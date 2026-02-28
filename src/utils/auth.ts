@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { connection } from "~/database/connection";
+import * as schema from "~/database/schema";
 
 export const auth = betterAuth({
     emailAndPassword: {
@@ -8,5 +9,6 @@ export const auth = betterAuth({
     },
     database: drizzleAdapter(connection, {
         provider: "pg",
+        schema
     }),
 });
