@@ -1,0 +1,135 @@
+/* Click-to-edit text */
+.click-to-edit {
+  cursor: pointer;
+  padding: 0.2em 0.4em;
+  border-radius: 0.3em;
+  border: 1.5px solid transparent;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.click-to-edit:hover {
+  border-color: rgba(var(--color-primary-rgb), 0.25);
+  background: rgba(var(--color-primary-rgb), 0.04);
+}
+
+/* Avatar cell with hover overlay */
+.avatar-cell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+}
+
+.avatar-cell:hover .avatar,
+.avatar-cell:hover .avatar-placeholder {
+  opacity: 0.35;
+}
+
+.avatar-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: var(--color-primary);
+  opacity: 0;
+  transition: opacity 0.15s;
+  pointer-events: none;
+}
+
+.avatar-cell:hover .avatar-overlay {
+  opacity: 1;
+}
+
+/* Status badges */
+.banned-badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2em 0.6em;
+  background: rgba(var(--color-error-rgb), 0.1);
+  color: var(--color-error);
+  border-radius: 1em;
+}
+
+.active-badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2em 0.6em;
+  background: rgba(var(--color-success-rgb), 0.1);
+  color: var(--color-success);
+  border-radius: 1em;
+}
+
+/* Action buttons layout */
+.admin-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+/* Inline edit form row */
+.edit-form-row td {
+  padding: 0.5em 0.8em;
+  background: rgba(var(--color-primary-rgb), 0.03);
+  border-bottom: 1px solid rgba(var(--color-primary-rgb), 0.1);
+}
+
+.edit-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.edit-form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+.edit-form input {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.4em 0.7em;
+  border: 1.5px solid rgba(var(--color-primary-rgb), 0.3);
+  border-radius: 0.4em;
+  outline: none;
+  flex: 1;
+  max-width: 24rem;
+}
+
+.edit-form input:focus {
+  border-color: var(--color-primary);
+}
+
+/* Inline ban form row */
+.ban-form-row td {
+  padding: 0.5em 0.8em;
+  background: rgba(var(--color-error-rgb), 0.03);
+  border-bottom: 1px solid rgba(var(--color-primary-rgb), 0.1);
+}
+
+.ban-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ban-form input {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.4em 0.7em;
+  border: 1.5px solid rgba(var(--color-primary-rgb), 0.3);
+  border-radius: 0.4em;
+  outline: none;
+  flex: 1;
+  max-width: 20rem;
+}
+
+.ban-form input:focus {
+  border-color: var(--color-primary);
+}

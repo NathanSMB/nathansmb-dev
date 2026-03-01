@@ -1,0 +1,86 @@
+.admin-batch-bar {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  margin-top: 1rem;
+  background: var(--color-primary);
+  color: white;
+  border-radius: 0.5em;
+  font-size: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.admin-batch-bar span {
+  font-weight: 600;
+  margin-right: auto;
+}
+
+.admin-batch-bar select {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.35em 0.6em;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.4em;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.admin-batch-bar select option {
+  color: var(--color-text);
+}
+
+.admin-batch-bar button {
+  font-family: inherit;
+  font-size: 0.8rem;
+  padding: 0.4em 0.8em;
+  border: none;
+  border-radius: 0.4em;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.admin-batch-bar button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.admin-batch-bar .batch-ban-reason {
+  padding: 0.4em 0.6em;
+  font-size: 0.8rem;
+  font-family: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.4em;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.admin-batch-bar .batch-ban-reason::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.admin-batch-bar .batch-ban {
+  background: rgba(var(--color-error-rgb), 0.7);
+}
+
+.admin-batch-bar .batch-ban:hover {
+  background: rgba(var(--color-error-rgb), 0.9);
+}
+
+.admin-batch-bar .batch-unban {
+  background: rgba(var(--color-success-rgb), 0.5);
+}
+
+.admin-batch-bar .batch-unban:hover {
+  background: rgba(var(--color-success-rgb), 0.7);
+}
+
+.admin-batch-bar .batch-delete {
+  background: rgba(var(--color-error-rgb), 0.7);
+}
+
+.admin-batch-bar .batch-delete:hover {
+  background: rgba(var(--color-error-rgb), 0.9);
+}

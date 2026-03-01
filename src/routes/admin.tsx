@@ -1,29 +1,16 @@
-import { createSignal, createEffect, on, Show, For } from "solid-js";
+import { createSignal, createEffect, on, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { authClient } from "~/auth/auth-client";
 import { requireAuth } from "~/auth/require-auth";
-import Avatar from "~/components/Avatar";
 import ConfirmModal from "~/components/ConfirmModal";
+import type { AdminUser, EditingField, Role } from "~/components/admin/types";
+import Button from "~/components/admin/Button";
+import Select from "~/components/admin/Select";
+import TextInput from "~/components/admin/TextInput";
+import { UserTable, BatchBar, Pagination } from "~/components/admin/table";
 import "./admin.css";
 
 const PAGE_SIZE = 10;
-
-interface AdminUser {
-  id: string;
-  name: string;
-  email: string;
-  role?: string | null;
-  banned: boolean | null;
-  banReason?: string | null;
-  banExpires?: number | null;
-  image?: string | null;
-  createdAt: Date;
-}
-
-interface EditingField {
-  userId: string;
-  field: "name" | "email" | "image";
-}
 
 export default function Admin() {
   const session = requireAuth({
@@ -122,13 +109,6 @@ export default function Admin() {
     const selectable = users().filter((u) => u.id !== currentUserId());
     return selectable.length > 0 && selectedIds().size === selectable.length;
   };
-
-  type Role = "user" | "admin";
-  const validRoles: Role[] = ["user", "admin"];
-
-  function isValidRole(value: string): value is Role {
-    return validRoles.includes(value as Role);
-  }
 
   async function handleSetRole(userId: string, newRole: Role) {
     setError("");
@@ -411,320 +391,92 @@ export default function Admin() {
 
       <div class="admin-toolbar">
         <form onSubmit={handleSearch}>
-          <input
-            type="text"
+          <TextInput
+            variant="toolbar"
             placeholder={`Search by ${searchField()}...`}
             value={search()}
-            onInput={(e) => setSearch(e.currentTarget.value)}
+            onInput={setSearch}
           />
-          <select
+          <Select
             value={searchField()}
-            onChange={(e) =>
-              setSearchField(e.currentTarget.value as "name" | "email")
-            }
-          >
-            <option value="name">Name</option>
-            <option value="email">Email</option>
-          </select>
-          <button type="submit">Search</button>
+            options={[
+              { value: "name", label: "Name" },
+              { value: "email", label: "Email" },
+            ]}
+            onChange={(v) => setSearchField(v as "name" | "email")}
+          />
+          <Button variant="primary" type="submit">Search</Button>
         </form>
-        <select
+        <Select
           value={roleFilter()}
-          onChange={(e) => {
-            setRoleFilter(e.currentTarget.value);
-            setPage(0);
-          }}
-        >
-          <option value="">All roles</option>
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
-        </select>
+          options={[
+            { value: "", label: "All roles" },
+            { value: "user", label: "User" },
+            { value: "admin", label: "Admin" },
+          ]}
+          onChange={(v) => { setRoleFilter(v); setPage(0); }}
+        />
       </div>
 
       <Show when={!loading()} fallback={<p class="admin-loading">Loading...</p>}>
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  checked={allSelected()}
-                  onChange={toggleSelectAll}
-                />
-              </th>
-              <th></th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <Show
-              when={users().length > 0}
-              fallback={
-                <tr>
-                  <td colspan="7" class="admin-empty">
-                    No users found
-                  </td>
-                </tr>
-              }
-            >
-              <For each={users()}>
-                {(user) => {
-                  const isSelf = () => user.id === currentUserId();
-                  return (
-                    <>
-                      <tr>
-                        <td>
-                          <input
-                            type="checkbox"
-                            checked={selectedIds().has(user.id)}
-                            onChange={() => toggleSelect(user.id)}
-                            disabled={isSelf()}
-                          />
-                        </td>
-                        <td>
-                          <div
-                            class="avatar-cell"
-                            onMouseDown={(e) => { if (isFieldEditing(user.id, "image")) e.preventDefault(); }}
-                            onClick={() => isFieldEditing(user.id, "image") ? setEditingField(null) : startFieldEdit(user.id, "image", user.image ?? "")}
-                            title="Edit image URL"
-                          >
-                            <Avatar image={user.image} name={user.name} />
-                            <span class="avatar-overlay">&#9998;</span>
-                          </div>
-                        </td>
-                        <td>
-                          <Show
-                            when={isFieldEditing(user.id, "name")}
-                            fallback={
-                              <span
-                                class="click-to-edit"
-                                onClick={() => startFieldEdit(user.id, "name", user.name)}
-                                title="Click to edit"
-                              >
-                                {user.name}
-                              </span>
-                            }
-                          >
-                            <input
-                              class="edit-input"
-                              type="text"
-                              value={editValue()}
-                              onInput={(e) => setEditValue(e.currentTarget.value)}
-                              onBlur={saveField}
-                              onKeyDown={handleFieldKeyDown}
-                              ref={(el) => setTimeout(() => el.focus(), 0)}
-                            />
-                          </Show>
-                        </td>
-                        <td>
-                          <Show
-                            when={isFieldEditing(user.id, "email")}
-                            fallback={
-                              <span
-                                class="click-to-edit"
-                                onClick={() => startFieldEdit(user.id, "email", user.email)}
-                                title="Click to edit"
-                              >
-                                {user.email}
-                              </span>
-                            }
-                          >
-                            <input
-                              class="edit-input"
-                              type="email"
-                              value={editValue()}
-                              onInput={(e) => setEditValue(e.currentTarget.value)}
-                              onBlur={saveField}
-                              onKeyDown={handleFieldKeyDown}
-                              ref={(el) => setTimeout(() => el.focus(), 0)}
-                            />
-                          </Show>
-                        </td>
-                        <td>
-                          <select
-                            class="role-select"
-                            value={user.role ?? "user"}
-                            onChange={(e) => {
-                              const value = e.currentTarget.value;
-                              if (isValidRole(value)) handleSetRole(user.id, value);
-                            }}
-                            disabled={isSelf()}
-                          >
-                            <option value="user">User</option>
-                            <option value="admin">Admin</option>
-                          </select>
-                        </td>
-                        <td>
-                          <Show
-                            when={user.banned}
-                            fallback={
-                              <span class="active-badge">Active</span>
-                            }
-                          >
-                            <span class="banned-badge" title={user.banReason ?? undefined}>Banned</span>
-                          </Show>
-                        </td>
-                        <td>
-                          <div class="admin-actions">
-                            <Show
-                              when={user.banned}
-                              fallback={
-                                <button
-                                  class="ban-btn"
-                                  onClick={() => {
-                                    setBanningUserId(
-                                      banningUserId() === user.id
-                                        ? null
-                                        : user.id
-                                    );
-                                    setBanReason("");
-                                  }}
-                                  disabled={isSelf()}
-                                >
-                                  Ban
-                                </button>
-                              }
-                            >
-                              <button
-                                class="unban-btn"
-                                onClick={() => handleUnban(user.id)}
-                              >
-                                Unban
-                              </button>
-                            </Show>
-                            <Show when={!isSelf()}>
-                              <button
-                                class="delete-btn"
-                                onClick={() =>
-                                  setDeleteTarget({
-                                    mode: "single",
-                                    userId: user.id,
-                                    userName: user.name,
-                                  })
-                                }
-                              >
-                                Delete
-                              </button>
-                            </Show>
-                          </div>
-                        </td>
-                      </tr>
-                      <Show when={isFieldEditing(user.id, "image")}>
-                        <tr class="edit-form-row">
-                          <td colspan="7">
-                            <div class="edit-form">
-                              <label class="edit-form-label">Image URL</label>
-                              <input
-                                type="url"
-                                placeholder="https://example.com/photo.jpg"
-                                value={editValue()}
-                                onInput={(e) => setEditValue(e.currentTarget.value)}
-                                onBlur={saveField}
-                                onKeyDown={handleFieldKeyDown}
-                                ref={(el) => setTimeout(() => el.focus(), 0)}
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      </Show>
-                      <Show when={banningUserId() === user.id}>
-                        <tr class="ban-form-row">
-                          <td colspan="7">
-                            <div class="ban-form">
-                              <input
-                                type="text"
-                                placeholder="Ban reason (optional)"
-                                value={banReason()}
-                                onInput={(e) =>
-                                  setBanReason(e.currentTarget.value)
-                                }
-                              />
-                              <button
-                                class="confirm-ban"
-                                onClick={() => handleBan(user.id)}
-                              >
-                                Confirm ban
-                              </button>
-                              <button
-                                class="cancel-ban"
-                                onClick={() => setBanningUserId(null)}
-                              >
-                                Cancel
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      </Show>
-                    </>
-                  );
-                }}
-              </For>
-            </Show>
-          </tbody>
-        </table>
+        <UserTable
+          users={users()}
+          currentUserId={currentUserId()}
+          selectedIds={selectedIds()}
+          allSelected={allSelected()}
+          editingField={editingField()}
+          editValue={editValue()}
+          banningUserId={banningUserId()}
+          banReason={banReason()}
+          onToggleSelectAll={toggleSelectAll}
+          onToggleSelect={toggleSelect}
+          onStartFieldEdit={startFieldEdit}
+          onSetEditingField={setEditingField}
+          onSetEditValue={setEditValue}
+          onSaveField={saveField}
+          onFieldKeyDown={handleFieldKeyDown}
+          onSetRole={handleSetRole}
+          onBanClick={(userId) => {
+            setBanningUserId(banningUserId() === userId ? null : userId);
+            setBanReason("");
+          }}
+          onUnban={handleUnban}
+          onDeleteClick={(userId, userName) =>
+            setDeleteTarget({ mode: "single", userId, userName })
+          }
+          onSetBanReason={setBanReason}
+          onConfirmBan={handleBan}
+          onCancelBan={() => setBanningUserId(null)}
+          isFieldEditing={isFieldEditing}
+        />
       </Show>
 
       <Show when={total() > PAGE_SIZE}>
-        <div class="admin-pagination">
-          <button
-            disabled={page() === 0}
-            onClick={() => setPage((p) => p - 1)}
-          >
-            Previous
-          </button>
-          <span>
-            Page {page() + 1} of {totalPages()}
-          </span>
-          <button
-            disabled={(page() + 1) * PAGE_SIZE >= total()}
-            onClick={() => setPage((p) => p + 1)}
-          >
-            Next
-          </button>
-        </div>
+        <Pagination
+          page={page()}
+          totalPages={totalPages()}
+          hasPrevious={page() > 0}
+          hasNext={(page() + 1) * PAGE_SIZE < total()}
+          onPrevious={() => setPage((p) => p - 1)}
+          onNext={() => setPage((p) => p + 1)}
+        />
       </Show>
 
       <Show when={selectedIds().size > 0}>
-        <div class="admin-batch-bar">
-          <span>{selectedIds().size} user(s) selected</span>
-          <select
-            value={batchRole()}
-            onChange={(e) => {
-              const value = e.currentTarget.value;
-              if (isValidRole(value)) setBatchRole(value);
-            }}
-          >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
-          <button onClick={handleBatchSetRole}>Set role</button>
-          <input
-            class="batch-ban-reason"
-            type="text"
-            placeholder="Ban reason (optional)"
-            value={batchBanReason()}
-            onInput={(e) => setBatchBanReason(e.currentTarget.value)}
-          />
-          <button class="batch-ban" onClick={handleBatchBan}>
-            Ban selected
-          </button>
-          <button class="batch-unban" onClick={handleBatchUnban}>
-            Unban selected
-          </button>
-          <button
-            class="batch-delete"
-            onClick={() => {
-              const ids = [...selectedIds()];
-              setDeleteTarget({ mode: "batch", userIds: ids, count: ids.length });
-            }}
-          >
-            Delete selected
-          </button>
-        </div>
+        <BatchBar
+          selectedCount={selectedIds().size}
+          batchRole={batchRole()}
+          batchBanReason={batchBanReason()}
+          onSetBatchRole={setBatchRole}
+          onBatchSetRole={handleBatchSetRole}
+          onSetBatchBanReason={setBatchBanReason}
+          onBatchBan={handleBatchBan}
+          onBatchUnban={handleBatchUnban}
+          onBatchDelete={() => {
+            const ids = [...selectedIds()];
+            setDeleteTarget({ mode: "batch", userIds: ids, count: ids.length });
+          }}
+        />
       </Show>
 
       <ConfirmModal

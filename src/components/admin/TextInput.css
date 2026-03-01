@@ -1,0 +1,27 @@
+.admin-input {
+  font-family: inherit;
+  outline: none;
+  border: 1.5px solid rgba(var(--color-primary-rgb), 0.3);
+}
+
+.admin-input:focus {
+  border-color: var(--color-primary);
+}
+
+/* Toolbar variant — search bar */
+.admin-input-toolbar {
+  font-size: 0.9rem;
+  padding: 0.5em 0.8em;
+  border-radius: 0.5em;
+  flex: 1;
+  min-width: 10rem;
+}
+
+/* Inline variant — edit inputs, ban reason */
+.admin-input-inline {
+  font-size: 0.85rem;
+  padding: 0.3em 0.6em;
+  border-radius: 0.4em;
+  width: 100%;
+  box-sizing: border-box;
+}
