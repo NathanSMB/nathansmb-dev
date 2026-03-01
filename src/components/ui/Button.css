@@ -3,6 +3,9 @@
   border: none;
   cursor: pointer;
   white-space: nowrap;
+  font-size: 0.8rem;
+  padding: 0.35em 0.8em;
+  border-radius: 0.5em;
 }
 
 .btn:disabled {
@@ -10,82 +13,51 @@
   cursor: not-allowed;
 }
 
-/* Primary — solid primary bg, white text */
 .btn-primary {
-  font-size: 0.9rem;
-  padding: 0.5em 1em;
   color: var(--color-text-on-colored);
   background: var(--color-primary);
-  border-radius: 0.5em;
 }
 
 .btn-primary:hover {
   background: var(--color-primary-hover);
 }
 
-/* Danger — light red bg, red text */
 .btn-danger {
-  font-size: 0.8rem;
-  padding: 0.35em 0.8em;
-  color: var(--color-error);
-  background: oklch(from var(--color-error) l c h / 0.1);
-  border-radius: 0.4em;
+  color: var(--color-text-on-colored);
+  background: var(--color-error);
 }
 
 .btn-danger:hover {
-  background: oklch(from var(--color-error) l c h / 0.2);
-}
-
-/* Success — light green bg, green text */
-.btn-success {
-  font-size: 0.8rem;
-  padding: 0.35em 0.8em;
-  color: var(--color-success);
-  background: oklch(from var(--color-success) l c h / 0.1);
-  border-radius: 0.4em;
-}
-
-.btn-success:hover {
-  background: oklch(from var(--color-success) l c h / 0.2);
-}
-
-/* Danger solid — solid red bg, white text */
-.btn-danger-solid {
-  font-size: 0.8rem;
-  padding: 0.4em 0.8em;
-  color: var(--color-text-on-colored);
-  background: var(--color-error);
-  border-radius: 0.4em;
-}
-
-.btn-danger-solid:hover {
   background: var(--color-error-hover);
 }
 
-/* Ghost — transparent bg, muted text */
-.btn-ghost {
-  font-size: 0.8rem;
-  padding: 0.4em 0.8em;
-  color: var(--color-text-muted);
-  background: oklch(from var(--color-neutral) l c h / 0.06);
-  border-radius: 0.4em;
+.btn-success {
+  color: var(--color-text-on-colored);
+  background: var(--color-success);
 }
 
-.btn-ghost:hover {
-  background: oklch(from var(--color-neutral) l c h / 0.1);
+.btn-success:hover {
+  background: var(--color-success-hover);
+}
+
+.btn-nuetral {
+  color: var(--color-text-muted);
+  background: var(--color-neutral);
+}
+
+.btn-nuetral:hover {
+  background: var(--color-neutral-hover);
 }
 
 /* Pagination — pill-shaped, primary tint */
 .btn-pagination {
-  font-size: 0.85rem;
-  padding: 0.4em 1em;
-  color: var(--color-primary);
-  background: oklch(from var(--color-primary) l c h / 0.1);
+  color: var(--color-text-on-colored);
+  background: var(--color-primary);
   border-radius: 1em;
 }
 
 .btn-pagination:hover:not(:disabled) {
-  background: oklch(from var(--color-primary) l c h / 0.2);
+  background: var(--color-primary-hover);
 }
 
 /* Form — full-width submit button for auth/settings forms */

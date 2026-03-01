@@ -2,7 +2,7 @@ import type { JSX } from "solid-js";
 import css from "./Button.css?inline";
 
 interface ButtonProps {
-  variant: "primary" | "danger" | "success" | "danger-solid" | "ghost" | "pagination" | "form";
+  variant: "primary" | "danger" | "success" | "nuetral" | "pagination" | "form";
   onClick?: () => void;
   disabled?: boolean;
   type?: "button" | "submit";

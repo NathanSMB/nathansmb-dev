@@ -20,10 +20,10 @@ export default function BanFormRow(props: BanFormRowProps) {
             value={props.banReason}
             onInput={(e) => props.onSetBanReason(e.currentTarget.value)}
           />
-          <Button variant="danger-solid" onClick={props.onConfirm}>
+          <Button variant="danger" onClick={props.onConfirm}>
             Confirm ban
           </Button>
-          <Button variant="ghost" onClick={props.onCancel}>
+          <Button variant="nuetral" onClick={props.onCancel}>
             Cancel
           </Button>
         </div>

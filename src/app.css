@@ -25,7 +25,8 @@
   --color-on-primary: oklch(100% 0 none);
   --color-overlay: oklch(0% 0 none / 0.5);
   --color-shadow: oklch(0% 0 none / 0.2);
-  --color-neutral: oklch(0% 0 none);
+  --color-neutral: oklch(90% 0 none);
+  --color-neutral-hover: oklch(94% 0 none);
 }
 
 /* Dark mode */
@@ -48,7 +49,8 @@
     --color-surface: oklch(23% 0.02 280);
     --color-page-bg: oklch(16% 0.02 280);
 
-    --color-neutral: oklch(100% 0 none);
+    --color-neutral: oklch(20% 0 none);
+    --color-neutral-hover: oklch(16% 0 none);
   }
 
   body {
