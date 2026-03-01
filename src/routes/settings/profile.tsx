@@ -1,7 +1,8 @@
-import { createEffect, createSignal, Show } from "solid-js";
+import { createEffect, createResource, createSignal, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { authClient } from "~/utils/auth-client";
 import { requireAuth } from "~/utils/require-auth";
+import { checkHasAdmins, promoteToAdmin } from "~/utils/admin-bootstrap";
 
 export default function ProfileSettings() {
   const session = requireAuth();
@@ -12,6 +13,26 @@ export default function ProfileSettings() {
   const [error, setError] = createSignal("");
   const [success, setSuccess] = createSignal("");
   const [loading, setLoading] = createSignal(false);
+
+  const [hasAdmins, { refetch: refetchAdmins }] = createResource(
+    () => session().data,
+    () => checkHasAdmins()
+  );
+
+  async function handleBecomeAdmin() {
+    setError("");
+    setSuccess("");
+    setLoading(true);
+    try {
+      await promoteToAdmin();
+      setSuccess("You are now an admin");
+      refetchAdmins();
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to become admin");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   createEffect(() => {
     const user = session().data?.user;
@@ -107,6 +128,18 @@ export default function ProfileSettings() {
             {loading() ? "Saving..." : "Save changes"}
           </button>
         </form>
+        <Show when={hasAdmins() === false}>
+          <div>
+            <p>No administrators exist yet. You can claim the admin role.</p>
+            <button
+              type="button"
+              onClick={handleBecomeAdmin}
+              disabled={loading()}
+            >
+              {loading() ? "Promoting..." : "Become Admin"}
+            </button>
+          </div>
+        </Show>
         <p>
           <a href="/settings/password">Change password</a>
         </p>

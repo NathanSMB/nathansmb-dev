@@ -1,5 +1,5 @@
 import { MetaProvider, Title } from "@solidjs/meta";
-import { Router } from "@solidjs/router";
+import { Router, useLocation } from "@solidjs/router";
 import { FileRoutes } from "@solidjs/start/router";
 import { Show, Suspense } from "solid-js";
 import { authClient } from "~/utils/auth-client";
@@ -10,6 +10,7 @@ export default function App() {
     <Router
       root={(props) => {
         const session = authClient.useSession();
+        const location = useLocation();
 
         return (
           <MetaProvider>
@@ -23,7 +24,7 @@ export default function App() {
                 <Show when={!session().isPending}>
                   <Show
                     when={session().data}
-                    fallback={<a href="/login">Log in</a>}
+                    fallback={<a href={`/login?redirect=${encodeURIComponent(location.pathname)}`}>Log in</a>}
                   >
                     {(s) => (
                       <>
@@ -35,6 +36,9 @@ export default function App() {
                           />
                         </Show>
                         <span>{s().user.name}</span>
+                        <Show when={s().user.role === "admin"}>
+                          <a href="/admin">Admin</a>
+                        </Show>
                         <a href="/settings/profile">Settings</a>
                         <button onClick={() => authClient.signOut()}>
                           Log out

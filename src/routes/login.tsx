@@ -1,4 +1,4 @@
-import { createSignal, Show } from "solid-js";
+import { createEffect, createSignal, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { useNavigate, useSearchParams } from "@solidjs/router";
 import { authClient } from "~/utils/auth-client";
@@ -10,6 +10,15 @@ export default function Login() {
   const [loading, setLoading] = createSignal(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const session = authClient.useSession();
+
+  createEffect(() => {
+    if (session().isPending) return;
+    if (session().data) {
+      const redirect = searchParams.redirect as string | undefined;
+      navigate(redirect ? decodeURIComponent(redirect) : "/", { replace: true });
+    }
+  });
 
   async function handleSubmit(e: Event) {
     e.preventDefault();
@@ -26,7 +35,7 @@ export default function Login() {
     if (result.error) {
       setError(result.error.message ?? "Login failed");
     } else {
-      const redirect = searchParams.redirect;
+      const redirect = searchParams.redirect as string | undefined;
       navigate(redirect ? decodeURIComponent(redirect) : "/", { replace: true });
     }
   }
