@@ -1,0 +1,102 @@
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: modal-fade-in 0.15s ease-out;
+}
+
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-dialog {
+  background: white;
+  border-radius: 0.75em;
+  padding: 2rem 2.5rem;
+  max-width: 28rem;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-destructive {
+  border-top: 4px solid #c0392b;
+}
+
+.modal-icon {
+  font-size: 3rem;
+  color: #c0392b;
+  margin-bottom: 0.5rem;
+}
+
+.modal-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #c0392b;
+  margin: 0 0 0.75rem;
+}
+
+.modal-message {
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.5;
+  margin: 0 0 0.5rem;
+}
+
+.modal-details {
+  font-size: 0.85rem;
+  color: #666;
+  background: rgba(192, 57, 43, 0.06);
+  border: 1px solid rgba(192, 57, 43, 0.15);
+  border-radius: 0.4em;
+  padding: 0.6em 0.8em;
+  margin: 0.75rem 0;
+  max-height: 6rem;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.modal-actions button {
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.6em 1.5em;
+  border: none;
+  border-radius: 0.5em;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.modal-cancel {
+  color: #555;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.modal-cancel:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.14);
+}
+
+.modal-confirm-destructive {
+  color: white;
+  background: #c0392b;
+}
+
+.modal-confirm-destructive:hover:not(:disabled) {
+  background: #a93226;
+}
+
+.modal-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

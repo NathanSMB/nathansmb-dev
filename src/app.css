@@ -156,15 +156,26 @@ header button:hover {
 
 /* Avatars */
 .avatar {
-  width: 2rem;
-  height: 2rem;
+  --avatar-size: 2rem;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
   border-radius: 50%;
   object-fit: cover;
+  transition: opacity 0.15s;
 }
 
 .avatar-lg {
-  width: 4rem;
-  height: 4rem;
+  --avatar-size: 4rem;
+}
+
+.avatar-placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(68, 107, 158, 0.15);
+  color: #335d92;
+  font-weight: 600;
+  font-size: calc(var(--avatar-size) * 0.5);
 }
 
 /* Image field with preview */

@@ -2,6 +2,8 @@ import { createSignal, createEffect, on, Show, For } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { authClient } from "~/auth/auth-client";
 import { requireAuth } from "~/auth/require-auth";
+import Avatar from "~/components/Avatar";
+import ConfirmModal from "~/components/ConfirmModal";
 import "./admin.css";
 
 const PAGE_SIZE = 10;
@@ -25,7 +27,7 @@ interface EditingField {
 
 export default function Admin() {
   const session = requireAuth({
-    permissions: { user: ["list", "set-role", "ban", "update"] },
+    permissions: { user: ["list", "set-role", "ban", "update", "delete"] },
   });
 
   const [users, setUsers] = createSignal<AdminUser[]>([]);
@@ -41,8 +43,15 @@ export default function Admin() {
   const [banReason, setBanReason] = createSignal("");
   const [selectedIds, setSelectedIds] = createSignal<Set<string>>(new Set());
   const [batchRole, setBatchRole] = createSignal<Role>("user");
+  const [batchBanReason, setBatchBanReason] = createSignal("");
   const [editingField, setEditingField] = createSignal<EditingField | null>(null);
   const [editValue, setEditValue] = createSignal("");
+  const [deleteTarget, setDeleteTarget] = createSignal<
+    | { mode: "single"; userId: string; userName: string }
+    | { mode: "batch"; userIds: string[]; count: number }
+    | null
+  >(null);
+  const [deleteLoading, setDeleteLoading] = createSignal(false);
 
   const currentUserId = () => session()?.data?.user?.id;
   const totalPages = () => Math.max(1, Math.ceil(total() / PAGE_SIZE));
@@ -268,10 +277,14 @@ export default function Admin() {
     setError("");
     setSuccess("");
     const ids = [...selectedIds()];
+    const reason = batchBanReason();
     let failed = 0;
 
     for (const userId of ids) {
-      const result = await authClient.admin.banUser({ userId });
+      const result = await authClient.admin.banUser({
+        userId,
+        banReason: reason || undefined,
+      });
       if (result.error) failed++;
     }
 
@@ -283,10 +296,13 @@ export default function Admin() {
 
     setUsers((prev) =>
       prev.map((u) =>
-        ids.includes(u.id) ? { ...u, banned: true } : u
+        ids.includes(u.id)
+          ? { ...u, banned: true, banReason: reason || null }
+          : u
       )
     );
     setSelectedIds(new Set<string>());
+    setBatchBanReason("");
   }
 
   async function handleBatchUnban() {
@@ -312,6 +328,73 @@ export default function Admin() {
       )
     );
     setSelectedIds(new Set<string>());
+  }
+
+  async function confirmDelete() {
+    const target = deleteTarget();
+    if (!target) return;
+
+    setDeleteLoading(true);
+    setError("");
+    setSuccess("");
+
+    if (target.mode === "single") {
+      const result = await authClient.admin.removeUser({ userId: target.userId });
+      setDeleteLoading(false);
+      setDeleteTarget(null);
+
+      if (result.error) {
+        setError(result.error.message ?? "Failed to delete user");
+      } else {
+        setSuccess("User deleted");
+        setUsers((prev) => prev.filter((u) => u.id !== target.userId));
+        setTotal((prev) => prev - 1);
+        setSelectedIds((prev) => {
+          const next = new Set(prev);
+          next.delete(target.userId);
+          return next;
+        });
+      }
+    } else {
+      let failed = 0;
+      let succeeded = 0;
+
+      for (const userId of target.userIds) {
+        const result = await authClient.admin.removeUser({ userId });
+        if (result.error) failed++;
+        else succeeded++;
+      }
+
+      setDeleteLoading(false);
+      setDeleteTarget(null);
+
+      if (failed > 0) setError(`Failed to delete ${failed} user(s)`);
+      if (succeeded > 0) setSuccess(`Deleted ${succeeded} user(s)`);
+
+      setSelectedIds(new Set<string>());
+      fetchUsers();
+    }
+  }
+
+  function deleteModalProps() {
+    const t = deleteTarget();
+    if (!t) return { title: "", message: "", details: "", confirmLabel: "" };
+    if (t.mode === "single") {
+      return {
+        title: "Permanently Delete User",
+        message:
+          "This action cannot be undone. All their data, sessions, and accounts will be permanently destroyed.",
+        details: `User: ${t.userName}`,
+        confirmLabel: "Yes, delete this user",
+      };
+    }
+    return {
+      title: `Permanently Delete ${t.count} Users`,
+      message:
+        "This action cannot be undone. All data, sessions, and accounts for these users will be permanently destroyed.",
+      details: `${t.count} user(s) will be permanently removed.`,
+      confirmLabel: `Yes, delete ${t.count} user(s)`,
+    };
   }
 
   return (
@@ -403,28 +486,14 @@ export default function Admin() {
                           />
                         </td>
                         <td>
-                          <div class="avatar-cell">
-                            <Show
-                              when={user.image}
-                              fallback={
-                                <span class="user-avatar-placeholder">
-                                  {user.name.charAt(0).toUpperCase()}
-                                </span>
-                              }
-                            >
-                              <img
-                                src={user.image!}
-                                alt=""
-                                class="user-avatar"
-                              />
-                            </Show>
-                            <button
-                              class="avatar-edit-btn"
-                              onClick={() => startFieldEdit(user.id, "image", user.image ?? "")}
-                              title="Edit image URL"
-                            >
-                              &#9998;
-                            </button>
+                          <div
+                            class="avatar-cell"
+                            onMouseDown={(e) => { if (isFieldEditing(user.id, "image")) e.preventDefault(); }}
+                            onClick={() => isFieldEditing(user.id, "image") ? setEditingField(null) : startFieldEdit(user.id, "image", user.image ?? "")}
+                            title="Edit image URL"
+                          >
+                            <Avatar image={user.image} name={user.name} />
+                            <span class="avatar-overlay">&#9998;</span>
                           </div>
                         </td>
                         <td>
@@ -499,33 +568,49 @@ export default function Admin() {
                             <span class="banned-badge" title={user.banReason ?? undefined}>Banned</span>
                           </Show>
                         </td>
-                        <td class="admin-actions">
-                          <Show
-                            when={user.banned}
-                            fallback={
-                              <button
-                                class="ban-btn"
-                                onClick={() => {
-                                  setBanningUserId(
-                                    banningUserId() === user.id
-                                      ? null
-                                      : user.id
-                                  );
-                                  setBanReason("");
-                                }}
-                                disabled={isSelf()}
-                              >
-                                Ban
-                              </button>
-                            }
-                          >
-                            <button
-                              class="unban-btn"
-                              onClick={() => handleUnban(user.id)}
+                        <td>
+                          <div class="admin-actions">
+                            <Show
+                              when={user.banned}
+                              fallback={
+                                <button
+                                  class="ban-btn"
+                                  onClick={() => {
+                                    setBanningUserId(
+                                      banningUserId() === user.id
+                                        ? null
+                                        : user.id
+                                    );
+                                    setBanReason("");
+                                  }}
+                                  disabled={isSelf()}
+                                >
+                                  Ban
+                                </button>
+                              }
                             >
-                              Unban
-                            </button>
-                          </Show>
+                              <button
+                                class="unban-btn"
+                                onClick={() => handleUnban(user.id)}
+                              >
+                                Unban
+                              </button>
+                            </Show>
+                            <Show when={!isSelf()}>
+                              <button
+                                class="delete-btn"
+                                onClick={() =>
+                                  setDeleteTarget({
+                                    mode: "single",
+                                    userId: user.id,
+                                    userName: user.name,
+                                  })
+                                }
+                              >
+                                Delete
+                              </button>
+                            </Show>
+                          </div>
                         </td>
                       </tr>
                       <Show when={isFieldEditing(user.id, "image")}>
@@ -542,13 +627,6 @@ export default function Admin() {
                                 onKeyDown={handleFieldKeyDown}
                                 ref={(el) => setTimeout(() => el.focus(), 0)}
                               />
-                              <Show when={editValue()}>
-                                <img
-                                  src={editValue()}
-                                  alt=""
-                                  class="edit-form-preview"
-                                />
-                              </Show>
                             </div>
                           </td>
                         </tr>
@@ -624,14 +702,41 @@ export default function Admin() {
             <option value="admin">Admin</option>
           </select>
           <button onClick={handleBatchSetRole}>Set role</button>
+          <input
+            class="batch-ban-reason"
+            type="text"
+            placeholder="Ban reason (optional)"
+            value={batchBanReason()}
+            onInput={(e) => setBatchBanReason(e.currentTarget.value)}
+          />
           <button class="batch-ban" onClick={handleBatchBan}>
             Ban selected
           </button>
           <button class="batch-unban" onClick={handleBatchUnban}>
             Unban selected
           </button>
+          <button
+            class="batch-delete"
+            onClick={() => {
+              const ids = [...selectedIds()];
+              setDeleteTarget({ mode: "batch", userIds: ids, count: ids.length });
+            }}
+          >
+            Delete selected
+          </button>
         </div>
       </Show>
+
+      <ConfirmModal
+        open={deleteTarget() !== null}
+        title={deleteModalProps().title}
+        message={deleteModalProps().message}
+        details={deleteModalProps().details}
+        confirmLabel={deleteModalProps().confirmLabel}
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteTarget(null)}
+        loading={deleteLoading()}
+      />
     </main>
   );
 }

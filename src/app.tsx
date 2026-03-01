@@ -3,6 +3,7 @@ import { Router, useLocation } from "@solidjs/router";
 import { FileRoutes } from "@solidjs/start/router";
 import { Show, Suspense } from "solid-js";
 import { authClient } from "~/auth/auth-client";
+import Avatar from "~/components/Avatar";
 import "./app.css";
 
 export default function App() {
@@ -28,13 +29,7 @@ export default function App() {
                   >
                     {(s) => (
                       <>
-                        <Show when={s().user.image}>
-                          <img
-                            src={s().user.image!}
-                            alt=""
-                            class="avatar"
-                          />
-                        </Show>
+                        <Avatar image={s().user.image} name={s().user.name} />
                         <span>{s().user.name}</span>
                         <Show when={s().user.role === "admin"}>
                           <a href="/admin">Admin</a>

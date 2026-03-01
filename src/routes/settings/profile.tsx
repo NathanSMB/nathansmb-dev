@@ -1,4 +1,5 @@
 import { createEffect, createResource, createSignal, Show } from "solid-js";
+import Avatar from "~/components/Avatar";
 import { Title } from "@solidjs/meta";
 import { authClient } from "~/auth/auth-client";
 import { requireAuth } from "~/auth/require-auth";
@@ -113,9 +114,7 @@ export default function ProfileSettings() {
           <label>
             Profile image URL
             <div class="image-field">
-              <Show when={image()}>
-                <img src={image()} alt="" class="avatar avatar-lg" />
-              </Show>
+              <Avatar image={image()} name={name()} class="avatar-lg" />
               <input
                 type="url"
                 value={image()}

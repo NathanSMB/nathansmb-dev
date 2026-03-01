@@ -137,27 +137,7 @@
   cursor: not-allowed;
 }
 
-/* User avatars */
-.user-avatar {
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 50%;
-  object-fit: cover;
-  vertical-align: middle;
-}
 
-.user-avatar-placeholder {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 50%;
-  background: rgba(68, 107, 158, 0.15);
-  color: #335d92;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
 
 .admin-table th:nth-child(2),
 .admin-table td:nth-child(2) {
@@ -232,6 +212,15 @@
   cursor: not-allowed;
 }
 
+.delete-btn {
+  color: #c0392b;
+  background: rgba(192, 57, 43, 0.1);
+}
+
+.delete-btn:hover {
+  background: rgba(192, 57, 43, 0.2);
+}
+
 .unban-btn {
   color: #27ae60;
   background: rgba(39, 174, 96, 0.1);
@@ -274,13 +263,6 @@
 
 .edit-form input:focus {
   border-color: #335d92;
-}
-
-.edit-form-preview {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  object-fit: cover;
 }
 
 /* Inline ban form row */
@@ -418,6 +400,20 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
+.admin-batch-bar .batch-ban-reason {
+  padding: 0.4em 0.6em;
+  font-size: 0.8rem;
+  font-family: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.4em;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.admin-batch-bar .batch-ban-reason::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
 .admin-batch-bar .batch-ban {
   background: rgba(192, 57, 43, 0.7);
 }
@@ -432,6 +428,14 @@
 
 .admin-batch-bar .batch-unban:hover {
   background: rgba(39, 174, 96, 0.7);
+}
+
+.admin-batch-bar .batch-delete {
+  background: rgba(192, 57, 43, 0.7);
+}
+
+.admin-batch-bar .batch-delete:hover {
+  background: rgba(192, 57, 43, 0.9);
 }
 
 .admin-loading {
@@ -460,25 +464,34 @@
   background: rgba(68, 107, 158, 0.04);
 }
 
-/* Avatar cell with edit button */
+/* Avatar cell with hover overlay */
 .avatar-cell {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-}
-
-.avatar-edit-btn {
-  font-size: 0.7rem;
-  padding: 0.15em 0.3em;
-  border: none;
-  background: rgba(68, 107, 158, 0.1);
-  color: #335d92;
-  border-radius: 0.3em;
+  width: 2rem;
+  height: 2rem;
   cursor: pointer;
-  line-height: 1;
 }
 
-.avatar-edit-btn:hover {
-  background: rgba(68, 107, 158, 0.2);
+.avatar-cell:hover .avatar,
+.avatar-cell:hover .avatar-placeholder {
+  opacity: 0.35;
+}
+
+.avatar-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: #335d92;
+  opacity: 0;
+  transition: opacity 0.15s;
+  pointer-events: none;
+}
+
+.avatar-cell:hover .avatar-overlay {
+  opacity: 1;
 }
