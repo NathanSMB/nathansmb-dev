@@ -53,19 +53,3 @@
   color: var(--color-text-muted);
 }
 
-.test-users-page input[type="number"] {
-  font-family: inherit;
-  font-size: 1rem;
-  padding: 0.6em 0.8em;
-  border: 1.5px solid rgba(var(--color-primary-rgb), 0.3);
-  border-radius: 0.5em;
-  outline: none;
-  width: 100%;
-  box-sizing: border-box;
-  background: var(--color-bg);
-  color: var(--color-text);
-}
-
-.test-users-page input[type="number"]:focus {
-  border-color: var(--color-primary);
-}

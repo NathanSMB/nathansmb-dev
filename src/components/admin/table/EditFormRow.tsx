@@ -1,4 +1,5 @@
 import TextInput from "~/components/ui/TextInput";
+import css from "./EditFormRow.css?inline";
 
 interface EditFormRowProps {
   editValue: string;
@@ -10,6 +11,7 @@ interface EditFormRowProps {
 export default function EditFormRow(props: EditFormRowProps) {
   return (
     <tr class="edit-form-row">
+      <style>{css}</style>
       <td colspan="7">
         <div class="edit-form">
           <label class="edit-form-label">Image URL</label>

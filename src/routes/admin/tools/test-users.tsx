@@ -4,6 +4,7 @@ import { useNavigate } from "@solidjs/router";
 import { requireAuth } from "~/auth/require-auth";
 import { getNextTestUserNumber, createTestUsers } from "~/auth/test-users";
 import Button from "~/components/ui/Button";
+import TextInput from "~/components/ui/TextInput";
 import "./test-users.css";
 
 export default function TestUserGenerator() {
@@ -67,12 +68,12 @@ export default function TestUserGenerator() {
       <form onSubmit={handleSubmit}>
         <label>
           Number of users to create
-          <input
+          <TextInput
             type="number"
-            min="1"
-            max="100"
-            value={count()}
-            onInput={(e) => setCount(parseInt(e.currentTarget.value) || 1)}
+            min={1}
+            max={100}
+            value={String(count())}
+            onInput={(v) => setCount(parseInt(v) || 1)}
             required
           />
         </label>

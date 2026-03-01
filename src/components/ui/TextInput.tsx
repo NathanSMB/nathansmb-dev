@@ -6,7 +6,10 @@ interface TextInputProps {
   onBlur?: () => void;
   onKeyDown?: (e: KeyboardEvent) => void;
   placeholder?: string;
-  type?: "text" | "email" | "url";
+  type?: "text" | "email" | "url" | "number";
+  min?: number;
+  max?: number;
+  required?: boolean;
   variant?: "toolbar" | "inline";
   ref?: (el: HTMLInputElement) => void;
   class?: string;
@@ -26,6 +29,9 @@ export default function TextInput(props: TextInputProps) {
         onBlur={props.onBlur}
         onKeyDown={props.onKeyDown}
         placeholder={props.placeholder}
+        min={props.min}
+        max={props.max}
+        required={props.required}
         ref={props.ref}
       />
     </>

@@ -1,4 +1,5 @@
 import Button from "~/components/ui/Button";
+import css from "./BanFormRow.css?inline";
 
 interface BanFormRowProps {
   banReason: string;
@@ -10,6 +11,7 @@ interface BanFormRowProps {
 export default function BanFormRow(props: BanFormRowProps) {
   return (
     <tr class="ban-form-row">
+      <style>{css}</style>
       <td colspan="7">
         <div class="ban-form">
           <input
