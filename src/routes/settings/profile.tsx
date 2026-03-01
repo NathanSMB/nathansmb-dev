@@ -35,6 +35,12 @@ export default function ProfileSettings() {
     }
   }
 
+  createEffect(async () => {
+    if (hasAdmins() === null) {
+      await authClient.signOut();
+    }
+  });
+
   createEffect(() => {
     const user = session().data?.user;
     if (user) {

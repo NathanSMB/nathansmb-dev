@@ -25,8 +25,11 @@ async function hasAdmins(): Promise<boolean> {
   return admins.length > 0;
 }
 
-export async function checkHasAdmins(): Promise<boolean> {
-  await requireSession();
+export async function checkHasAdmins(): Promise<boolean | null> {
+  const session = await auth.api.getSession({
+    headers: getWebRequest().headers,
+  });
+  if (!session) return null;
   return hasAdmins();
 }
 
