@@ -18,9 +18,14 @@ interface AdminUser {
   createdAt: Date;
 }
 
+interface EditingField {
+  userId: string;
+  field: "name" | "email" | "image";
+}
+
 export default function Admin() {
   const session = requireAuth({
-    permissions: { user: ["list", "set-role", "ban"] },
+    permissions: { user: ["list", "set-role", "ban", "update"] },
   });
 
   const [users, setUsers] = createSignal<AdminUser[]>([]);
@@ -36,6 +41,8 @@ export default function Admin() {
   const [banReason, setBanReason] = createSignal("");
   const [selectedIds, setSelectedIds] = createSignal<Set<string>>(new Set());
   const [batchRole, setBatchRole] = createSignal<Role>("user");
+  const [editingField, setEditingField] = createSignal<EditingField | null>(null);
+  const [editValue, setEditValue] = createSignal("");
 
   const currentUserId = () => session()?.data?.user?.id;
   const totalPages = () => Math.max(1, Math.ceil(total() / PAGE_SIZE));
@@ -173,6 +180,64 @@ export default function Admin() {
     }
   }
 
+  function startFieldEdit(userId: string, field: "name" | "email" | "image", currentValue: string) {
+    setEditingField({ userId, field });
+    setEditValue(currentValue);
+  }
+
+  async function saveField() {
+    const ef = editingField();
+    if (!ef) return;
+
+    const user = users().find((u) => u.id === ef.userId);
+    if (!user) return;
+
+    const currentVal = ef.field === "image" ? (user.image ?? "") : user[ef.field];
+    if (editValue() === currentVal) {
+      setEditingField(null);
+      return;
+    }
+
+    setError("");
+    setSuccess("");
+
+    const data: Record<string, unknown> = {};
+    if (ef.field === "image") {
+      data.image = editValue() || null;
+    } else {
+      data[ef.field] = editValue();
+    }
+
+    const result = await authClient.admin.updateUser({ userId: ef.userId, data });
+    if (result.error) {
+      setError(result.error.message ?? "Failed to update user");
+    } else {
+      setSuccess(`${ef.field.charAt(0).toUpperCase() + ef.field.slice(1)} updated`);
+      setUsers((prev) =>
+        prev.map((u) =>
+          u.id === ef.userId
+            ? { ...u, [ef.field]: ef.field === "image" ? (editValue() || null) : editValue() }
+            : u
+        )
+      );
+    }
+    setEditingField(null);
+  }
+
+  function handleFieldKeyDown(e: KeyboardEvent) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      saveField();
+    } else if (e.key === "Escape") {
+      setEditingField(null);
+    }
+  }
+
+  function isFieldEditing(userId: string, field: "name" | "email" | "image") {
+    const ef = editingField();
+    return ef !== null && ef.userId === userId && ef.field === field;
+  }
+
   async function handleBatchSetRole() {
     setError("");
     setSuccess("");
@@ -304,6 +369,7 @@ export default function Admin() {
                   onChange={toggleSelectAll}
                 />
               </th>
+              <th></th>
               <th>Name</th>
               <th>Email</th>
               <th>Role</th>
@@ -316,7 +382,7 @@ export default function Admin() {
               when={users().length > 0}
               fallback={
                 <tr>
-                  <td colspan="6" class="admin-empty">
+                  <td colspan="7" class="admin-empty">
                     No users found
                   </td>
                 </tr>
@@ -336,8 +402,79 @@ export default function Admin() {
                             disabled={isSelf()}
                           />
                         </td>
-                        <td>{user.name}</td>
-                        <td>{user.email}</td>
+                        <td>
+                          <div class="avatar-cell">
+                            <Show
+                              when={user.image}
+                              fallback={
+                                <span class="user-avatar-placeholder">
+                                  {user.name.charAt(0).toUpperCase()}
+                                </span>
+                              }
+                            >
+                              <img
+                                src={user.image!}
+                                alt=""
+                                class="user-avatar"
+                              />
+                            </Show>
+                            <button
+                              class="avatar-edit-btn"
+                              onClick={() => startFieldEdit(user.id, "image", user.image ?? "")}
+                              title="Edit image URL"
+                            >
+                              &#9998;
+                            </button>
+                          </div>
+                        </td>
+                        <td>
+                          <Show
+                            when={isFieldEditing(user.id, "name")}
+                            fallback={
+                              <span
+                                class="click-to-edit"
+                                onClick={() => startFieldEdit(user.id, "name", user.name)}
+                                title="Click to edit"
+                              >
+                                {user.name}
+                              </span>
+                            }
+                          >
+                            <input
+                              class="edit-input"
+                              type="text"
+                              value={editValue()}
+                              onInput={(e) => setEditValue(e.currentTarget.value)}
+                              onBlur={saveField}
+                              onKeyDown={handleFieldKeyDown}
+                              ref={(el) => setTimeout(() => el.focus(), 0)}
+                            />
+                          </Show>
+                        </td>
+                        <td>
+                          <Show
+                            when={isFieldEditing(user.id, "email")}
+                            fallback={
+                              <span
+                                class="click-to-edit"
+                                onClick={() => startFieldEdit(user.id, "email", user.email)}
+                                title="Click to edit"
+                              >
+                                {user.email}
+                              </span>
+                            }
+                          >
+                            <input
+                              class="edit-input"
+                              type="email"
+                              value={editValue()}
+                              onInput={(e) => setEditValue(e.currentTarget.value)}
+                              onBlur={saveField}
+                              onKeyDown={handleFieldKeyDown}
+                              ref={(el) => setTimeout(() => el.focus(), 0)}
+                            />
+                          </Show>
+                        </td>
                         <td>
                           <select
                             class="role-select"
@@ -391,9 +528,34 @@ export default function Admin() {
                           </Show>
                         </td>
                       </tr>
+                      <Show when={isFieldEditing(user.id, "image")}>
+                        <tr class="edit-form-row">
+                          <td colspan="7">
+                            <div class="edit-form">
+                              <label class="edit-form-label">Image URL</label>
+                              <input
+                                type="url"
+                                placeholder="https://example.com/photo.jpg"
+                                value={editValue()}
+                                onInput={(e) => setEditValue(e.currentTarget.value)}
+                                onBlur={saveField}
+                                onKeyDown={handleFieldKeyDown}
+                                ref={(el) => setTimeout(() => el.focus(), 0)}
+                              />
+                              <Show when={editValue()}>
+                                <img
+                                  src={editValue()}
+                                  alt=""
+                                  class="edit-form-preview"
+                                />
+                              </Show>
+                            </div>
+                          </td>
+                        </tr>
+                      </Show>
                       <Show when={banningUserId() === user.id}>
                         <tr class="ban-form-row">
-                          <td colspan="6">
+                          <td colspan="7">
                             <div class="ban-form">
                               <input
                                 type="text"

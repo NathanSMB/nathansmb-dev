@@ -137,6 +137,50 @@
   cursor: not-allowed;
 }
 
+/* User avatars */
+.user-avatar {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+}
+
+.user-avatar-placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: rgba(68, 107, 158, 0.15);
+  color: #335d92;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.admin-table th:nth-child(2),
+.admin-table td:nth-child(2) {
+  width: 2.5rem;
+  text-align: center;
+}
+
+/* Inline edit inputs */
+.edit-input {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.3em 0.6em;
+  border: 1.5px solid rgba(68, 107, 158, 0.3);
+  border-radius: 0.4em;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.edit-input:focus {
+  border-color: #335d92;
+}
+
 /* Status badges */
 .banned-badge {
   display: inline-block;
@@ -195,6 +239,48 @@
 
 .unban-btn:hover {
   background: rgba(39, 174, 96, 0.2);
+}
+
+/* Inline edit form row */
+.edit-form-row td {
+  padding: 0.5em 0.8em;
+  background: rgba(68, 107, 158, 0.03);
+  border-bottom: 1px solid rgba(68, 107, 158, 0.1);
+}
+
+.edit-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.edit-form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #335d92;
+  white-space: nowrap;
+}
+
+.edit-form input {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.4em 0.7em;
+  border: 1.5px solid rgba(68, 107, 158, 0.3);
+  border-radius: 0.4em;
+  outline: none;
+  flex: 1;
+  max-width: 24rem;
+}
+
+.edit-form input:focus {
+  border-color: #335d92;
+}
+
+.edit-form-preview {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 /* Inline ban form row */
@@ -358,4 +444,41 @@
   text-align: center;
   color: #888;
   padding: 2rem;
+}
+
+/* Click-to-edit text */
+.click-to-edit {
+  cursor: pointer;
+  padding: 0.2em 0.4em;
+  border-radius: 0.3em;
+  border: 1.5px solid transparent;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.click-to-edit:hover {
+  border-color: rgba(68, 107, 158, 0.25);
+  background: rgba(68, 107, 158, 0.04);
+}
+
+/* Avatar cell with edit button */
+.avatar-cell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.avatar-edit-btn {
+  font-size: 0.7rem;
+  padding: 0.15em 0.3em;
+  border: none;
+  background: rgba(68, 107, 158, 0.1);
+  color: #335d92;
+  border-radius: 0.3em;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.avatar-edit-btn:hover {
+  background: rgba(68, 107, 158, 0.2);
 }
