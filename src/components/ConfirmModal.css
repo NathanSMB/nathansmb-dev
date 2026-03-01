@@ -15,7 +15,7 @@
 }
 
 .modal-dialog {
-  background: white;
+  background: var(--color-surface);
   border-radius: 0.75em;
   padding: 2rem 2.5rem;
   max-width: 28rem;
@@ -25,34 +25,34 @@
 }
 
 .modal-destructive {
-  border-top: 4px solid #c0392b;
+  border-top: 4px solid var(--color-error);
 }
 
 .modal-icon {
   font-size: 3rem;
-  color: #c0392b;
+  color: var(--color-error);
   margin-bottom: 0.5rem;
 }
 
 .modal-title {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #c0392b;
+  color: var(--color-error);
   margin: 0 0 0.75rem;
 }
 
 .modal-message {
   font-size: 0.95rem;
-  color: #333;
+  color: var(--color-text);
   line-height: 1.5;
   margin: 0 0 0.5rem;
 }
 
 .modal-details {
   font-size: 0.85rem;
-  color: #666;
-  background: rgba(192, 57, 43, 0.06);
-  border: 1px solid rgba(192, 57, 43, 0.15);
+  color: var(--color-text-subtle);
+  background: rgba(var(--color-error-rgb), 0.06);
+  border: 1px solid rgba(var(--color-error-rgb), 0.15);
   border-radius: 0.4em;
   padding: 0.6em 0.8em;
   margin: 0.75rem 0;
@@ -79,7 +79,7 @@
 }
 
 .modal-cancel {
-  color: #555;
+  color: var(--color-text-muted);
   background: rgba(0, 0, 0, 0.08);
 }
 
@@ -89,11 +89,11 @@
 
 .modal-confirm-destructive {
   color: white;
-  background: #c0392b;
+  background: var(--color-error);
 }
 
 .modal-confirm-destructive:hover:not(:disabled) {
-  background: #a93226;
+  background: var(--color-error-hover);
 }
 
 .modal-actions button:disabled {

@@ -1,9 +1,41 @@
+:root {
+  /* Base RGB triplets (for use in rgba()) */
+  --color-primary-rgb: 68, 107, 158;
+  --color-error-rgb: 192, 57, 43;
+  --color-success-rgb: 39, 174, 96;
+
+  /* Solid colors */
+  --color-primary: #335d92;
+  --color-primary-hover: #2a4d7a;
+  --color-error: #c0392b;
+  --color-error-hover: #a93226;
+  --color-success: #27ae60;
+
+  /* Text */
+  --color-text: #333;
+  --color-text-muted: #555;
+  --color-text-subtle: #666;
+  --color-text-faint: #888;
+
+  /* Links */
+  --color-link: #335d92;
+
+  /* Surfaces */
+  --color-surface: white;
+  --color-page-bg: white;
+}
+
 body {
   font-family: Gordita, Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 a {
   margin-right: 1rem;
+  color: var(--color-link);
+}
+
+a:visited {
+  color: var(--color-link);
 }
 
 main {
@@ -13,7 +45,7 @@ main {
 }
 
 h1 {
-  color: #335d92;
+  color: var(--color-primary);
   text-transform: uppercase;
   font-size: 4rem;
   font-weight: 100;
@@ -44,7 +76,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  border-bottom: 1px solid rgba(68, 107, 158, 0.15);
+  border-bottom: 1px solid rgba(var(--color-primary-rgb), 0.15);
 }
 
 header nav a {
@@ -61,15 +93,15 @@ header button {
   font-family: inherit;
   font-size: 0.9rem;
   padding: 0.4em 1em;
-  color: #335d92;
-  background: rgba(68, 107, 158, 0.1);
+  color: var(--color-primary);
+  background: rgba(var(--color-primary-rgb), 0.1);
   border: none;
   border-radius: 1em;
   cursor: pointer;
 }
 
 header button:hover {
-  background: rgba(68, 107, 158, 0.2);
+  background: rgba(var(--color-primary-rgb), 0.2);
 }
 
 /* Auth form pages */
@@ -96,28 +128,28 @@ header button:hover {
   gap: 0.3rem;
   text-align: left;
   font-size: 0.9rem;
-  color: #555;
+  color: var(--color-text-muted);
 }
 
 .auth-form input {
   font-family: inherit;
   font-size: 1rem;
   padding: 0.6em 0.8em;
-  border: 1.5px solid rgba(68, 107, 158, 0.3);
+  border: 1.5px solid rgba(var(--color-primary-rgb), 0.3);
   border-radius: 0.5em;
   outline: none;
 }
 
 .auth-form input:focus {
-  border-color: #335d92;
+  border-color: var(--color-primary);
 }
 
 .auth-form button[type="submit"] {
   font-family: inherit;
   font-size: 1rem;
   padding: 0.7em;
-  color: white;
-  background: #335d92;
+  color: var(--color-surface);
+  background: var(--color-primary);
   border: none;
   border-radius: 0.5em;
   cursor: pointer;
@@ -125,7 +157,7 @@ header button:hover {
 }
 
 .auth-form button[type="submit"]:hover {
-  background: #2a4d7a;
+  background: var(--color-primary-hover);
 }
 
 .auth-form button[type="submit"]:disabled {
@@ -134,18 +166,18 @@ header button:hover {
 }
 
 .auth-form .error {
-  color: #c0392b;
+  color: var(--color-error);
   font-size: 0.9rem;
   padding: 0.5em;
-  background: rgba(192, 57, 43, 0.08);
+  background: rgba(var(--color-error-rgb), 0.08);
   border-radius: 0.3em;
 }
 
 .auth-form .success {
-  color: #27ae60;
+  color: var(--color-success);
   font-size: 0.9rem;
   padding: 0.5em;
-  background: rgba(39, 174, 96, 0.08);
+  background: rgba(var(--color-success-rgb), 0.08);
   border-radius: 0.3em;
 }
 
@@ -172,8 +204,8 @@ header button:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(68, 107, 158, 0.15);
-  color: #335d92;
+  background: rgba(var(--color-primary-rgb), 0.15);
+  color: var(--color-primary);
   font-weight: 600;
   font-size: calc(var(--avatar-size) * 0.5);
 }
@@ -187,4 +219,40 @@ header button:hover {
 
 .image-field input {
   flex: 1;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary-rgb: 110, 160, 220;
+    --color-error-rgb: 230, 90, 80;
+    --color-success-rgb: 70, 200, 130;
+
+    --color-primary: #6ea0dc;
+    --color-primary-hover: #8ab4e4;
+    --color-error: #e65a50;
+    --color-error-hover: #f07068;
+    --color-success: #46c882;
+
+    --color-text: #e0e0e0;
+    --color-text-muted: #b0b0b0;
+    --color-text-subtle: #999;
+    --color-text-faint: #777;
+
+    --color-link: #7eb8f0;
+
+    --color-surface: #1e1e2e;
+    --color-page-bg: #151520;
+  }
+
+  body {
+    background: var(--color-page-bg);
+    color: var(--color-text);
+  }
+
+  select,
+  input {
+    color: var(--color-text);
+    background: var(--color-surface);
+  }
 }

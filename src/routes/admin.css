@@ -13,19 +13,19 @@
 }
 
 .admin-page .error {
-  color: #c0392b;
+  color: var(--color-error);
   font-size: 0.9rem;
   padding: 0.5em 0.8em;
-  background: rgba(192, 57, 43, 0.08);
+  background: rgba(var(--color-error-rgb), 0.08);
   border-radius: 0.3em;
   margin-bottom: 1rem;
 }
 
 .admin-page .success {
-  color: #27ae60;
+  color: var(--color-success);
   font-size: 0.9rem;
   padding: 0.5em 0.8em;
-  background: rgba(39, 174, 96, 0.08);
+  background: rgba(var(--color-success-rgb), 0.08);
   border-radius: 0.3em;
   margin-bottom: 1rem;
 }
@@ -50,7 +50,7 @@
   font-family: inherit;
   font-size: 0.9rem;
   padding: 0.5em 0.8em;
-  border: 1.5px solid rgba(68, 107, 158, 0.3);
+  border: 1.5px solid rgba(var(--color-primary-rgb), 0.3);
   border-radius: 0.5em;
   outline: none;
   flex: 1;
@@ -58,7 +58,7 @@
 }
 
 .admin-toolbar input[type="text"]:focus {
-  border-color: #335d92;
+  border-color: var(--color-primary);
 }
 
 .admin-toolbar select,
@@ -66,16 +66,16 @@
   font-family: inherit;
   font-size: 0.9rem;
   padding: 0.5em 0.8em;
-  border: 1.5px solid rgba(68, 107, 158, 0.3);
+  border: 1.5px solid rgba(var(--color-primary-rgb), 0.3);
   border-radius: 0.5em;
   outline: none;
-  background: white;
+  background: var(--color-surface);
   cursor: pointer;
 }
 
 .admin-toolbar select:focus,
 .role-select:focus {
-  border-color: #335d92;
+  border-color: var(--color-primary);
 }
 
 .admin-toolbar button {
@@ -83,7 +83,7 @@
   font-size: 0.9rem;
   padding: 0.5em 1em;
   color: white;
-  background: #335d92;
+  background: var(--color-primary);
   border: none;
   border-radius: 0.5em;
   cursor: pointer;
@@ -91,7 +91,7 @@
 }
 
 .admin-toolbar button:hover {
-  background: #2a4d7a;
+  background: var(--color-primary-hover);
 }
 
 /* Table */
@@ -104,20 +104,20 @@
 .admin-table th {
   text-align: left;
   padding: 0.7em 0.8em;
-  background: rgba(68, 107, 158, 0.08);
-  color: #335d92;
+  background: rgba(var(--color-primary-rgb), 0.08);
+  color: var(--color-primary);
   font-weight: 600;
-  border-bottom: 2px solid rgba(68, 107, 158, 0.15);
+  border-bottom: 2px solid rgba(var(--color-primary-rgb), 0.15);
 }
 
 .admin-table td {
   padding: 0.7em 0.8em;
-  border-bottom: 1px solid rgba(68, 107, 158, 0.1);
+  border-bottom: 1px solid rgba(var(--color-primary-rgb), 0.1);
   vertical-align: middle;
 }
 
 .admin-table tbody tr:hover {
-  background: rgba(68, 107, 158, 0.03);
+  background: rgba(var(--color-primary-rgb), 0.03);
 }
 
 .admin-table th:first-child,
@@ -150,7 +150,7 @@
   font-family: inherit;
   font-size: 0.85rem;
   padding: 0.3em 0.6em;
-  border: 1.5px solid rgba(68, 107, 158, 0.3);
+  border: 1.5px solid rgba(var(--color-primary-rgb), 0.3);
   border-radius: 0.4em;
   outline: none;
   width: 100%;
@@ -158,7 +158,7 @@
 }
 
 .edit-input:focus {
-  border-color: #335d92;
+  border-color: var(--color-primary);
 }
 
 /* Status badges */
@@ -167,8 +167,8 @@
   font-size: 0.8rem;
   font-weight: 600;
   padding: 0.2em 0.6em;
-  background: rgba(192, 57, 43, 0.1);
-  color: #c0392b;
+  background: rgba(var(--color-error-rgb), 0.1);
+  color: var(--color-error);
   border-radius: 1em;
 }
 
@@ -177,8 +177,8 @@
   font-size: 0.8rem;
   font-weight: 600;
   padding: 0.2em 0.6em;
-  background: rgba(39, 174, 96, 0.1);
-  color: #27ae60;
+  background: rgba(var(--color-success-rgb), 0.1);
+  color: var(--color-success);
   border-radius: 1em;
 }
 
@@ -199,12 +199,12 @@
 }
 
 .ban-btn {
-  color: #c0392b;
-  background: rgba(192, 57, 43, 0.1);
+  color: var(--color-error);
+  background: rgba(var(--color-error-rgb), 0.1);
 }
 
 .ban-btn:hover {
-  background: rgba(192, 57, 43, 0.2);
+  background: rgba(var(--color-error-rgb), 0.2);
 }
 
 .ban-btn:disabled {
@@ -213,28 +213,28 @@
 }
 
 .delete-btn {
-  color: #c0392b;
-  background: rgba(192, 57, 43, 0.1);
+  color: var(--color-error);
+  background: rgba(var(--color-error-rgb), 0.1);
 }
 
 .delete-btn:hover {
-  background: rgba(192, 57, 43, 0.2);
+  background: rgba(var(--color-error-rgb), 0.2);
 }
 
 .unban-btn {
-  color: #27ae60;
-  background: rgba(39, 174, 96, 0.1);
+  color: var(--color-success);
+  background: rgba(var(--color-success-rgb), 0.1);
 }
 
 .unban-btn:hover {
-  background: rgba(39, 174, 96, 0.2);
+  background: rgba(var(--color-success-rgb), 0.2);
 }
 
 /* Inline edit form row */
 .edit-form-row td {
   padding: 0.5em 0.8em;
-  background: rgba(68, 107, 158, 0.03);
-  border-bottom: 1px solid rgba(68, 107, 158, 0.1);
+  background: rgba(var(--color-primary-rgb), 0.03);
+  border-bottom: 1px solid rgba(var(--color-primary-rgb), 0.1);
 }
 
 .edit-form {
@@ -246,7 +246,7 @@
 .edit-form-label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #335d92;
+  color: var(--color-primary);
   white-space: nowrap;
 }
 
@@ -254,7 +254,7 @@
   font-family: inherit;
   font-size: 0.85rem;
   padding: 0.4em 0.7em;
-  border: 1.5px solid rgba(68, 107, 158, 0.3);
+  border: 1.5px solid rgba(var(--color-primary-rgb), 0.3);
   border-radius: 0.4em;
   outline: none;
   flex: 1;
@@ -262,14 +262,14 @@
 }
 
 .edit-form input:focus {
-  border-color: #335d92;
+  border-color: var(--color-primary);
 }
 
 /* Inline ban form row */
 .ban-form-row td {
   padding: 0.5em 0.8em;
-  background: rgba(192, 57, 43, 0.03);
-  border-bottom: 1px solid rgba(68, 107, 158, 0.1);
+  background: rgba(var(--color-error-rgb), 0.03);
+  border-bottom: 1px solid rgba(var(--color-primary-rgb), 0.1);
 }
 
 .ban-form {
@@ -282,7 +282,7 @@
   font-family: inherit;
   font-size: 0.85rem;
   padding: 0.4em 0.7em;
-  border: 1.5px solid rgba(68, 107, 158, 0.3);
+  border: 1.5px solid rgba(var(--color-primary-rgb), 0.3);
   border-radius: 0.4em;
   outline: none;
   flex: 1;
@@ -290,7 +290,7 @@
 }
 
 .ban-form input:focus {
-  border-color: #335d92;
+  border-color: var(--color-primary);
 }
 
 .ban-form button {
@@ -304,15 +304,15 @@
 
 .ban-form .confirm-ban {
   color: white;
-  background: #c0392b;
+  background: var(--color-error);
 }
 
 .ban-form .confirm-ban:hover {
-  background: #a93226;
+  background: var(--color-error-hover);
 }
 
 .ban-form .cancel-ban {
-  color: #555;
+  color: var(--color-text-muted);
   background: rgba(0, 0, 0, 0.06);
 }
 
@@ -334,15 +334,15 @@
   font-family: inherit;
   font-size: 0.85rem;
   padding: 0.4em 1em;
-  color: #335d92;
-  background: rgba(68, 107, 158, 0.1);
+  color: var(--color-primary);
+  background: rgba(var(--color-primary-rgb), 0.1);
   border: none;
   border-radius: 1em;
   cursor: pointer;
 }
 
 .admin-pagination button:hover:not(:disabled) {
-  background: rgba(68, 107, 158, 0.2);
+  background: rgba(var(--color-primary-rgb), 0.2);
 }
 
 .admin-pagination button:disabled {
@@ -359,7 +359,7 @@
   gap: 0.75rem;
   padding: 0.8rem 1rem;
   margin-top: 1rem;
-  background: #335d92;
+  background: var(--color-primary);
   color: white;
   border-radius: 0.5em;
   font-size: 0.9rem;
@@ -382,7 +382,7 @@
 }
 
 .admin-batch-bar select option {
-  color: #333;
+  color: var(--color-text);
 }
 
 .admin-batch-bar button {
@@ -415,38 +415,38 @@
 }
 
 .admin-batch-bar .batch-ban {
-  background: rgba(192, 57, 43, 0.7);
+  background: rgba(var(--color-error-rgb), 0.7);
 }
 
 .admin-batch-bar .batch-ban:hover {
-  background: rgba(192, 57, 43, 0.9);
+  background: rgba(var(--color-error-rgb), 0.9);
 }
 
 .admin-batch-bar .batch-unban {
-  background: rgba(39, 174, 96, 0.5);
+  background: rgba(var(--color-success-rgb), 0.5);
 }
 
 .admin-batch-bar .batch-unban:hover {
-  background: rgba(39, 174, 96, 0.7);
+  background: rgba(var(--color-success-rgb), 0.7);
 }
 
 .admin-batch-bar .batch-delete {
-  background: rgba(192, 57, 43, 0.7);
+  background: rgba(var(--color-error-rgb), 0.7);
 }
 
 .admin-batch-bar .batch-delete:hover {
-  background: rgba(192, 57, 43, 0.9);
+  background: rgba(var(--color-error-rgb), 0.9);
 }
 
 .admin-loading {
   text-align: center;
-  color: #888;
+  color: var(--color-text-faint);
   padding: 2rem;
 }
 
 .admin-empty {
   text-align: center;
-  color: #888;
+  color: var(--color-text-faint);
   padding: 2rem;
 }
 
@@ -460,8 +460,8 @@
 }
 
 .click-to-edit:hover {
-  border-color: rgba(68, 107, 158, 0.25);
-  background: rgba(68, 107, 158, 0.04);
+  border-color: rgba(var(--color-primary-rgb), 0.25);
+  background: rgba(var(--color-primary-rgb), 0.04);
 }
 
 /* Avatar cell with hover overlay */
@@ -486,7 +486,7 @@
   align-items: center;
   justify-content: center;
   font-size: 0.85rem;
-  color: #335d92;
+  color: var(--color-primary);
   opacity: 0;
   transition: opacity 0.15s;
   pointer-events: none;
