@@ -10,8 +10,6 @@ import TextInput from "~/components/ui/TextInput";
 import { UserTable, BatchBar, Pagination } from "~/components/admin/table";
 import "./admin.css";
 
-const PAGE_SIZE = 10;
-
 export default function Admin() {
   const session = requireAuth({
     permissions: { user: ["list", "set-role", "ban", "update", "delete"] },
@@ -20,6 +18,7 @@ export default function Admin() {
   const [users, setUsers] = createSignal<AdminUser[]>([]);
   const [total, setTotal] = createSignal(0);
   const [page, setPage] = createSignal(0);
+  const [pageSize, setPageSize] = createSignal(10);
   const [search, setSearch] = createSignal("");
   const [searchField, setSearchField] = createSignal<"name" | "email">("name");
   const [roleFilter, setRoleFilter] = createSignal("");
@@ -41,15 +40,15 @@ export default function Admin() {
   const [deleteLoading, setDeleteLoading] = createSignal(false);
 
   const currentUserId = () => session()?.data?.user?.id;
-  const totalPages = () => Math.max(1, Math.ceil(total() / PAGE_SIZE));
+  const totalPages = () => Math.max(1, Math.ceil(total() / pageSize()));
 
   async function fetchUsers() {
     setLoading(true);
     setError("");
 
     const query: Record<string, unknown> = {
-      limit: PAGE_SIZE,
-      offset: page() * PAGE_SIZE,
+      limit: pageSize(),
+      offset: page() * pageSize(),
     };
 
     if (search()) {
@@ -76,7 +75,7 @@ export default function Admin() {
     }
   }
 
-  createEffect(on([page, roleFilter], () => fetchUsers()));
+  createEffect(on([page, roleFilter, pageSize], () => fetchUsers()));
 
   function handleSearch(e: Event) {
     e.preventDefault();
@@ -416,6 +415,7 @@ export default function Admin() {
           ]}
           onChange={(v) => { setRoleFilter(v); setPage(0); }}
         />
+        <a href="/admin/tools/test-users" class="admin-tool-link">Generate test users</a>
       </div>
 
       <Show when={!loading()} fallback={<p class="admin-loading">Loading...</p>}>
@@ -451,14 +451,18 @@ export default function Admin() {
         />
       </Show>
 
-      <Show when={total() > PAGE_SIZE}>
+      <Show when={total() > pageSize()}>
         <Pagination
           page={page()}
           totalPages={totalPages()}
           hasPrevious={page() > 0}
-          hasNext={(page() + 1) * PAGE_SIZE < total()}
+          hasNext={(page() + 1) * pageSize() < total()}
+          pageSize={pageSize()}
+          onFirst={() => setPage(0)}
           onPrevious={() => setPage((p) => p - 1)}
           onNext={() => setPage((p) => p + 1)}
+          onLast={() => setPage(totalPages() - 1)}
+          onPageSizeChange={(size) => { setPageSize(size); setPage(0); }}
         />
       </Show>
 
