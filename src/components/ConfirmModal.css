@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--color-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,7 +21,7 @@
   max-width: 28rem;
   width: 90%;
   text-align: center;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 30px var(--color-shadow);
 }
 
 .modal-destructive {
@@ -80,15 +80,15 @@
 
 .modal-cancel {
   color: var(--color-text-muted);
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(var(--color-neutral-rgb), 0.08);
 }
 
 .modal-cancel:hover:not(:disabled) {
-  background: rgba(0, 0, 0, 0.14);
+  background: rgba(var(--color-neutral-rgb), 0.14);
 }
 
 .modal-confirm-destructive {
-  color: white;
+  color: var(--color-text-on-colored);
   background: var(--color-error);
 }
 

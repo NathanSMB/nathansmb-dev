@@ -7,7 +7,7 @@
   padding: 0.8rem 1rem;
   margin-top: 1rem;
   background: var(--color-primary);
-  color: white;
+  color: var(--color-text-on-colored);
   border-radius: 0.5em;
   font-size: 0.9rem;
   flex-wrap: wrap;
@@ -22,10 +22,10 @@
   font-family: inherit;
   font-size: 0.85rem;
   padding: 0.35em 0.6em;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(var(--color-on-primary-rgb), 0.3);
   border-radius: 0.4em;
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
+  background: rgba(var(--color-on-primary-rgb), 0.15);
+  color: var(--color-text-on-colored);
 }
 
 .admin-batch-bar select option {
@@ -39,26 +39,26 @@
   border: none;
   border-radius: 0.4em;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
+  background: rgba(var(--color-on-primary-rgb), 0.2);
+  color: var(--color-text-on-colored);
 }
 
 .admin-batch-bar button:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(var(--color-on-primary-rgb), 0.3);
 }
 
 .admin-batch-bar .batch-ban-reason {
   padding: 0.4em 0.6em;
   font-size: 0.8rem;
   font-family: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(var(--color-on-primary-rgb), 0.3);
   border-radius: 0.4em;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: rgba(var(--color-on-primary-rgb), 0.1);
+  color: var(--color-text-on-colored);
 }
 
 .admin-batch-bar .batch-ban-reason::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(var(--color-on-primary-rgb), 0.5);
 }
 
 .admin-batch-bar .batch-ban {

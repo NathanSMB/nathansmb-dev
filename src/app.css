@@ -23,6 +23,13 @@
   /* Surfaces */
   --color-surface: white;
   --color-page-bg: white;
+
+  /* Contrast / overlay */
+  --color-text-on-colored: white;
+  --color-on-primary-rgb: 255, 255, 255;
+  --color-overlay: rgba(0, 0, 0, 0.5);
+  --color-shadow: rgba(0, 0, 0, 0.2);
+  --color-neutral-rgb: 0, 0, 0;
 }
 
 /* Dark mode */
@@ -47,6 +54,8 @@
 
     --color-surface: #1e1e2e;
     --color-page-bg: #151520;
+
+    --color-neutral-rgb: 255, 255, 255;
   }
 
   body {
