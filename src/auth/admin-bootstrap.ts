@@ -2,7 +2,7 @@
 
 import { eq } from "drizzle-orm";
 import { getWebRequest } from "vinxi/http";
-import { auth } from "~/utils/auth";
+import { auth } from "~/auth/core";
 import { connection } from "~/database/connection";
 import { user } from "~/database/schema";
 

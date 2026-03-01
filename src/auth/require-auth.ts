@@ -1,6 +1,6 @@
 import { createEffect } from "solid-js";
 import { useLocation, useNavigate } from "@solidjs/router";
-import { authClient } from "~/utils/auth-client";
+import { authClient } from "~/auth/auth-client";
 
 type Permissions = Record<string, string[]>;
 

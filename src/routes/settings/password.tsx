@@ -1,7 +1,7 @@
 import { createSignal, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
-import { authClient } from "~/utils/auth-client";
-import { requireAuth } from "~/utils/require-auth";
+import { authClient } from "~/auth/auth-client";
+import { requireAuth } from "~/auth/require-auth";
 
 export default function PasswordSettings() {
   const session = requireAuth();

@@ -2,7 +2,7 @@ import { MetaProvider, Title } from "@solidjs/meta";
 import { Router, useLocation } from "@solidjs/router";
 import { FileRoutes } from "@solidjs/start/router";
 import { Show, Suspense } from "solid-js";
-import { authClient } from "~/utils/auth-client";
+import { authClient } from "~/auth/auth-client";
 import "./app.css";
 
 export default function App() {

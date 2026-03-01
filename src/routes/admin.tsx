@@ -1,7 +1,7 @@
 import { createSignal, createEffect, on, Show, For } from "solid-js";
 import { Title } from "@solidjs/meta";
-import { authClient } from "~/utils/auth-client";
-import { requireAuth } from "~/utils/require-auth";
+import { authClient } from "~/auth/auth-client";
+import { requireAuth } from "~/auth/require-auth";
 import "./admin.css";
 
 const PAGE_SIZE = 10;

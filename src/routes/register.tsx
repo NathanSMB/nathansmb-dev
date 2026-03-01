@@ -1,7 +1,7 @@
 import { createSignal, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { useNavigate } from "@solidjs/router";
-import { authClient } from "~/utils/auth-client";
+import { authClient } from "~/auth/auth-client";
 
 export default function Register() {
   const [name, setName] = createSignal("");

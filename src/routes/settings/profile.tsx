@@ -1,8 +1,8 @@
 import { createEffect, createResource, createSignal, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
-import { authClient } from "~/utils/auth-client";
-import { requireAuth } from "~/utils/require-auth";
-import { checkHasAdmins, promoteToAdmin } from "~/utils/admin-bootstrap";
+import { authClient } from "~/auth/auth-client";
+import { requireAuth } from "~/auth/require-auth";
+import { checkHasAdmins, promoteToAdmin } from "~/auth/admin-bootstrap";
 
 export default function ProfileSettings() {
   const session = requireAuth();

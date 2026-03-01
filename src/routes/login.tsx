@@ -1,7 +1,7 @@
 import { createEffect, createSignal, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { useNavigate, useSearchParams } from "@solidjs/router";
-import { authClient } from "~/utils/auth-client";
+import { authClient } from "~/auth/auth-client";
 
 export default function Login() {
   const [email, setEmail] = createSignal("");
