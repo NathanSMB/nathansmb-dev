@@ -5,6 +5,7 @@ import { Show, Suspense } from "solid-js";
 import { authClient } from "~/auth/auth-client";
 import Avatar from "~/components/ui/Avatar";
 import "./app.css";
+import Button from "./components/ui/Button";
 
 export default function App() {
   return (
@@ -35,9 +36,9 @@ export default function App() {
                           <a href="/admin">Admin</a>
                         </Show>
                         <a href="/settings/profile">Settings</a>
-                        <button onClick={() => authClient.signOut()}>
+                        <Button variant="primary" onClick={() => authClient.signOut()}>
                           Log out
-                        </button>
+                        </Button>
                       </>
                     )}
                   </Show>
