@@ -1,32 +1,43 @@
-# SolidStart
+# nathansmb-dev
 
-Everything you need to build a Solid project, powered by [`solid-start`](https://start.solidjs.com);
+A SolidStart application.
 
-## Creating a project
+## Setup
 
-```bash
-# create a new project in the current directory
-npm init solid@latest
+After install dependencies and mark the auto-generated auth schema as unchanged:
 
-# create a new project in my-app
-npm init solid@latest my-app
+```sh
+bun install
+```
+
+`src/database/schemas/auth.ts` is auto-generated and should not be committed. It will be autogenerate on `prebuild` and `predev`. Otherwise you can run the following to regenerate it:
+
+```sh
+bun run generate-auth-schema
+```
+
+Run the following command to make it easier to avoid commiting the auth schema.
+
+```sh
+git update-index --assume-unchanged src/database/schemas/auth.ts
+```
+
+To push schema changes to the database:
+
+```sh
+bun run push-schemas
 ```
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Start a development server:
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```sh
+bun run dev
 ```
 
 ## Building
 
-Solid apps are built with _presets_, which optimise your project for deployment to different environments.
-
-By default, `npm run build` will generate a Node app that you can run with `npm start`. To use a different preset, add it to the `devDependencies` in `package.json` and specify in your `app.config.js`.
-
-## This project was created with the [Solid CLI](https://github.com/solidjs-community/solid-cli)
+```sh
+bun run build
+```
