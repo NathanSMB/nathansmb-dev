@@ -4,9 +4,9 @@ import { authClient } from "~/auth/auth-client";
 import { requireAuth } from "~/auth/require-auth";
 import ConfirmModal from "~/components/ConfirmModal";
 import type { AdminUser, EditingField, Role } from "~/components/admin/types";
-import Button from "~/components/admin/Button";
-import Select from "~/components/admin/Select";
-import TextInput from "~/components/admin/TextInput";
+import Button from "~/components/ui/Button";
+import Select from "~/components/ui/Select";
+import TextInput from "~/components/ui/TextInput";
 import { UserTable, BatchBar, Pagination } from "~/components/admin/table";
 import "./admin.css";
 

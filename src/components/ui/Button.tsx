@@ -13,7 +13,7 @@ interface ButtonProps {
 export default function Button(props: ButtonProps) {
   return (
     <button
-      class={`admin-btn admin-btn-${props.variant}${props.class ? ` ${props.class}` : ""}`}
+      class={`btn btn-${props.variant}${props.class ? ` ${props.class}` : ""}`}
       onClick={props.onClick}
       disabled={props.disabled}
       type={props.type ?? "button"}

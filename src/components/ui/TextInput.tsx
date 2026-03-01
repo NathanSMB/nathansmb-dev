@@ -17,7 +17,7 @@ export default function TextInput(props: TextInputProps) {
 
   return (
     <input
-      class={`admin-input admin-input-${variant()}${props.class ? ` ${props.class}` : ""}`}
+      class={`input input-${variant()}${props.class ? ` ${props.class}` : ""}`}
       type={props.type ?? "text"}
       value={props.value}
       onInput={(e) => props.onInput(e.currentTarget.value)}

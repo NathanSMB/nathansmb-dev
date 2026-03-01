@@ -17,7 +17,7 @@ interface SelectProps {
 export default function Select(props: SelectProps) {
   return (
     <select
-      class={`admin-select${props.class ? ` ${props.class}` : ""}`}
+      class={`select${props.class ? ` ${props.class}` : ""}`}
       value={props.value}
       onChange={(e) => props.onChange(e.currentTarget.value)}
       disabled={props.disabled}
