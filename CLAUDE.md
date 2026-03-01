@@ -24,3 +24,29 @@ For any interaction with the users, accounts, and sessions make sure to use the 
 #### Documentation:
 
 - [Better Auth](https://www.better-auth.com/docs)
+
+## Styling
+
+For components use the `?inline` parameter for css imports. For styles that don't belong to an individual component they can go in @src/app.css which is added as a stylesheet link to every page.
+
+#### Example Component:
+
+```tsx
+import { Show } from "solid-js";
+import css from "./Example.css?inline";
+
+interface ExampleProps {
+  option?: "first-option" | "second-option";
+}
+
+export default function Example(props: ExampleProps) {
+  const cls = () => `some-cls ${props.size === "firstoption" ? "some-other-cls" : "and-another-cls"}`;
+
+  return (
+    <>
+      <style>{css}</style>
+      <span class={cls()}>Example</span>
+    </>
+  );
+}
+```
