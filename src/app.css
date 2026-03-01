@@ -1,11 +1,11 @@
 :root {
   /* Semantic colors */
-  --color-primary:       oklch(48% 0.10 255);
-  --color-primary-hover: oklch(44% 0.10 255);
-  --color-error:         oklch(48% 0.16 29);
-  --color-error-hover:   oklch(44% 0.16 29);
-  --color-success:       oklch(55% 0.14 152);
-  --color-success-hover: oklch(51% 0.14 152);
+  --color-primary:       oklch(66% 0.08 255);
+  --color-primary-hover: oklch(70% 0.08 255);
+  --color-error:         oklch(66% 0.12 29);
+  --color-error-hover:   oklch(70% 0.12 29);
+  --color-success:       oklch(62% 0.10 152);
+  --color-success-hover: oklch(66% 0.10 152);
 
   /* Text */
   --color-text:       oklch(25% 0 none);
@@ -31,12 +31,12 @@
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-primary:       oklch(76% 0.09 255);
-    --color-primary-hover: oklch(80% 0.08 255);
-    --color-error:         oklch(76% 0.12 29);
-    --color-error-hover:   oklch(80% 0.10 29);
-    --color-success:       oklch(72% 0.11 152);
-    --color-success-hover: oklch(76% 0.10 152);
+    --color-primary:       oklch(54% 0.10 255);
+    --color-primary-hover: oklch(50% 0.10 255);
+    --color-error:         oklch(56% 0.16 29);
+    --color-error-hover:   oklch(52% 0.16 29);
+    --color-success:       oklch(60% 0.14 152);
+    --color-success-hover: oklch(54% 0.14 152);
 
     --color-text:       oklch(92% 0 none);
     --color-text-muted: oklch(81% 0 none);
