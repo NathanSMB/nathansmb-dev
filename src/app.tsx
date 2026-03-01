@@ -3,7 +3,7 @@ import { Router, useLocation } from "@solidjs/router";
 import { FileRoutes } from "@solidjs/start/router";
 import { Show, Suspense } from "solid-js";
 import { authClient } from "~/auth/auth-client";
-import Avatar from "~/components/Avatar";
+import Avatar from "~/components/ui/Avatar";
 import "./app.css";
 
 export default function App() {

@@ -1,5 +1,5 @@
 import { For } from "solid-js";
-import "./Select.css";
+import css from "./Select.css?inline";
 
 interface SelectOption {
   value: string;
@@ -16,15 +16,18 @@ interface SelectProps {
 
 export default function Select(props: SelectProps) {
   return (
-    <select
-      class={`select${props.class ? ` ${props.class}` : ""}`}
-      value={props.value}
-      onChange={(e) => props.onChange(e.currentTarget.value)}
-      disabled={props.disabled}
-    >
-      <For each={props.options}>
-        {(opt) => <option value={opt.value}>{opt.label}</option>}
-      </For>
-    </select>
+    <>
+      <style>{css}</style>
+      <select
+        class={`select${props.class ? ` ${props.class}` : ""}`}
+        value={props.value}
+        onChange={(e) => props.onChange(e.currentTarget.value)}
+        disabled={props.disabled}
+      >
+        <For each={props.options}>
+          {(opt) => <option value={opt.value}>{opt.label}</option>}
+        </For>
+      </select>
+    </>
   );
 }

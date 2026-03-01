@@ -1,13 +1,13 @@
 import { Show } from "solid-js";
 import type { AdminUser, EditingField } from "../types";
 import { isValidRole } from "../types";
-import Avatar from "~/components/Avatar";
+import Avatar from "~/components/ui/Avatar";
 import Button from "~/components/ui/Button";
 import Select from "~/components/ui/Select";
 import TextInput from "~/components/ui/TextInput";
 import BanFormRow from "./BanFormRow";
 import EditFormRow from "./EditFormRow";
-import "./UserRow.css";
+import css from "./UserRow.css?inline";
 
 interface UserRowProps {
   user: AdminUser;
@@ -41,6 +41,7 @@ const roleOptions = [
 export default function UserRow(props: UserRowProps) {
   return (
     <>
+      <style>{css}</style>
       <tr>
         <td>
           <input

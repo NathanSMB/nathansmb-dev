@@ -1,6 +1,6 @@
 import Button from "~/components/ui/Button";
 import Select from "~/components/ui/Select";
-import "./Pagination.css";
+import css from "./Pagination.css?inline";
 
 interface PaginationProps {
   page: number;
@@ -24,7 +24,9 @@ const PAGE_SIZE_OPTIONS = [
 
 export default function Pagination(props: PaginationProps) {
   return (
-    <div class="admin-pagination">
+    <>
+      <style>{css}</style>
+      <div class="admin-pagination">
       <div class="admin-pagination-nav">
         <Button
           variant="pagination"
@@ -65,5 +67,6 @@ export default function Pagination(props: PaginationProps) {
         class="pagination-size-select"
       />
     </div>
+    </>
   );
 }

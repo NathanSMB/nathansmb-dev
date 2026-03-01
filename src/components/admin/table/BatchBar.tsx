@@ -1,6 +1,6 @@
 import type { Role } from "../types";
 import { isValidRole } from "../types";
-import "./BatchBar.css";
+import css from "./BatchBar.css?inline";
 
 interface BatchBarProps {
   selectedCount: number;
@@ -16,7 +16,9 @@ interface BatchBarProps {
 
 export default function BatchBar(props: BatchBarProps) {
   return (
-    <div class="admin-batch-bar">
+    <>
+      <style>{css}</style>
+      <div class="admin-batch-bar">
       <span>{props.selectedCount} user(s) selected</span>
       <select
         value={props.batchRole}
@@ -46,5 +48,6 @@ export default function BatchBar(props: BatchBarProps) {
         Delete selected
       </button>
     </div>
+    </>
   );
 }

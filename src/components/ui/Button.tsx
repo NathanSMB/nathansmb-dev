@@ -1,5 +1,5 @@
 import type { JSX } from "solid-js";
-import "./Button.css";
+import css from "./Button.css?inline";
 
 interface ButtonProps {
   variant: "primary" | "danger" | "success" | "danger-solid" | "ghost" | "pagination";
@@ -12,13 +12,16 @@ interface ButtonProps {
 
 export default function Button(props: ButtonProps) {
   return (
-    <button
-      class={`btn btn-${props.variant}${props.class ? ` ${props.class}` : ""}`}
-      onClick={props.onClick}
-      disabled={props.disabled}
-      type={props.type ?? "button"}
-    >
-      {props.children}
-    </button>
+    <>
+      <style>{css}</style>
+      <button
+        class={`btn btn-${props.variant}${props.class ? ` ${props.class}` : ""}`}
+        onClick={props.onClick}
+        disabled={props.disabled}
+        type={props.type ?? "button"}
+      >
+        {props.children}
+      </button>
+    </>
   );
 }

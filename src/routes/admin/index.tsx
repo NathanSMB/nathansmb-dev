@@ -8,7 +8,7 @@ import Button from "~/components/ui/Button";
 import Select from "~/components/ui/Select";
 import TextInput from "~/components/ui/TextInput";
 import { UserTable, BatchBar, Pagination } from "~/components/admin/table";
-import "./admin.css";
+import css from "./admin.css?inline";
 
 export default function Admin() {
   const session = requireAuth({
@@ -377,7 +377,9 @@ export default function Admin() {
   }
 
   return (
-    <main class="admin-page">
+    <>
+      <style>{css}</style>
+      <main class="admin-page">
       <Title>User management</Title>
       <h1>User management</h1>
 
@@ -494,5 +496,6 @@ export default function Admin() {
         loading={deleteLoading()}
       />
     </main>
+    </>
   );
 }

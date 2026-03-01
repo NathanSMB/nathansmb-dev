@@ -1,5 +1,5 @@
 import { Show, onCleanup, createEffect } from "solid-js";
-import "./ConfirmModal.css";
+import css from "./ConfirmModal.css?inline";
 
 interface ConfirmModalProps {
   open: boolean;
@@ -25,7 +25,9 @@ export default function ConfirmModal(props: ConfirmModalProps) {
   });
 
   return (
-    <Show when={props.open}>
+    <>
+      <style>{css}</style>
+      <Show when={props.open}>
       <div class="modal-backdrop" onClick={props.onCancel}>
         <div
           class="modal-dialog modal-destructive"
@@ -56,5 +58,6 @@ export default function ConfirmModal(props: ConfirmModalProps) {
         </div>
       </div>
     </Show>
+    </>
   );
 }

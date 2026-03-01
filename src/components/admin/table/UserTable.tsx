@@ -1,7 +1,7 @@
 import { Show, For } from "solid-js";
 import type { AdminUser, EditingField } from "../types";
 import UserRow from "./UserRow";
-import "./UserTable.css";
+import css from "./UserTable.css?inline";
 
 interface UserTableProps {
   users: AdminUser[];
@@ -31,7 +31,9 @@ interface UserTableProps {
 
 export default function UserTable(props: UserTableProps) {
   return (
-    <table class="admin-table">
+    <>
+      <style>{css}</style>
+      <table class="admin-table">
       <thead>
         <tr>
           <th>
@@ -93,5 +95,6 @@ export default function UserTable(props: UserTableProps) {
         </Show>
       </tbody>
     </table>
+    </>
   );
 }

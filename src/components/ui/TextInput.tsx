@@ -1,4 +1,4 @@
-import "./TextInput.css";
+import css from "./TextInput.css?inline";
 
 interface TextInputProps {
   value: string;
@@ -16,15 +16,18 @@ export default function TextInput(props: TextInputProps) {
   const variant = () => props.variant ?? "inline";
 
   return (
-    <input
-      class={`input input-${variant()}${props.class ? ` ${props.class}` : ""}`}
-      type={props.type ?? "text"}
-      value={props.value}
-      onInput={(e) => props.onInput(e.currentTarget.value)}
-      onBlur={props.onBlur}
-      onKeyDown={props.onKeyDown}
-      placeholder={props.placeholder}
-      ref={props.ref}
-    />
+    <>
+      <style>{css}</style>
+      <input
+        class={`input input-${variant()}${props.class ? ` ${props.class}` : ""}`}
+        type={props.type ?? "text"}
+        value={props.value}
+        onInput={(e) => props.onInput(e.currentTarget.value)}
+        onBlur={props.onBlur}
+        onKeyDown={props.onKeyDown}
+        placeholder={props.placeholder}
+        ref={props.ref}
+      />
+    </>
   );
 }

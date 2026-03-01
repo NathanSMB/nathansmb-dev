@@ -186,30 +186,6 @@ header button:hover {
   font-size: 0.9rem;
 }
 
-/* Avatars */
-.avatar {
-  --avatar-size: 2rem;
-  width: var(--avatar-size);
-  height: var(--avatar-size);
-  border-radius: 50%;
-  object-fit: cover;
-  transition: opacity 0.15s;
-}
-
-.avatar-lg {
-  --avatar-size: 4rem;
-}
-
-.avatar-placeholder {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(var(--color-primary-rgb), 0.15);
-  color: var(--color-primary);
-  font-weight: 600;
-  font-size: calc(var(--avatar-size) * 0.5);
-}
-
 /* Image field with preview */
 .image-field {
   display: flex;
