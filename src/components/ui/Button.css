@@ -28,12 +28,12 @@
   font-size: 0.8rem;
   padding: 0.35em 0.8em;
   color: var(--color-error);
-  background: rgba(var(--color-error-rgb), 0.1);
+  background: oklch(from var(--color-error) l c h / 0.1);
   border-radius: 0.4em;
 }
 
 .btn-danger:hover {
-  background: rgba(var(--color-error-rgb), 0.2);
+  background: oklch(from var(--color-error) l c h / 0.2);
 }
 
 /* Success — light green bg, green text */
@@ -41,12 +41,12 @@
   font-size: 0.8rem;
   padding: 0.35em 0.8em;
   color: var(--color-success);
-  background: rgba(var(--color-success-rgb), 0.1);
+  background: oklch(from var(--color-success) l c h / 0.1);
   border-radius: 0.4em;
 }
 
 .btn-success:hover {
-  background: rgba(var(--color-success-rgb), 0.2);
+  background: oklch(from var(--color-success) l c h / 0.2);
 }
 
 /* Danger solid — solid red bg, white text */
@@ -67,12 +67,12 @@
   font-size: 0.8rem;
   padding: 0.4em 0.8em;
   color: var(--color-text-muted);
-  background: rgba(var(--color-neutral-rgb), 0.06);
+  background: oklch(from var(--color-neutral) l c h / 0.06);
   border-radius: 0.4em;
 }
 
 .btn-ghost:hover {
-  background: rgba(var(--color-neutral-rgb), 0.1);
+  background: oklch(from var(--color-neutral) l c h / 0.1);
 }
 
 /* Pagination — pill-shaped, primary tint */
@@ -80,12 +80,12 @@
   font-size: 0.85rem;
   padding: 0.4em 1em;
   color: var(--color-primary);
-  background: rgba(var(--color-primary-rgb), 0.1);
+  background: oklch(from var(--color-primary) l c h / 0.1);
   border-radius: 1em;
 }
 
 .btn-pagination:hover:not(:disabled) {
-  background: rgba(var(--color-primary-rgb), 0.2);
+  background: oklch(from var(--color-primary) l c h / 0.2);
 }
 
 /* Form — full-width submit button for auth/settings forms */

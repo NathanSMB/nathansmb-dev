@@ -8,8 +8,8 @@
 }
 
 .click-to-edit:hover {
-  border-color: rgba(var(--color-primary-rgb), 0.25);
-  background: rgba(var(--color-primary-rgb), 0.04);
+  border-color: oklch(from var(--color-primary) l c h / 0.25);
+  background: oklch(from var(--color-primary) l c h / 0.04);
 }
 
 /* Avatar cell with hover overlay */
@@ -50,7 +50,7 @@
   font-size: 0.8rem;
   font-weight: 600;
   padding: 0.2em 0.6em;
-  background: rgba(var(--color-error-rgb), 0.1);
+  background: oklch(from var(--color-error) l c h / 0.1);
   color: var(--color-error);
   border-radius: 1em;
 }
@@ -60,7 +60,7 @@
   font-size: 0.8rem;
   font-weight: 600;
   padding: 0.2em 0.6em;
-  background: rgba(var(--color-success-rgb), 0.1);
+  background: oklch(from var(--color-success) l c h / 0.1);
   color: var(--color-success);
   border-radius: 1em;
 }

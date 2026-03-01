@@ -1,61 +1,54 @@
 :root {
-  /* Base RGB triplets (for use in rgba()) */
-  --color-primary-rgb: 68, 107, 158;
-  --color-error-rgb: 192, 57, 43;
-  --color-success-rgb: 39, 174, 96;
-
-  /* Solid colors */
-  --color-primary: #335d92;
-  --color-primary-hover: #2a4d7a;
-  --color-error: #c0392b;
-  --color-error-hover: #a93226;
-  --color-success: #27ae60;
+  /* Semantic colors */
+  --color-primary:       oklch(48% 0.10 255);
+  --color-primary-hover: oklch(44% 0.10 255);
+  --color-error:         oklch(48% 0.16 29);
+  --color-error-hover:   oklch(44% 0.16 29);
+  --color-success:       oklch(55% 0.14 152);
+  --color-success-hover: oklch(51% 0.14 152);
 
   /* Text */
-  --color-text: #333;
-  --color-text-muted: #555;
-  --color-text-subtle: #666;
-  --color-text-faint: #888;
+  --color-text:       oklch(25% 0 none);
+  --color-text-muted: oklch(36% 0 none);
+  --color-text-subtle: oklch(47% 0 none);
+  --color-text-faint: oklch(58% 0 none);
 
   /* Links */
-  --color-link: #335d92;
+  --color-link: oklch(48% 0.10 255);
 
   /* Surfaces */
-  --color-surface: white;
-  --color-page-bg: white;
+  --color-surface: oklch(100% 0 none);
+  --color-page-bg: oklch(100% 0 none);
 
   /* Contrast / overlay */
-  --color-text-on-colored: white;
-  --color-on-primary-rgb: 255, 255, 255;
-  --color-overlay: rgba(0, 0, 0, 0.5);
-  --color-shadow: rgba(0, 0, 0, 0.2);
-  --color-neutral-rgb: 0, 0, 0;
+  --color-text-on-colored: oklch(100% 0 none);
+  --color-on-primary: oklch(100% 0 none);
+  --color-overlay: oklch(0% 0 none / 0.5);
+  --color-shadow: oklch(0% 0 none / 0.2);
+  --color-neutral: oklch(0% 0 none);
 }
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-primary-rgb: 110, 160, 220;
-    --color-error-rgb: 230, 90, 80;
-    --color-success-rgb: 70, 200, 130;
+    --color-primary:       oklch(76% 0.09 255);
+    --color-primary-hover: oklch(80% 0.08 255);
+    --color-error:         oklch(76% 0.12 29);
+    --color-error-hover:   oklch(80% 0.10 29);
+    --color-success:       oklch(72% 0.11 152);
+    --color-success-hover: oklch(76% 0.10 152);
 
-    --color-primary: #6ea0dc;
-    --color-primary-hover: #8ab4e4;
-    --color-error: #e65a50;
-    --color-error-hover: #f07068;
-    --color-success: #46c882;
+    --color-text:       oklch(92% 0 none);
+    --color-text-muted: oklch(81% 0 none);
+    --color-text-subtle: oklch(70% 0 none);
+    --color-text-faint: oklch(59% 0 none);
 
-    --color-text: #e0e0e0;
-    --color-text-muted: #b0b0b0;
-    --color-text-subtle: #999;
-    --color-text-faint: #777;
+    --color-link: oklch(76% 0.09 255);
 
-    --color-link: #7eb8f0;
+    --color-surface: oklch(23% 0.02 280);
+    --color-page-bg: oklch(16% 0.02 280);
 
-    --color-surface: #1e1e2e;
-    --color-page-bg: #151520;
-
-    --color-neutral-rgb: 255, 255, 255;
+    --color-neutral: oklch(100% 0 none);
   }
 
   body {
@@ -122,7 +115,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  border-bottom: 1px solid rgba(var(--color-primary-rgb), 0.15);
+  border-bottom: 1px solid oklch(from var(--color-primary) l c h / 0.15);
 }
 
 header nav a {
@@ -140,12 +133,12 @@ header button {
   font-size: 0.9rem;
   padding: 0.4em 1em;
   color: var(--color-primary);
-  background: rgba(var(--color-primary-rgb), 0.1);
+  background: oklch(from var(--color-primary) l c h / 0.1);
   border: none;
   border-radius: 1em;
   cursor: pointer;
 }
 
 header button:hover {
-  background: rgba(var(--color-primary-rgb), 0.2);
+  background: oklch(from var(--color-primary) l c h / 0.2);
 }

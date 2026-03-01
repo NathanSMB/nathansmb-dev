@@ -22,9 +22,9 @@
   font-family: inherit;
   font-size: 0.85rem;
   padding: 0.35em 0.6em;
-  border: 1px solid rgba(var(--color-on-primary-rgb), 0.3);
+  border: 1px solid oklch(from var(--color-on-primary) l c h / 0.3);
   border-radius: 0.4em;
-  background: rgba(var(--color-on-primary-rgb), 0.15);
+  background: oklch(from var(--color-on-primary) l c h / 0.15);
   color: var(--color-text-on-colored);
 }
 
@@ -39,48 +39,48 @@
   border: none;
   border-radius: 0.4em;
   cursor: pointer;
-  background: rgba(var(--color-on-primary-rgb), 0.2);
+  background: oklch(from var(--color-on-primary) l c h / 0.2);
   color: var(--color-text-on-colored);
 }
 
 .admin-batch-bar button:hover {
-  background: rgba(var(--color-on-primary-rgb), 0.3);
+  background: oklch(from var(--color-on-primary) l c h / 0.3);
 }
 
 .admin-batch-bar .batch-ban-reason {
   padding: 0.4em 0.6em;
   font-size: 0.8rem;
   font-family: inherit;
-  border: 1px solid rgba(var(--color-on-primary-rgb), 0.3);
+  border: 1px solid oklch(from var(--color-on-primary) l c h / 0.3);
   border-radius: 0.4em;
-  background: rgba(var(--color-on-primary-rgb), 0.1);
+  background: oklch(from var(--color-on-primary) l c h / 0.1);
   color: var(--color-text-on-colored);
 }
 
 .admin-batch-bar .batch-ban-reason::placeholder {
-  color: rgba(var(--color-on-primary-rgb), 0.5);
+  color: oklch(from var(--color-on-primary) l c h / 0.5);
 }
 
 .admin-batch-bar .batch-ban {
-  background: rgba(var(--color-error-rgb), 0.7);
+  background: oklch(from var(--color-error) l c h / 0.7);
 }
 
 .admin-batch-bar .batch-ban:hover {
-  background: rgba(var(--color-error-rgb), 0.9);
+  background: oklch(from var(--color-error) l c h / 0.9);
 }
 
 .admin-batch-bar .batch-unban {
-  background: rgba(var(--color-success-rgb), 0.5);
+  background: oklch(from var(--color-success) l c h / 0.5);
 }
 
 .admin-batch-bar .batch-unban:hover {
-  background: rgba(var(--color-success-rgb), 0.7);
+  background: oklch(from var(--color-success) l c h / 0.7);
 }
 
 .admin-batch-bar .batch-delete {
-  background: rgba(var(--color-error-rgb), 0.7);
+  background: oklch(from var(--color-error) l c h / 0.7);
 }
 
 .admin-batch-bar .batch-delete:hover {
-  background: rgba(var(--color-error-rgb), 0.9);
+  background: oklch(from var(--color-error) l c h / 0.9);
 }

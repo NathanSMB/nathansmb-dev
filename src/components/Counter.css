@@ -3,9 +3,9 @@
   font-size: inherit;
   padding: 1em 2em;
   color: var(--color-primary);
-  background-color: rgba(var(--color-primary-rgb), 0.1);
+  background-color: oklch(from var(--color-primary) l c h / 0.1);
   border-radius: 2em;
-  border: 2px solid rgba(var(--color-primary-rgb), 0);
+  border: 2px solid transparent;
   outline: none;
   width: 200px;
   font-variant-numeric: tabular-nums;
@@ -17,5 +17,5 @@
 }
 
 .increment:active {
-  background-color: rgba(var(--color-primary-rgb), 0.2);
+  background-color: oklch(from var(--color-primary) l c h / 0.2);
 }

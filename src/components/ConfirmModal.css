@@ -51,8 +51,8 @@
 .modal-details {
   font-size: 0.85rem;
   color: var(--color-text-subtle);
-  background: rgba(var(--color-error-rgb), 0.06);
-  border: 1px solid rgba(var(--color-error-rgb), 0.15);
+  background: oklch(from var(--color-error) l c h / 0.06);
+  border: 1px solid oklch(from var(--color-error) l c h / 0.15);
   border-radius: 0.4em;
   padding: 0.6em 0.8em;
   margin: 0.75rem 0;
@@ -80,11 +80,11 @@
 
 .modal-cancel {
   color: var(--color-text-muted);
-  background: rgba(var(--color-neutral-rgb), 0.08);
+  background: oklch(from var(--color-neutral) l c h / 0.08);
 }
 
 .modal-cancel:hover:not(:disabled) {
-  background: rgba(var(--color-neutral-rgb), 0.14);
+  background: oklch(from var(--color-neutral) l c h / 0.14);
 }
 
 .modal-confirm-destructive {

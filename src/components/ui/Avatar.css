@@ -16,7 +16,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(var(--color-primary-rgb), 0.15);
+  background: oklch(from var(--color-primary) l c h / 0.15);
   color: var(--color-primary);
   font-weight: 600;
   font-size: calc(var(--avatar-size) * 0.5);
