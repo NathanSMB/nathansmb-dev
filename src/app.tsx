@@ -27,7 +27,15 @@ export default function App() {
                   >
                     {(s) => (
                       <>
+                        <Show when={s().user.image}>
+                          <img
+                            src={s().user.image!}
+                            alt=""
+                            class="avatar"
+                          />
+                        </Show>
                         <span>{s().user.name}</span>
+                        <a href="/settings/profile">Settings</a>
                         <button onClick={() => authClient.signOut()}>
                           Log out
                         </button>

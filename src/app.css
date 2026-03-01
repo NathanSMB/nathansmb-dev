@@ -141,7 +141,39 @@ header button:hover {
   border-radius: 0.3em;
 }
 
+.auth-form .success {
+  color: #27ae60;
+  font-size: 0.9rem;
+  padding: 0.5em;
+  background: rgba(39, 174, 96, 0.08);
+  border-radius: 0.3em;
+}
+
 .auth-form p {
   margin-top: 1rem;
   font-size: 0.9rem;
+}
+
+/* Avatars */
+.avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-lg {
+  width: 4rem;
+  height: 4rem;
+}
+
+/* Image field with preview */
+.image-field {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.image-field input {
+  flex: 1;
 }
