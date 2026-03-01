@@ -50,8 +50,7 @@ export default function TestUserGenerator() {
   }
 
   return (
-    <>
-      <main class="test-users-page">
+    <main class="test-users-page">
       <Title>Generate Test Users</Title>
       <h1>Generate Test Users</h1>
       <p class="back-link">
@@ -79,6 +78,5 @@ export default function TestUserGenerator() {
         </Button>
       </Form>
     </main>
-    </>
   );
 }

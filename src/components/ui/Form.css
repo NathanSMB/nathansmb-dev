@@ -1,5 +1,13 @@
 .form {
   display: flex;
+}
+
+.form-default {
   flex-direction: column;
   gap: 1rem;
+}
+
+.form-inline {
+  flex-direction: row;
+  gap: 0.5rem;
 }

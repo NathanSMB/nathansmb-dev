@@ -5,6 +5,7 @@ import { requireAuth } from "~/auth/require-auth";
 import ConfirmModal from "~/components/ConfirmModal";
 import type { AdminUser, EditingField, Role } from "~/components/admin/types";
 import Button from "~/components/ui/Button";
+import Form from "~/components/ui/Form";
 import Select from "~/components/ui/Select";
 import TextInput from "~/components/ui/TextInput";
 import { UserTable, BatchBar, Pagination } from "~/components/admin/table";
@@ -378,8 +379,7 @@ export default function Admin() {
   }
 
   return (
-    <>
-      <main class="admin-page">
+    <main class="admin-page">
       <Title>User management</Title>
       <h1>User management</h1>
 
@@ -387,7 +387,7 @@ export default function Admin() {
       <Banner variant="success" message={success()} />
 
       <div class="admin-toolbar">
-        <form onSubmit={handleSearch}>
+        <Form variant="inline" class="admin-search-form" onSubmit={handleSearch}>
           <TextInput
             variant="toolbar"
             placeholder={`Search by ${searchField()}...`}
@@ -403,7 +403,7 @@ export default function Admin() {
             onChange={(v) => setSearchField(v as "name" | "email")}
           />
           <Button variant="primary" type="submit">Search</Button>
-        </form>
+        </Form>
         <Select
           value={roleFilter()}
           options={[
@@ -413,10 +413,10 @@ export default function Admin() {
           ]}
           onChange={(v) => { setRoleFilter(v); setPage(0); }}
         />
-        <a href="/admin/tools/test-users" class="admin-tool-link">Generate test users</a>
+        <a href="/admin/tools/test-users">Generate test users</a>
       </div>
 
-      <Show when={!loading()} fallback={<p class="admin-loading">Loading...</p>}>
+      <Show when={!loading()} fallback={<p>Loading...</p>}>
         <UserTable
           users={users()}
           currentUserId={currentUserId()}
@@ -492,6 +492,5 @@ export default function Admin() {
         loading={deleteLoading()}
       />
     </main>
-    </>
   );
 }
