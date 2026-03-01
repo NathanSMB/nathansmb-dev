@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { useNavigate } from "@solidjs/router";
 import { authClient } from "~/auth/auth-client";
@@ -16,6 +16,14 @@ export default function Register() {
   const [error, setError] = createSignal("");
   const [loading, setLoading] = createSignal(false);
   const navigate = useNavigate();
+  const session = authClient.useSession();
+
+  createEffect(() => {
+    if (session().isPending) return;
+    if (session().data) {
+      navigate("/", { replace: true });
+    }
+  });
 
   async function handleSubmit(e: Event) {
     e.preventDefault();
