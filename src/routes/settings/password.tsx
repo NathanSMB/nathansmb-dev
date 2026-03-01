@@ -1,11 +1,10 @@
-import { createEffect, createSignal, Show } from "solid-js";
+import { createSignal, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
-import { useNavigate } from "@solidjs/router";
 import { authClient } from "~/utils/auth-client";
+import { requireAuth } from "~/utils/require-auth";
 
 export default function PasswordSettings() {
-  const session = authClient.useSession();
-  const navigate = useNavigate();
+  const session = requireAuth();
 
   const [currentPassword, setCurrentPassword] = createSignal("");
   const [newPassword, setNewPassword] = createSignal("");
@@ -13,12 +12,6 @@ export default function PasswordSettings() {
   const [error, setError] = createSignal("");
   const [success, setSuccess] = createSignal("");
   const [loading, setLoading] = createSignal(false);
-
-  createEffect(() => {
-    if (!session().isPending && !session().data) {
-      navigate("/login", { replace: true });
-    }
-  });
 
   async function handleSubmit(e: Event) {
     e.preventDefault();

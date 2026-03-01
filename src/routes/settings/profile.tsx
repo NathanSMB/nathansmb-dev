@@ -1,11 +1,10 @@
 import { createEffect, createSignal, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
-import { useNavigate } from "@solidjs/router";
 import { authClient } from "~/utils/auth-client";
+import { requireAuth } from "~/utils/require-auth";
 
 export default function ProfileSettings() {
-  const session = authClient.useSession();
-  const navigate = useNavigate();
+  const session = requireAuth();
 
   const [name, setName] = createSignal("");
   const [email, setEmail] = createSignal("");
@@ -15,10 +14,6 @@ export default function ProfileSettings() {
   const [loading, setLoading] = createSignal(false);
 
   createEffect(() => {
-    if (!session().isPending && !session().data) {
-      navigate("/login", { replace: true });
-    }
-
     const user = session().data?.user;
     if (user) {
       setName(user.name);
