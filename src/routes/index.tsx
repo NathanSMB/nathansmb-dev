@@ -1,16 +1,8 @@
 import { Title } from "@solidjs/meta";
 import Counter from "~/components/Counter";
-import { connection } from "~/database/connection";
-import { tempTable } from "~/database/schema";
 
-async function logTempTable() {
-  "use server"
-  const users = await connection.select().from(tempTable);
-  console.log(users);
-}
 
 export default function Home() {
-  logTempTable();
   return (
     <main>
       <Title>Hello World</Title>
