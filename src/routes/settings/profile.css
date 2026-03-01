@@ -1,0 +1,9 @@
+.image-field {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.image-field input {
+  flex: 1;
+}

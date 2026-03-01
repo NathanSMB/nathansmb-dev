@@ -25,3 +25,12 @@
   width: 100%;
   box-sizing: border-box;
 }
+
+/* Form variant — auth/settings forms */
+.input-form {
+  font-size: 1rem;
+  padding: 0.6em 0.8em;
+  border-radius: 0.5em;
+  width: 100%;
+  box-sizing: border-box;
+}

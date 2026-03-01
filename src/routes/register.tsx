@@ -3,6 +3,11 @@ import { Title } from "@solidjs/meta";
 import { useNavigate } from "@solidjs/router";
 import { authClient } from "~/auth/auth-client";
 import Banner from "~/components/ui/Banner";
+import Form from "~/components/ui/Form";
+import FormLabel from "~/components/ui/FormLabel";
+import TextInput from "~/components/ui/TextInput";
+import Button from "~/components/ui/Button";
+import "~/styles/page-narrow.css";
 
 export default function Register() {
   const [name, setName] = createSignal("");
@@ -33,42 +38,44 @@ export default function Register() {
   }
 
   return (
-    <main class="auth-form">
+    <main class="page-narrow">
       <Title>Create account</Title>
       <h1>Create account</h1>
       <Banner variant="error" message={error()} />
-      <form onSubmit={handleSubmit}>
-        <label>
+      <Form onSubmit={handleSubmit}>
+        <FormLabel>
           Name
-          <input
-            type="text"
+          <TextInput
+            variant="form"
             value={name()}
-            onInput={(e) => setName(e.currentTarget.value)}
+            onInput={setName}
             required
           />
-        </label>
-        <label>
+        </FormLabel>
+        <FormLabel>
           Email
-          <input
+          <TextInput
             type="email"
+            variant="form"
             value={email()}
-            onInput={(e) => setEmail(e.currentTarget.value)}
+            onInput={setEmail}
             required
           />
-        </label>
-        <label>
+        </FormLabel>
+        <FormLabel>
           Password
-          <input
+          <TextInput
             type="password"
+            variant="form"
             value={password()}
-            onInput={(e) => setPassword(e.currentTarget.value)}
+            onInput={setPassword}
             required
           />
-        </label>
-        <button type="submit" disabled={loading()}>
+        </FormLabel>
+        <Button variant="form" type="submit" disabled={loading()}>
           {loading() ? "Creating account..." : "Create account"}
-        </button>
-      </form>
+        </Button>
+      </Form>
       <p>
         Already have an account? <a href="/login">Log in</a>
       </p>

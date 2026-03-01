@@ -3,6 +3,11 @@ import { Title } from "@solidjs/meta";
 import { authClient } from "~/auth/auth-client";
 import { requireAuth } from "~/auth/require-auth";
 import Banner from "~/components/ui/Banner";
+import Form from "~/components/ui/Form";
+import FormLabel from "~/components/ui/FormLabel";
+import TextInput from "~/components/ui/TextInput";
+import Button from "~/components/ui/Button";
+import "~/styles/page-narrow.css";
 
 export default function PasswordSettings() {
   const session = requireAuth();
@@ -44,44 +49,47 @@ export default function PasswordSettings() {
   }
 
   return (
-    <main class="auth-form">
+    <main class="page-narrow">
       <Title>Change password</Title>
       <h1>Change password</h1>
       <Banner variant="error" message={error()} />
       <Banner variant="success" message={success()} />
       <Show when={session().data}>
-        <form onSubmit={handleSubmit}>
-          <label>
+        <Form onSubmit={handleSubmit}>
+          <FormLabel>
             Current password
-            <input
+            <TextInput
               type="password"
+              variant="form"
               value={currentPassword()}
-              onInput={(e) => setCurrentPassword(e.currentTarget.value)}
+              onInput={setCurrentPassword}
               required
             />
-          </label>
-          <label>
+          </FormLabel>
+          <FormLabel>
             New password
-            <input
+            <TextInput
               type="password"
+              variant="form"
               value={newPassword()}
-              onInput={(e) => setNewPassword(e.currentTarget.value)}
+              onInput={setNewPassword}
               required
             />
-          </label>
-          <label>
+          </FormLabel>
+          <FormLabel>
             Confirm new password
-            <input
+            <TextInput
               type="password"
+              variant="form"
               value={confirmPassword()}
-              onInput={(e) => setConfirmPassword(e.currentTarget.value)}
+              onInput={setConfirmPassword}
               required
             />
-          </label>
-          <button type="submit" disabled={loading()}>
+          </FormLabel>
+          <Button variant="form" type="submit" disabled={loading()}>
             {loading() ? "Changing password..." : "Change password"}
-          </button>
-        </form>
+          </Button>
+        </Form>
         <p>
           <a href="/settings/profile">Back to profile</a>
         </p>

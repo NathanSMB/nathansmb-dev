@@ -5,6 +5,12 @@ import { authClient } from "~/auth/auth-client";
 import { requireAuth } from "~/auth/require-auth";
 import { checkHasAdmins, promoteToAdmin } from "~/auth/admin-bootstrap";
 import Banner from "~/components/ui/Banner";
+import Form from "~/components/ui/Form";
+import FormLabel from "~/components/ui/FormLabel";
+import TextInput from "~/components/ui/TextInput";
+import Button from "~/components/ui/Button";
+import "~/styles/page-narrow.css";
+import "./profile.css";
 
 export default function ProfileSettings() {
   const session = requireAuth();
@@ -89,47 +95,49 @@ export default function ProfileSettings() {
   }
 
   return (
-    <main class="auth-form">
+    <main class="page-narrow">
       <Title>Profile settings</Title>
       <h1>Profile settings</h1>
       <Banner variant="error" message={error()} />
       <Banner variant="success" message={success()} />
       <Show when={session().data}>
-        <form onSubmit={handleSubmit}>
-          <label>
+        <Form onSubmit={handleSubmit}>
+          <FormLabel>
             Name
-            <input
-              type="text"
+            <TextInput
+              variant="form"
               value={name()}
-              onInput={(e) => setName(e.currentTarget.value)}
+              onInput={setName}
               required
             />
-          </label>
-          <label>
+          </FormLabel>
+          <FormLabel>
             Email
-            <input
+            <TextInput
               type="email"
+              variant="form"
               value={email()}
-              onInput={(e) => setEmail(e.currentTarget.value)}
+              onInput={setEmail}
               required
             />
-          </label>
-          <label>
+          </FormLabel>
+          <FormLabel>
             Profile image URL
             <div class="image-field">
               <Avatar image={image()} name={name()} size="lg" />
-              <input
+              <TextInput
                 type="url"
+                variant="form"
                 value={image()}
-                onInput={(e) => setImage(e.currentTarget.value)}
+                onInput={setImage}
                 placeholder="https://example.com/photo.jpg"
               />
             </div>
-          </label>
-          <button type="submit" disabled={loading()}>
+          </FormLabel>
+          <Button variant="form" type="submit" disabled={loading()}>
             {loading() ? "Saving..." : "Save changes"}
-          </button>
-        </form>
+          </Button>
+        </Form>
         <Show when={hasAdmins() === false}>
           <div>
             <p>No administrators exist yet. You can claim the admin role.</p>

@@ -31,17 +31,22 @@ For any interaction with the users, accounts, and sessions make sure to use the 
 
 For global styles that should apply to every page include them in the @src/app.css.
 
+### Reusable Layouts
+
+Reusable layout styles shared across multiple pages live in `src/styles/` (e.g. `page-narrow.css`). Import them directly in any page that needs them.
+
 ### Page
 
-For styles that apply only to specific pages or a subset of pages put them in there own style sheet and import them in the page.
+For styles specific to a single page, put them in their own stylesheet alongside the route file. A page can combine a reusable layout with page-specific styles.
 
 #### Example
 
 ```tsx
-import "./example.css";
+import "~/styles/page-narrow.css";
+import "./profile.css";
 
-export default function ExamplePage() {
-  return <></>;
+export default function ProfilePage() {
+  return <main class="page-narrow">...</main>;
 }
 ```
 

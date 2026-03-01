@@ -6,11 +6,11 @@ interface TextInputProps {
   onBlur?: () => void;
   onKeyDown?: (e: KeyboardEvent) => void;
   placeholder?: string;
-  type?: "text" | "email" | "url" | "number";
+  type?: "text" | "email" | "url" | "number" | "password";
   min?: number;
   max?: number;
   required?: boolean;
-  variant?: "toolbar" | "inline";
+  variant?: "toolbar" | "inline" | "form";
   ref?: (el: HTMLInputElement) => void;
   class?: string;
 }

@@ -5,6 +5,8 @@ import { requireAuth } from "~/auth/require-auth";
 import { getNextTestUserNumber, createTestUsers } from "~/auth/test-users";
 import Banner from "~/components/ui/Banner";
 import Button from "~/components/ui/Button";
+import Form from "~/components/ui/Form";
+import FormLabel from "~/components/ui/FormLabel";
 import TextInput from "~/components/ui/TextInput";
 import "./test-users.css";
 
@@ -60,8 +62,8 @@ export default function TestUserGenerator() {
 
       <Banner variant="info" message={nextNumber() !== null ? `Next test user: TestUser${nextNumber()} (testuser${nextNumber()}@example.com)` : undefined} />
 
-      <form onSubmit={handleSubmit}>
-        <label>
+      <Form onSubmit={handleSubmit}>
+        <FormLabel>
           Number of users to create
           <TextInput
             type="number"
@@ -71,11 +73,11 @@ export default function TestUserGenerator() {
             onInput={(v) => setCount(parseInt(v) || 1)}
             required
           />
-        </label>
+        </FormLabel>
         <Button variant="primary" type="submit" disabled={loading()}>
           {loading() ? "Creating..." : `Create ${count()} test user(s)`}
         </Button>
-      </form>
+      </Form>
     </main>
     </>
   );
