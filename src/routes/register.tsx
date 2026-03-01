@@ -1,7 +1,8 @@
-import { createSignal, Show } from "solid-js";
+import { createSignal } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { useNavigate } from "@solidjs/router";
 import { authClient } from "~/auth/auth-client";
+import Banner from "~/components/ui/Banner";
 
 export default function Register() {
   const [name, setName] = createSignal("");
@@ -35,9 +36,7 @@ export default function Register() {
     <main class="auth-form">
       <Title>Create account</Title>
       <h1>Create account</h1>
-      <Show when={error()}>
-        <div class="error">{error()}</div>
-      </Show>
+      <Banner variant="error" message={error()} />
       <form onSubmit={handleSubmit}>
         <label>
           Name

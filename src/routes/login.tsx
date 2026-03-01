@@ -1,7 +1,8 @@
-import { createEffect, createSignal, Show } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { useNavigate, useSearchParams } from "@solidjs/router";
 import { authClient } from "~/auth/auth-client";
+import Banner from "~/components/ui/Banner";
 
 export default function Login() {
   const [email, setEmail] = createSignal("");
@@ -44,9 +45,7 @@ export default function Login() {
     <main class="auth-form">
       <Title>Log in</Title>
       <h1>Log in</h1>
-      <Show when={error()}>
-        <div class="error">{error()}</div>
-      </Show>
+      <Banner variant="error" message={error()} />
       <form onSubmit={handleSubmit}>
         <label>
           Email

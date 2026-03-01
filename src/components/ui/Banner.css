@@ -1,0 +1,21 @@
+.banner {
+  font-size: 0.9rem;
+  padding: 0.5em 0.8em;
+  border-radius: 0.3em;
+  margin-bottom: 1rem;
+}
+
+.banner-error {
+  color: var(--color-error);
+  background: rgba(var(--color-error-rgb), 0.08);
+}
+
+.banner-success {
+  color: var(--color-success);
+  background: rgba(var(--color-success-rgb), 0.08);
+}
+
+.banner-info {
+  color: var(--color-primary);
+  background: rgba(var(--color-primary-rgb), 0.08);
+}

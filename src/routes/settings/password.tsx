@@ -2,6 +2,7 @@ import { createSignal, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { authClient } from "~/auth/auth-client";
 import { requireAuth } from "~/auth/require-auth";
+import Banner from "~/components/ui/Banner";
 
 export default function PasswordSettings() {
   const session = requireAuth();
@@ -46,12 +47,8 @@ export default function PasswordSettings() {
     <main class="auth-form">
       <Title>Change password</Title>
       <h1>Change password</h1>
-      <Show when={error()}>
-        <div class="error">{error()}</div>
-      </Show>
-      <Show when={success()}>
-        <div class="success">{success()}</div>
-      </Show>
+      <Banner variant="error" message={error()} />
+      <Banner variant="success" message={success()} />
       <Show when={session().data}>
         <form onSubmit={handleSubmit}>
           <label>

@@ -8,6 +8,7 @@ import Button from "~/components/ui/Button";
 import Select from "~/components/ui/Select";
 import TextInput from "~/components/ui/TextInput";
 import { UserTable, BatchBar, Pagination } from "~/components/admin/table";
+import Banner from "~/components/ui/Banner";
 import "./admin.css";
 
 export default function Admin() {
@@ -382,12 +383,8 @@ export default function Admin() {
       <Title>User management</Title>
       <h1>User management</h1>
 
-      <Show when={error()}>
-        <div class="error">{error()}</div>
-      </Show>
-      <Show when={success()}>
-        <div class="success">{success()}</div>
-      </Show>
+      <Banner variant="error" message={error()} />
+      <Banner variant="success" message={success()} />
 
       <div class="admin-toolbar">
         <form onSubmit={handleSearch}>

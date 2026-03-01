@@ -12,24 +12,6 @@
   text-align: left;
 }
 
-.admin-page .error {
-  color: var(--color-error);
-  font-size: 0.9rem;
-  padding: 0.5em 0.8em;
-  background: rgba(var(--color-error-rgb), 0.08);
-  border-radius: 0.3em;
-  margin-bottom: 1rem;
-}
-
-.admin-page .success {
-  color: var(--color-success);
-  font-size: 0.9rem;
-  padding: 0.5em 0.8em;
-  background: rgba(var(--color-success-rgb), 0.08);
-  border-radius: 0.3em;
-  margin-bottom: 1rem;
-}
-
 /* Toolbar */
 .admin-toolbar {
   display: flex;

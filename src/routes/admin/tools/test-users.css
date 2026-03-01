@@ -10,15 +10,6 @@
   margin: 1rem 0 1.5rem;
 }
 
-.test-users-page .error {
-  color: var(--color-error);
-  font-size: 0.9rem;
-  padding: 0.5em 0.8em;
-  background: rgba(var(--color-error-rgb), 0.08);
-  border-radius: 0.3em;
-  margin-bottom: 1rem;
-}
-
 .test-users-page .back-link {
   margin: 0 0 1rem;
 }
@@ -31,12 +22,6 @@
 
 .test-users-page .back-link a:hover {
   text-decoration: underline;
-}
-
-.test-users-page .info {
-  font-size: 0.9rem;
-  color: var(--color-text-muted);
-  margin: 0 0 1rem;
 }
 
 .test-users-page form {

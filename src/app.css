@@ -165,22 +165,6 @@ header button:hover {
   cursor: not-allowed;
 }
 
-.auth-form .error {
-  color: var(--color-error);
-  font-size: 0.9rem;
-  padding: 0.5em;
-  background: rgba(var(--color-error-rgb), 0.08);
-  border-radius: 0.3em;
-}
-
-.auth-form .success {
-  color: var(--color-success);
-  font-size: 0.9rem;
-  padding: 0.5em;
-  background: rgba(var(--color-success-rgb), 0.08);
-  border-radius: 0.3em;
-}
-
 .auth-form p {
   margin-top: 1rem;
   font-size: 0.9rem;
