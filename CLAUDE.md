@@ -27,7 +27,27 @@ For any interaction with the users, accounts, and sessions make sure to use the 
 
 ## Styling
 
-For components use the `?inline` parameter for css imports. For styles that don't belong to an individual component they can go in @src/app.css which is added as a stylesheet link to every page.
+### Global
+
+For global styles that should apply to every page include them in the @src/app.css.
+
+### Page
+
+For styles that apply only to specific pages or a subset of pages put them in there own style sheet and import them in the page.
+
+#### Example
+
+```tsx
+import "./example.css";
+
+export default function ExamplePage() {
+  return <></>;
+}
+```
+
+### Components
+
+For components use the `?inline` parameter for css imports.
 
 #### Example Component:
 

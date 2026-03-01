@@ -4,7 +4,7 @@ import { useNavigate } from "@solidjs/router";
 import { requireAuth } from "~/auth/require-auth";
 import { getNextTestUserNumber, createTestUsers } from "~/auth/test-users";
 import Button from "~/components/ui/Button";
-import css from "./test-users.css?inline";
+import "./test-users.css";
 
 export default function TestUserGenerator() {
   requireAuth({
@@ -47,7 +47,6 @@ export default function TestUserGenerator() {
 
   return (
     <>
-      <style>{css}</style>
       <main class="test-users-page">
       <Title>Generate Test Users</Title>
       <h1>Generate Test Users</h1>
