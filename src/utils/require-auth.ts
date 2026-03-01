@@ -18,6 +18,10 @@ export function requireAuth(options?: { permissions?: Permissions }) {
       return;
     }
 
+    if (session().data?.user.banned) {
+      navigate("/forbidden", { replace: true });
+    }
+
     if (options?.permissions) {
       const result = await authClient.admin.hasPermission({
         permissions: options.permissions,
