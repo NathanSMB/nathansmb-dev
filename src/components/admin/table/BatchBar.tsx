@@ -1,8 +1,16 @@
 import { Show } from "solid-js";
 import type { Role } from "../types";
 import { isValidRole } from "../types";
+import Button from "~/components/ui/Button";
+import Select from "~/components/ui/Select";
+import TextInput from "~/components/ui/TextInput";
 import ProgressBar from "~/components/ui/ProgressBar";
 import css from "./BatchBar.css?inline";
+
+const roleOptions = [
+  { value: "user", label: "User" },
+  { value: "admin", label: "Admin" },
+];
 
 interface BatchBarProps {
   selectedCount: number;
@@ -33,33 +41,31 @@ export default function BatchBar(props: BatchBarProps) {
           }
         >
           <span>{props.selectedCount} user(s) selected</span>
-          <select
+          <Select
             value={props.batchRole}
-            onChange={(e) => {
-              const value = e.currentTarget.value;
+            options={roleOptions}
+            onChange={(value) => {
               if (isValidRole(value)) props.onSetBatchRole(value);
             }}
-          >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
-          <button onClick={props.onBatchSetRole}>Set role</button>
-          <input
-            class="batch-ban-reason"
-            type="text"
+          />
+          <Button color="neutral" onClick={props.onBatchSetRole}>
+            Set role
+          </Button>
+          <TextInput
+            variant="toolbar"
             placeholder="Ban reason (optional)"
             value={props.batchBanReason}
-            onInput={(e) => props.onSetBatchBanReason(e.currentTarget.value)}
+            onInput={props.onSetBatchBanReason}
           />
-          <button class="batch-ban" onClick={props.onBatchBan}>
+          <Button color="danger" onClick={props.onBatchBan}>
             Ban selected
-          </button>
-          <button class="batch-unban" onClick={props.onBatchUnban}>
+          </Button>
+          <Button color="success" onClick={props.onBatchUnban}>
             Unban selected
-          </button>
-          <button class="batch-delete" onClick={props.onBatchDelete}>
+          </Button>
+          <Button color="danger" onClick={props.onBatchDelete}>
             Delete selected
-          </button>
+          </Button>
         </Show>
       </div>
     </>

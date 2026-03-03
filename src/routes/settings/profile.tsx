@@ -141,13 +141,13 @@ export default function ProfileSettings() {
         <Show when={hasAdmins() === false}>
           <div>
             <p>No administrators exist yet. You can claim the admin role.</p>
-            <button
+            <Button
               type="button"
               onClick={handleBecomeAdmin}
               disabled={loading()}
             >
               {loading() ? "Promoting..." : "Become Admin"}
-            </button>
+            </Button>
           </div>
         </Show>
         <p>
