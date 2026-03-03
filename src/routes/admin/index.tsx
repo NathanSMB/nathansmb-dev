@@ -34,6 +34,8 @@ export default function Admin() {
   const [selectedIds, setSelectedIds] = createSignal<Set<string>>(new Set());
   const [batchRole, setBatchRole] = createSignal<Role>("user");
   const [batchBanReason, setBatchBanReason] = createSignal("");
+  const [sortBy, setSortBy] = createSignal<string | null>(null);
+  const [sortDirection, setSortDirection] = createSignal<"asc" | "desc">("asc");
   const [editingField, setEditingField] = createSignal<EditingField | null>(null);
   const [editValue, setEditValue] = createSignal("");
   const [deleteTarget, setDeleteTarget] = createSignal<
@@ -67,6 +69,11 @@ export default function Admin() {
       query.filterOperator = "eq";
     }
 
+    if (sortBy()) {
+      query.sortBy = sortBy();
+      query.sortDirection = sortDirection();
+    }
+
     const result = await authClient.admin.listUsers({ query });
     setLoading(false);
 
@@ -79,7 +86,17 @@ export default function Admin() {
     }
   }
 
-  createEffect(on([page, roleFilter, pageSize], () => fetchUsers()));
+  createEffect(on([page, roleFilter, pageSize, sortBy, sortDirection], () => fetchUsers()));
+
+  function handleSort(field: string) {
+    if (sortBy() === field) {
+      setSortDirection((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortBy(field);
+      setSortDirection("asc");
+    }
+    setPage(0);
+  }
 
   function handleSearch(e: Event) {
     e.preventDefault();
@@ -441,6 +458,9 @@ export default function Admin() {
           currentUserId={currentUserId()}
           selectedIds={selectedIds()}
           allSelected={allSelected()}
+          sortBy={sortBy()}
+          sortDirection={sortDirection()}
+          onSort={handleSort}
           editingField={editingField()}
           editValue={editValue()}
           banningUserId={banningUserId()}

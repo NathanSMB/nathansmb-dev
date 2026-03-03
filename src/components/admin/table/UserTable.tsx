@@ -3,11 +3,16 @@ import type { AdminUser, EditingField } from "../types";
 import UserRow from "./UserRow";
 import css from "./UserTable.css?inline";
 
+type SortableField = "name" | "email" | "role" | "banned";
+
 interface UserTableProps {
   users: AdminUser[];
   currentUserId: string | undefined;
   selectedIds: Set<string>;
   allSelected: boolean;
+  sortBy: string | null;
+  sortDirection: "asc" | "desc";
+  onSort: (field: SortableField) => void;
   editingField: EditingField | null;
   editValue: string;
   banningUserId: string | null;
@@ -36,6 +41,11 @@ interface UserTableProps {
 }
 
 export default function UserTable(props: UserTableProps) {
+  function sortIndicator(field: SortableField) {
+    if (props.sortBy !== field) return "";
+    return props.sortDirection === "asc" ? " \u25B2" : " \u25BC";
+  }
+
   return (
     <>
       <style>{css}</style>
@@ -50,10 +60,10 @@ export default function UserTable(props: UserTableProps) {
             />
           </th>
           <th></th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Role</th>
-          <th>Status</th>
+          <th class="sortable" onClick={() => props.onSort("name")}>Name{sortIndicator("name")}</th>
+          <th class="sortable" onClick={() => props.onSort("email")}>Email{sortIndicator("email")}</th>
+          <th class="sortable" onClick={() => props.onSort("role")}>Role{sortIndicator("role")}</th>
+          <th class="sortable" onClick={() => props.onSort("banned")}>Status{sortIndicator("banned")}</th>
           <th>Actions</th>
         </tr>
       </thead>

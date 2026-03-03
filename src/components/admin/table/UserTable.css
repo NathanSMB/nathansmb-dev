@@ -41,6 +41,15 @@
   text-align: center;
 }
 
+.admin-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.admin-table th.sortable:hover {
+  background: oklch(from var(--color-primary-hover) calc(l - 0.05) c h);
+}
+
 .admin-empty {
   text-align: center;
   color: var(--color-text-faint);
