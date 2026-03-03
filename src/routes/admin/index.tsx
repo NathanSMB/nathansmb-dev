@@ -358,23 +358,23 @@ export default function Admin() {
   }
 
   function deleteModalProps() {
-    const t = deleteTarget();
-    if (!t) return { title: "", message: "", details: "", confirmLabel: "" };
-    if (t.mode === "single") {
+    const target = deleteTarget();
+    if (!target) return { title: "", message: "", details: "", confirmLabel: "" };
+    if (target.mode === "single") {
       return {
         title: "Permanently Delete User",
         message:
           "This action cannot be undone. All their data, sessions, and accounts will be permanently destroyed.",
-        details: `User: ${t.userName}`,
+        details: `User: ${target.userName}`,
         confirmLabel: "Yes, delete this user",
       };
     }
     return {
-      title: `Permanently Delete ${t.count} Users`,
+      title: `Permanently Delete ${target.count} Users`,
       message:
         "This action cannot be undone. All data, sessions, and accounts for these users will be permanently destroyed.",
-      details: `${t.count} user(s) will be permanently removed.`,
-      confirmLabel: `Yes, delete ${t.count} user(s)`,
+      details: `${target.count} user(s) will be permanently removed.`,
+      confirmLabel: `Yes, delete ${target.count} user(s)`,
     };
   }
 
