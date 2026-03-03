@@ -1,19 +1,19 @@
 .select {
-  font-family: inherit;
-  font-size: 0.9rem;
-  padding: 0.5em 0.8em;
-  border: 1.5px solid var(--color-primary-hover);
-  border-radius: 0.5em;
-  outline: none;
-  background: var(--color-surface);
-  cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.5em 0.8em;
+    border: 1.5px solid var(--color-primary-hover);
+    border-radius: 0.5em;
+    outline: none;
+    background: var(--color-surface);
+    cursor: pointer;
 }
 
 .select:focus {
-  border-color: var(--color-primary);
+    border-color: var(--color-primary);
 }
 
 .select:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
 }

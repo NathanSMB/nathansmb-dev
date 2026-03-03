@@ -1,16 +1,16 @@
 /* Auth form pages */
 .page-narrow {
-  max-width: 24rem;
-  margin: 2rem auto;
-  padding: 2rem;
+    max-width: 24rem;
+    margin: 2rem auto;
+    padding: 2rem;
 }
 
 .page-narrow h1 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .page-narrow p {
-  margin-top: 1rem;
-  font-size: 0.9rem;
+    margin-top: 1rem;
+    font-size: 0.9rem;
 }

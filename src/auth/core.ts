@@ -17,6 +17,6 @@ export const auth = betterAuth({
     },
     database: drizzleAdapter(connection, {
         provider: "pg",
-        schema
+        schema,
     }),
 });

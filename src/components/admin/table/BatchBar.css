@@ -1,20 +1,20 @@
 .admin-batch-bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  margin-top: 0.75rem;
-  background: var(--color-neutral);
-  border-radius: 0.5em;
-  font-size: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    margin-top: 0.75rem;
+    background: var(--color-neutral);
+    border-radius: 0.5em;
+    font-size: 0.9rem;
 }
 
 .batch-ban-reason {
-  flex: 1;
-  min-width: 12rem;
+    flex: 1;
+    min-width: 12rem;
 }
 
 .admin-batch-bar .progress-bar {
-  width: 100%;
+    width: 100%;
 }

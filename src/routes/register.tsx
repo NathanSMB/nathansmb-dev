@@ -10,83 +10,83 @@ import Button from "~/components/ui/Button";
 import "~/styles/page-narrow.css";
 
 export default function Register() {
-  const [name, setName] = createSignal("");
-  const [email, setEmail] = createSignal("");
-  const [password, setPassword] = createSignal("");
-  const [error, setError] = createSignal("");
-  const [loading, setLoading] = createSignal(false);
-  const navigate = useNavigate();
-  const session = authClient.useSession();
+    const [name, setName] = createSignal("");
+    const [email, setEmail] = createSignal("");
+    const [password, setPassword] = createSignal("");
+    const [error, setError] = createSignal("");
+    const [loading, setLoading] = createSignal(false);
+    const navigate = useNavigate();
+    const session = authClient.useSession();
 
-  createEffect(() => {
-    if (session().isPending) return;
-    if (session().data) {
-      navigate("/", { replace: true });
-    }
-  });
-
-  async function handleSubmit(e: Event) {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-
-    const result = await authClient.signUp.email({
-      email: email(),
-      password: password(),
-      name: name(),
+    createEffect(() => {
+        if (session().isPending) return;
+        if (session().data) {
+            navigate("/", { replace: true });
+        }
     });
 
-    setLoading(false);
+    async function handleSubmit(e: Event) {
+        e.preventDefault();
+        setError("");
+        setLoading(true);
 
-    if (result.error) {
-      setError(result.error.message ?? "Registration failed");
-    } else {
-      navigate("/", { replace: true });
+        const result = await authClient.signUp.email({
+            email: email(),
+            password: password(),
+            name: name(),
+        });
+
+        setLoading(false);
+
+        if (result.error) {
+            setError(result.error.message ?? "Registration failed");
+        } else {
+            navigate("/", { replace: true });
+        }
     }
-  }
 
-  return (
-    <main class="page-narrow">
-      <Title>Create account</Title>
-      <h1>Create account</h1>
-      <Banner variant="error" message={error()} />
-      <Form onSubmit={handleSubmit}>
-        <FormLabel>
-          Name
-          <TextInput
-            variant="form"
-            value={name()}
-            onInput={setName}
-            required
-          />
-        </FormLabel>
-        <FormLabel>
-          Email
-          <TextInput
-            type="email"
-            variant="form"
-            value={email()}
-            onInput={setEmail}
-            required
-          />
-        </FormLabel>
-        <FormLabel>
-          Password
-          <TextInput
-            type="password"
-            variant="form"
-            value={password()}
-            onInput={setPassword}
-            required
-          />
-        </FormLabel>
-        <Button variant="form" type="submit" disabled={loading()}>
-          {loading() ? "Creating account..." : "Create account"}
-        </Button>
-      </Form>
-      <p>
-        Already have an account? <a href="/login">Log in</a>
-      </p>
-    </main>
-  );
+    return (
+        <main class="page-narrow">
+            <Title>Create account</Title>
+            <h1>Create account</h1>
+            <Banner variant="error" message={error()} />
+            <Form onSubmit={handleSubmit}>
+                <FormLabel>
+                    Name
+                    <TextInput
+                        variant="form"
+                        value={name()}
+                        onInput={setName}
+                        required
+                    />
+                </FormLabel>
+                <FormLabel>
+                    Email
+                    <TextInput
+                        type="email"
+                        variant="form"
+                        value={email()}
+                        onInput={setEmail}
+                        required
+                    />
+                </FormLabel>
+                <FormLabel>
+                    Password
+                    <TextInput
+                        type="password"
+                        variant="form"
+                        value={password()}
+                        onInput={setPassword}
+                        required
+                    />
+                </FormLabel>
+                <Button variant="form" type="submit" disabled={loading()}>
+                    {loading() ? "Creating account..." : "Create account"}
+                </Button>
+            </Form>
+            <p>
+                Already have an account? <a href="/login">Log in</a>
+            </p>
+        </main>
+    );
 }

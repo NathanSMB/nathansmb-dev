@@ -1,49 +1,49 @@
 .btn {
-  font-family: inherit;
-  border: none;
-  cursor: pointer;
-  white-space: nowrap;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
 }
 
 .btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+    opacity: 0.4;
+    cursor: not-allowed;
 }
 
 /* ── Colors ── */
 
 .btn-primary {
-  color: var(--color-text-on-colored);
-  background: var(--color-primary);
+    color: var(--color-text-on-colored);
+    background: var(--color-primary);
 }
 
 .btn-primary:hover {
-  background: var(--color-primary-hover);
+    background: var(--color-primary-hover);
 }
 
 .btn-danger {
-  color: var(--color-text-on-colored);
-  background: var(--color-error);
+    color: var(--color-text-on-colored);
+    background: var(--color-error);
 }
 
 .btn-danger:hover {
-  background: var(--color-error-hover);
+    background: var(--color-error-hover);
 }
 
 .btn-success {
-  color: var(--color-text-on-colored);
-  background: var(--color-success);
+    color: var(--color-text-on-colored);
+    background: var(--color-success);
 }
 
 .btn-success:hover {
-  background: var(--color-success-hover);
+    background: var(--color-success-hover);
 }
 
 .btn-neutral {
-  color: var(--color-text-muted);
-  background: var(--color-neutral);
+    color: var(--color-text-muted);
+    background: var(--color-neutral);
 }
 
 .btn-neutral:hover {
-  background: var(--color-neutral-hover);
+    background: var(--color-neutral-hover);
 }

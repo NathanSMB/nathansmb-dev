@@ -1,21 +1,21 @@
 .banner {
-  font-size: 0.9rem;
-  padding: 0.5em 0.8em;
-  border-radius: 0.3em;
-  margin-bottom: 1rem;
+    font-size: 0.9rem;
+    padding: 0.5em 0.8em;
+    border-radius: 0.3em;
+    margin-bottom: 1rem;
 }
 
 .banner-error {
-  color: var(--color-error);
-  background: oklch(from var(--color-error) l c h / 0.08);
+    color: var(--color-error);
+    background: oklch(from var(--color-error) l c h / 0.08);
 }
 
 .banner-success {
-  color: var(--color-success);
-  background: oklch(from var(--color-success) l c h / 0.08);
+    color: var(--color-success);
+    background: oklch(from var(--color-success) l c h / 0.08);
 }
 
 .banner-info {
-  color: var(--color-primary);
-  background: oklch(from var(--color-primary) l c h / 0.08);
+    color: var(--color-primary);
+    background: oklch(from var(--color-primary) l c h / 0.08);
 }

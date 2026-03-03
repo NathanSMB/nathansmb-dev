@@ -11,5 +11,7 @@ export function getAnyString(keys: string[]): string {
         const value = process.env[key];
         if (value) return value;
     }
-    throw Error(`None of the environment variables are set: ${keys.join(", ")}`);
+    throw Error(
+        `None of the environment variables are set: ${keys.join(", ")}`,
+    );
 }

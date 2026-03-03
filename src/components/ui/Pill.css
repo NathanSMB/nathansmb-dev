@@ -1,19 +1,19 @@
 .pill-primary {
-  color: var(--color-primary);
-  background: oklch(from var(--color-primary) l c h / 0.1);
+    color: var(--color-primary);
+    background: oklch(from var(--color-primary) l c h / 0.1);
 }
 
 .pill-danger {
-  color: var(--color-error);
-  background: oklch(from var(--color-error) l c h / 0.1);
+    color: var(--color-error);
+    background: oklch(from var(--color-error) l c h / 0.1);
 }
 
 .pill-success {
-  color: var(--color-success);
-  background: oklch(from var(--color-success) l c h / 0.1);
+    color: var(--color-success);
+    background: oklch(from var(--color-success) l c h / 0.1);
 }
 
 .pill-neutral {
-  color: var(--color-text-muted);
-  background: oklch(from var(--color-neutral) l c h / 0.15);
+    color: var(--color-text-muted);
+    background: oklch(from var(--color-neutral) l c h / 0.15);
 }

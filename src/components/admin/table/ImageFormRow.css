@@ -1,23 +1,23 @@
 /* Inline image form row */
 .image-form-row td {
-  padding: 0.5em 0.8em;
-  border-bottom: 1px solid var(--color-text-faint);
+    padding: 0.5em 0.8em;
+    border-bottom: 1px solid var(--color-text-faint);
 }
 
 .image-form {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .image-form .form {
-  flex: 1;
+    flex: 1;
 }
 
 .image-form .form-label {
-  white-space: nowrap;
+    white-space: nowrap;
 }
 
 .image-form .input {
-  flex: 1;
+    flex: 1;
 }

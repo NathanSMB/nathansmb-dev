@@ -1,27 +1,25 @@
 .test-users-page {
-  max-width: 32rem;
-  margin: 0 auto;
-  padding: 1.5rem 2rem;
-  text-align: left;
+    max-width: 32rem;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    text-align: left;
 }
 
 .test-users-page h1 {
-  font-size: 1.8rem;
-  margin: 1rem 0 1.5rem;
+    font-size: 1.8rem;
+    margin: 1rem 0 1.5rem;
 }
 
 .test-users-page .back-link {
-  margin: 0 0 1rem;
+    margin: 0 0 1rem;
 }
 
 .test-users-page .back-link a {
-  color: var(--color-primary);
-  text-decoration: none;
-  font-size: 0.9rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: 0.9rem;
 }
 
 .test-users-page .back-link a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
-
-

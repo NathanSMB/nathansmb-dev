@@ -1,0 +1,7 @@
+- Make components for as much as is feasible (Known areas left to reuse or create new components [BatchBar])
+- Move styles for those components into css modules
+- Separate styles that are only for a single page into css a css module for each individual page.
+- Make variables for things like border-radius and padding and other spacing stuff
+- Add better loading states
+- Add documentation for what's there
+- Start planning the testing strategy
