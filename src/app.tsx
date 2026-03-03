@@ -24,7 +24,10 @@ export default function App() {
                                 <a href="/about">About</a>
                             </nav>
                             <div class="auth-controls">
-                                <Show when={!session().isPending}>
+                                <Show
+                                    when={!session().isPending}
+                                    fallback={<Spinner size="sm" />}
+                                >
                                     <Show
                                         when={session().data}
                                         fallback={
@@ -66,7 +69,7 @@ export default function App() {
                                 </Show>
                             </div>
                         </header>
-                        <Suspense fallback={<Spinner />}>
+                        <Suspense fallback={<Spinner size="lg" />}>
                             {props.children}
                         </Suspense>
                     </MetaProvider>

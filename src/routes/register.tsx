@@ -49,7 +49,7 @@ export default function Register() {
     return (
         <Show
             when={!session().isPending && !session().data}
-            fallback={<Spinner />}
+            fallback={<Spinner size="lg" />}
         >
             <main class="page-narrow">
                 <Title>Create account</Title>
