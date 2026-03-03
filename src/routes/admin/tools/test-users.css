@@ -15,11 +15,5 @@
 }
 
 .test-users-page .back-link a {
-    color: var(--color-primary);
-    text-decoration: none;
     font-size: var(--text-base);
-}
-
-.test-users-page .back-link a:hover {
-    text-decoration: underline;
 }

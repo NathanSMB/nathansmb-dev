@@ -22,7 +22,7 @@ export default function AuthLayout(props: { children: JSX.Element }) {
     return (
         <Show
             when={!session().isPending && !session().data}
-            fallback={<Spinner size="xl" />}
+            fallback={<Spinner size="xl" center />}
         >
             {props.children}
         </Show>

@@ -4,10 +4,11 @@ import { useNavigate } from "@solidjs/router";
 import { getNextTestUserNumber } from "~/auth/test-users";
 import Banner from "~/components/ui/Banner";
 import Button from "~/components/ui/Button";
+import Spinner from "~/components/ui/Spinner";
 import Form from "~/components/ui/Form";
 import FormLabel from "~/components/ui/FormLabel";
 import ProgressBar from "~/components/ui/ProgressBar";
-import TextInput from "~/components/ui/TextInput";
+import Slider from "~/components/ui/Slider";
 import "./test-users.css";
 
 export default function TestUserGenerator() {
@@ -102,44 +103,40 @@ export default function TestUserGenerator() {
 
             <Banner variant="error" message={error()} />
 
-            <Banner
-                variant="info"
-                message={
-                    nextNumber() !== null
-                        ? `Next test user: TestUser${nextNumber()} (testuser${nextNumber()}@example.com)`
-                        : undefined
-                }
-            />
+            <Show when={nextNumber() !== null} fallback={<Spinner size="lg" />}>
+                <Banner
+                    variant="info"
+                    message={`Next test user: TestUser${nextNumber()} (testuser${nextNumber()}@example.com)`}
+                />
 
-            <Form onSubmit={handleSubmit}>
-                <FormLabel>
-                    Number of users to create
-                    <TextInput
-                        type="number"
-                        min={1}
-                        max={100}
-                        value={String(count())}
-                        onInput={(v) => setCount(parseInt(v) || 1)}
-                        required
-                    />
-                </FormLabel>
-
-                <Show when={progress()}>
-                    {(p) => (
-                        <ProgressBar
-                            current={p().current}
-                            total={p().total}
-                            label="created"
+                <Form onSubmit={handleSubmit}>
+                    <FormLabel>
+                        Number of users to create
+                        <Slider
+                            value={count()}
+                            onInput={setCount}
+                            min={1}
+                            max={100}
                         />
-                    )}
-                </Show>
+                    </FormLabel>
 
-                <Button type="submit" disabled={loading()}>
-                    {loading()
-                        ? `Creating... (${progress()?.current ?? 0}/${progress()?.total ?? count()})`
-                        : `Create ${count()} test user(s)`}
-                </Button>
-            </Form>
+                    <Show when={progress()}>
+                        {(p) => (
+                            <ProgressBar
+                                current={p().current}
+                                total={p().total}
+                                label="created"
+                            />
+                        )}
+                    </Show>
+
+                    <Button type="submit" disabled={loading()}>
+                        {loading()
+                            ? `Creating... (${progress()?.current ?? 0}/${progress()?.total ?? count()})`
+                            : `Create ${count()} test user(s)`}
+                    </Button>
+                </Form>
+            </Show>
         </main>
     );
 }

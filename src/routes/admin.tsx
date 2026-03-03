@@ -17,7 +17,7 @@ export default function AdminLayout(props: { children: JSX.Element }) {
     });
 
     return (
-        <Show when={authorized()} fallback={<Spinner size="xl" />}>
+        <Show when={authorized()} fallback={<Spinner size="xl" center />}>
             {props.children}
         </Show>
     );

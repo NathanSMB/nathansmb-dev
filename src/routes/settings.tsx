@@ -6,7 +6,7 @@ export default function SettingsLayout(props: { children: JSX.Element }) {
     const { authorized } = requireAuth();
 
     return (
-        <Show when={authorized()} fallback={<Spinner size="xl" />}>
+        <Show when={authorized()} fallback={<Spinner size="xl" center />}>
             {props.children}
         </Show>
     );

@@ -9,6 +9,7 @@ import Select from "~/components/ui/Select";
 import TextInput from "~/components/ui/TextInput";
 import { UserTable, BatchBar, Pagination } from "~/components/admin/table";
 import Banner from "~/components/ui/Banner";
+import Spinner from "~/components/ui/Spinner";
 import { consumeBatchStream } from "~/utils/batch-stream";
 import "./admin.css";
 
@@ -581,7 +582,7 @@ export default function Admin() {
                 <a href="/admin/tools/test-users">Generate test users</a>
             </div>
 
-            <Show when={!loading()} fallback={<p>Loading...</p>}>
+            <Show when={!loading()} fallback={<Spinner size="lg" />}>
                 <UserTable
                     users={users()}
                     currentUserId={currentUserId()}

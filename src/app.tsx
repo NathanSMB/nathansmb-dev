@@ -69,7 +69,7 @@ export default function App() {
                                 </Show>
                             </div>
                         </header>
-                        <Suspense fallback={<Spinner size="lg" />}>
+                        <Suspense fallback={<Spinner size="xl" center />}>
                             {props.children}
                         </Suspense>
                     </MetaProvider>
