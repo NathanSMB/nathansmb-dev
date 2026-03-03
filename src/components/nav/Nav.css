@@ -85,6 +85,7 @@
         0 6px 20px oklch(0% 0 none / 0.12),
         0 1.5px 6px oklch(0% 0 none / 0.06);
     padding: 0.3rem;
+    overflow: hidden;
     z-index: var(--z-modal);
 }
 
@@ -175,7 +176,7 @@
 .session-menu {
     position: absolute;
     right: 0;
-    top: calc(100% + 0.35rem);
+    top: calc(100% + 1rem);
     min-width: 100%;
     box-sizing: border-box;
     background: var(--color-surface);
@@ -186,6 +187,7 @@
         0 6px 20px oklch(0% 0 none / 0.12),
         0 1.5px 6px oklch(0% 0 none / 0.06);
     padding: 0.3rem;
+    overflow: hidden;
     animation: menu-enter-down var(--duration-normal) ease-out both;
     z-index: var(--z-modal);
 }
@@ -196,21 +198,26 @@
     align-items: center;
     gap: var(--gap-inline);
     width: 100%;
-    padding: 0.4em 0.6em;
+    box-sizing: border-box;
+    padding: 0.7em 1em;
     border: none;
     border-radius: var(--radius-md);
     background: none;
-    color: var(--color-text);
+    color: var(--color-text-muted);
     text-decoration: none;
     font: inherit;
     font-size: var(--text-base);
+    font-weight: 500;
     cursor: pointer;
-    transition: background var(--duration-fast);
+    transition:
+        color var(--duration-fast),
+        background var(--duration-fast);
 }
 
 .session-menu a:hover,
 .session-menu button:hover {
-    background: oklch(from var(--color-primary) l c h / 0.08);
+    color: var(--color-text);
+    background: oklch(from var(--color-primary) l c h / 0.07);
 }
 
 .session-menu-separator {
@@ -330,7 +337,7 @@
         right: 0;
         left: 0;
         top: auto;
-        bottom: calc(100% + 0.35rem);
+        bottom: calc(100% + 1rem);
         animation-name: menu-enter-up;
     }
 
