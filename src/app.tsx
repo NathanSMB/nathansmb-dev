@@ -36,7 +36,7 @@ export default function App() {
                           <a href="/admin">Admin</a>
                         </Show>
                         <a href="/settings/profile">Settings</a>
-                        <Button variant="primary" onClick={() => authClient.signOut()}>
+                        <Button onClick={() => authClient.signOut()}>
                           Log out
                         </Button>
                       </>

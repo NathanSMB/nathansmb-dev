@@ -44,27 +44,6 @@
   opacity: 1;
 }
 
-/* Status badges */
-.banned-badge {
-  display: inline-block;
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 0.2em 0.6em;
-  background: oklch(from var(--color-error) l c h / 0.1);
-  color: var(--color-error);
-  border-radius: 1em;
-}
-
-.active-badge {
-  display: inline-block;
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 0.2em 0.6em;
-  background: oklch(from var(--color-success) l c h / 0.1);
-  color: var(--color-success);
-  border-radius: 1em;
-}
-
 /* Action buttons layout */
 .admin-actions {
   display: flex;

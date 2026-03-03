@@ -3,15 +3,14 @@
   border: none;
   cursor: pointer;
   white-space: nowrap;
-  font-size: 0.8rem;
-  padding: 0.35em 0.8em;
-  border-radius: 0.5em;
 }
 
 .btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+/* ── Colors ── */
 
 .btn-primary {
   color: var(--color-text-on-colored);
@@ -40,41 +39,11 @@
   background: var(--color-success-hover);
 }
 
-.btn-nuetral {
+.btn-neutral {
   color: var(--color-text-muted);
   background: var(--color-neutral);
 }
 
-.btn-nuetral:hover {
+.btn-neutral:hover {
   background: var(--color-neutral-hover);
-}
-
-/* Pagination — pill-shaped, primary tint */
-.btn-pagination {
-  color: var(--color-text-on-colored);
-  background: var(--color-primary);
-  border-radius: 1em;
-}
-
-.btn-pagination:hover:not(:disabled) {
-  background: var(--color-primary-hover);
-}
-
-/* Form — full-width submit button for auth/settings forms */
-.btn-form {
-  font-size: 1rem;
-  padding: 0.7em;
-  width: 100%;
-  color: var(--color-text-on-colored);
-  background: var(--color-primary);
-  border-radius: 0.5em;
-  margin-top: 0.5rem;
-}
-
-.btn-form:hover {
-  background: var(--color-primary-hover);
-}
-
-.btn-form:disabled {
-  opacity: 0.6;
 }

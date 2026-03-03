@@ -73,7 +73,7 @@ export default function TestUserGenerator() {
             required
           />
         </FormLabel>
-        <Button variant="primary" type="submit" disabled={loading()}>
+        <Button type="submit" disabled={loading()}>
           {loading() ? "Creating..." : `Create ${count()} test user(s)`}
         </Button>
       </Form>

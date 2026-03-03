@@ -402,7 +402,7 @@ export default function Admin() {
             ]}
             onChange={(v) => setSearchField(v as "name" | "email")}
           />
-          <Button variant="primary" type="submit">Search</Button>
+          <Button type="submit">Search</Button>
         </Form>
         <Select
           value={roleFilter()}

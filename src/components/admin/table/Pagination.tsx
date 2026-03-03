@@ -29,14 +29,14 @@ export default function Pagination(props: PaginationProps) {
       <div class="admin-pagination">
       <div class="admin-pagination-nav">
         <Button
-          variant="pagination"
+          variant="pill"
           disabled={!props.hasPrevious}
           onClick={props.onFirst}
         >
           First
         </Button>
         <Button
-          variant="pagination"
+          variant="pill"
           disabled={!props.hasPrevious}
           onClick={props.onPrevious}
         >
@@ -46,14 +46,14 @@ export default function Pagination(props: PaginationProps) {
           Page {props.page + 1} of {props.totalPages}
         </span>
         <Button
-          variant="pagination"
+          variant="pill"
           disabled={!props.hasNext}
           onClick={props.onNext}
         >
           Next
         </Button>
         <Button
-          variant="pagination"
+          variant="pill"
           disabled={!props.hasNext}
           onClick={props.onLast}
         >

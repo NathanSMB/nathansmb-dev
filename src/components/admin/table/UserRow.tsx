@@ -3,10 +3,11 @@ import type { AdminUser, EditingField } from "../types";
 import { isValidRole } from "../types";
 import Avatar from "~/components/ui/Avatar";
 import Button from "~/components/ui/Button";
+import Pill from "~/components/ui/Pill";
 import Select from "~/components/ui/Select";
 import TextInput from "~/components/ui/TextInput";
 import BanFormRow from "./BanFormRow";
-import EditFormRow from "./EditFormRow";
+import ImageFormRow from "./ImageFormRow";
 import css from "./UserRow.css?inline";
 
 interface UserRowProps {
@@ -122,9 +123,9 @@ export default function UserRow(props: UserRowProps) {
         <td>
           <Show
             when={props.user.banned}
-            fallback={<span class="active-badge">Active</span>}
+            fallback={<Pill color="success">Active</Pill>}
           >
-            <span class="banned-badge" title={props.user.banReason ?? undefined}>Banned</span>
+            <Pill color="danger" title={props.user.banReason ?? undefined}>Banned</Pill>
           </Show>
         </td>
         <td>
@@ -133,7 +134,7 @@ export default function UserRow(props: UserRowProps) {
               when={props.user.banned}
               fallback={
                 <Button
-                  variant="danger"
+                  color="danger"
                   onClick={props.onBanClick}
                   disabled={props.isSelf}
                 >
@@ -141,12 +142,12 @@ export default function UserRow(props: UserRowProps) {
                 </Button>
               }
             >
-              <Button variant="success" onClick={props.onUnban}>
+              <Button color="success" onClick={props.onUnban}>
                 Unban
               </Button>
             </Show>
             <Show when={!props.isSelf}>
-              <Button variant="danger" onClick={props.onDeleteClick}>
+              <Button color="danger" onClick={props.onDeleteClick}>
                 Delete
               </Button>
             </Show>
@@ -154,10 +155,11 @@ export default function UserRow(props: UserRowProps) {
         </td>
       </tr>
       <Show when={props.isFieldEditing("image")}>
-        <EditFormRow
+        <ImageFormRow
           editValue={props.editValue}
           onSetEditValue={props.onSetEditValue}
           onSaveField={props.onSaveField}
+          onCancel={() => props.onSetEditingField(null)}
           onFieldKeyDown={props.onFieldKeyDown}
         />
       </Show>

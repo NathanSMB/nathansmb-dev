@@ -1,23 +1,23 @@
-/* Inline ban form row */
-.ban-form-row td {
+/* Inline image form row */
+.image-form-row td {
   padding: 0.5em 0.8em;
   border-bottom: 1px solid var(--color-text-faint);
 }
 
-.ban-form {
+.image-form {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.ban-form .form {
+.image-form .form {
   flex: 1;
 }
 
-.ban-form .form-label {
+.image-form .form-label {
   white-space: nowrap;
 }
 
-.ban-form .input {
+.image-form .input {
   flex: 1;
 }

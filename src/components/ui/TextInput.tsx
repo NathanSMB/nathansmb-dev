@@ -11,6 +11,7 @@ interface TextInputProps {
   max?: number;
   required?: boolean;
   variant?: "toolbar" | "inline" | "form";
+  id?: string;
   ref?: (el: HTMLInputElement) => void;
   class?: string;
 }
@@ -32,6 +33,7 @@ export default function TextInput(props: TextInputProps) {
         min={props.min}
         max={props.max}
         required={props.required}
+        id={props.id}
         ref={props.ref}
       />
     </>
