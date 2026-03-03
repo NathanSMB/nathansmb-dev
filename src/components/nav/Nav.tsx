@@ -9,6 +9,7 @@ export default function Nav() {
     const session = authClient.useSession();
     const location = useLocation();
     const [menuOpen, setMenuOpen] = createSignal(false);
+    const [linksOpen, setLinksOpen] = createSignal(false);
     let navRef: HTMLElement | undefined;
 
     const isActive = (path: string) =>
@@ -17,15 +18,25 @@ export default function Nav() {
             : location.pathname.startsWith(path);
 
     const closeMenu = () => setMenuOpen(false);
+    const closeLinks = () => setLinksOpen(false);
+
+    const closeAll = () => {
+        closeMenu();
+        closeLinks();
+    };
 
     const handleClickOutside = (e: MouseEvent) => {
-        if (menuOpen() && navRef && !navRef.contains(e.target as Node)) {
-            closeMenu();
+        if (
+            (menuOpen() || linksOpen()) &&
+            navRef &&
+            !navRef.contains(e.target as Node)
+        ) {
+            closeAll();
         }
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Escape" && menuOpen()) closeMenu();
+        if (e.key === "Escape") closeAll();
     };
 
     onMount(() => {
@@ -41,11 +52,32 @@ export default function Nav() {
         <>
             <style>{css}</style>
             <nav class="nav" ref={navRef}>
-                <div class="nav-links">
-                    <a href="/" class={isActive("/") ? "active" : ""}>
+                <button
+                    class={`nav-hamburger${linksOpen() ? " open" : ""}`}
+                    aria-label="Menu"
+                    aria-expanded={linksOpen()}
+                    onClick={() => {
+                        setLinksOpen(!linksOpen());
+                        closeMenu();
+                    }}
+                >
+                    <span />
+                    <span />
+                    <span />
+                </button>
+                <div class={`nav-links${linksOpen() ? " nav-links-open" : ""}`}>
+                    <a
+                        href="/"
+                        class={isActive("/") ? "active" : ""}
+                        onClick={closeLinks}
+                    >
                         Home
                     </a>
-                    <a href="/about" class={isActive("/about") ? "active" : ""}>
+                    <a
+                        href="/about"
+                        class={isActive("/about") ? "active" : ""}
+                        onClick={closeLinks}
+                    >
                         About
                     </a>
                 </div>
@@ -70,7 +102,10 @@ export default function Nav() {
                                     <button
                                         class="session-trigger"
                                         aria-expanded={menuOpen()}
-                                        onClick={() => setMenuOpen(!menuOpen())}
+                                        onClick={() => {
+                                            setMenuOpen(!menuOpen());
+                                            closeLinks();
+                                        }}
                                     >
                                         <Avatar
                                             image={s().user.image}

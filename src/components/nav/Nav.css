@@ -25,16 +25,78 @@
     z-index: calc(var(--z-modal) - 1);
 }
 
+/* ── Hamburger button (top nav only) ── */
+.nav-hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: var(--radius-control);
+    transition: background var(--duration-fast);
+}
+
+.nav-hamburger:hover {
+    background: oklch(from var(--color-primary) l c h / 0.07);
+}
+
+.nav-hamburger span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--color-text-muted);
+    border-radius: 1px;
+    transition:
+        transform var(--duration-normal) ease,
+        opacity var(--duration-normal) ease;
+}
+
+.nav-hamburger.open span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+}
+
+.nav-hamburger.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-hamburger.open span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+}
+
 /* ── Links row ── */
 .nav-links {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: calc(100% + 0.35rem);
+    min-width: 10rem;
+    box-sizing: border-box;
+    background: var(--color-surface);
+    border: var(--border-thin) solid
+        oklch(from var(--color-primary) l c h / 0.1);
+    border-radius: var(--radius-lg);
+    box-shadow:
+        0 6px 20px oklch(0% 0 none / 0.12),
+        0 1.5px 6px oklch(0% 0 none / 0.06);
+    padding: 0.3rem;
+    z-index: var(--z-modal);
+}
+
+.nav-links.nav-links-open {
     display: flex;
-    align-items: center;
-    gap: 0.15rem;
+    flex-direction: column;
+    animation: menu-enter-down var(--duration-normal) ease-out both;
 }
 
 .nav-links a {
-    padding: 0.35em 0.65em;
-    border-radius: var(--radius-control);
+    padding: 0.7em 1em;
+    border-radius: var(--radius-md);
     color: var(--color-text-muted);
     text-decoration: none;
     font-size: var(--text-base);
@@ -223,9 +285,21 @@
         flex-shrink: 0;
     }
 
+    .nav-hamburger {
+        display: none;
+    }
+
     .nav-links {
+        display: flex;
         flex-direction: column;
         gap: 0.1rem;
+        position: static;
+        background: none;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 0;
+        animation: none;
     }
 
     .nav-links a {
