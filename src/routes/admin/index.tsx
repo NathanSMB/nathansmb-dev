@@ -526,20 +526,18 @@ export default function Admin() {
         />
       </Show>
 
-      <Show when={total() > pageSize()}>
-        <Pagination
-          page={page()}
-          totalPages={totalPages()}
-          hasPrevious={page() > 0}
-          hasNext={(page() + 1) * pageSize() < total()}
-          pageSize={pageSize()}
-          onFirst={() => setPage(0)}
-          onPrevious={() => setPage((p) => p - 1)}
-          onNext={() => setPage((p) => p + 1)}
-          onLast={() => setPage(totalPages() - 1)}
-          onPageSizeChange={(size) => { setPageSize(size); setPage(0); }}
-        />
-      </Show>
+      <Pagination
+        page={page()}
+        totalPages={totalPages()}
+        hasPrevious={page() > 0}
+        hasNext={(page() + 1) * pageSize() < total()}
+        pageSize={pageSize()}
+        onFirst={() => setPage(0)}
+        onPrevious={() => setPage((p) => p - 1)}
+        onNext={() => setPage((p) => p + 1)}
+        onLast={() => setPage(totalPages() - 1)}
+        onPageSizeChange={(size) => { setPageSize(size); setPage(0); }}
+      />
 
       <Show when={selectedIds().size > 0}>
         <BatchBar
