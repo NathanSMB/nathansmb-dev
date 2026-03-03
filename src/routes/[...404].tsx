@@ -8,11 +8,7 @@ export default function NotFound() {
             <HttpStatusCode code={404} />
             <h1>Page Not Found</h1>
             <p>
-                Visit{" "}
-                <a href="https://start.solidjs.com" target="_blank">
-                    start.solidjs.com
-                </a>{" "}
-                to learn how to build SolidStart apps.
+                If you had spun out in your oldsmobile this probably wouldn't have happened.
             </p>
         </main>
     );
