@@ -8,6 +8,7 @@ import Button from "~/components/ui/Button";
 import Form from "~/components/ui/Form";
 import FormLabel from "~/components/ui/FormLabel";
 import ProgressBar from "~/components/ui/ProgressBar";
+import Spinner from "~/components/ui/Spinner";
 import TextInput from "~/components/ui/TextInput";
 import "./test-users.css";
 
@@ -98,7 +99,7 @@ export default function TestUserGenerator() {
     }
 
     return (
-        <Show when={authorized()}>
+        <Show when={authorized()} fallback={<Spinner />}>
             <main class="test-users-page">
                 <Title>Generate Test Users</Title>
                 <h1>Generate Test Users</h1>

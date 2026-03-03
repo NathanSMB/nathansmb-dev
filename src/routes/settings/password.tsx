@@ -7,6 +7,7 @@ import Form from "~/components/ui/Form";
 import FormLabel from "~/components/ui/FormLabel";
 import TextInput from "~/components/ui/TextInput";
 import Button from "~/components/ui/Button";
+import Spinner from "~/components/ui/Spinner";
 import "~/styles/page-narrow.css";
 
 export default function PasswordSettings() {
@@ -49,7 +50,7 @@ export default function PasswordSettings() {
     }
 
     return (
-        <Show when={authorized()}>
+        <Show when={authorized()} fallback={<Spinner />}>
             <main class="page-narrow">
                 <Title>Change password</Title>
                 <h1>Change password</h1>

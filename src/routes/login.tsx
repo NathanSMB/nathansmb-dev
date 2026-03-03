@@ -7,6 +7,7 @@ import Form from "~/components/ui/Form";
 import FormLabel from "~/components/ui/FormLabel";
 import TextInput from "~/components/ui/TextInput";
 import Button from "~/components/ui/Button";
+import Spinner from "~/components/ui/Spinner";
 import "~/styles/page-narrow.css";
 
 export default function Login() {
@@ -51,7 +52,10 @@ export default function Login() {
     }
 
     return (
-        <Show when={!session().isPending && !session().data}>
+        <Show
+            when={!session().isPending && !session().data}
+            fallback={<Spinner />}
+        >
             <main class="page-narrow">
                 <Title>Log in</Title>
                 <h1>Log in</h1>

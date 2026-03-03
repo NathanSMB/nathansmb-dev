@@ -10,6 +10,7 @@ import Select from "~/components/ui/Select";
 import TextInput from "~/components/ui/TextInput";
 import { UserTable, BatchBar, Pagination } from "~/components/admin/table";
 import Banner from "~/components/ui/Banner";
+import Spinner from "~/components/ui/Spinner";
 import { consumeBatchStream } from "~/utils/batch-stream";
 import "./admin.css";
 
@@ -549,7 +550,7 @@ export default function Admin() {
     }
 
     return (
-        <Show when={authorized()}>
+        <Show when={authorized()} fallback={<Spinner />}>
             <main class="admin-page">
                 <Title>User management</Title>
                 <h1>User management</h1>

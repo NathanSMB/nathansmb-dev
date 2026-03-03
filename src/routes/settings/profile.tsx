@@ -9,6 +9,7 @@ import Form from "~/components/ui/Form";
 import FormLabel from "~/components/ui/FormLabel";
 import TextInput from "~/components/ui/TextInput";
 import Button from "~/components/ui/Button";
+import Spinner from "~/components/ui/Spinner";
 import "~/styles/page-narrow.css";
 import "./profile.css";
 
@@ -97,7 +98,7 @@ export default function ProfileSettings() {
     }
 
     return (
-        <Show when={authorized()}>
+        <Show when={authorized()} fallback={<Spinner />}>
             <main class="page-narrow">
                 <Title>Profile settings</Title>
                 <h1>Profile settings</h1>
