@@ -16,10 +16,10 @@ The app uses the **better-auth admin plugin** for role-based access control.
 
 Out of the box (no custom access control defined yet), better-auth provides two roles:
 
-| Role    | Description                        |
-| ------- | ---------------------------------- |
+| Role    | Description                         |
+| ------- | ----------------------------------- |
 | `user`  | Default role, no admin capabilities |
-| `admin` | Full control over user management  |
+| `admin` | Full control over user management   |
 
 Default permission **resources** and **actions**:
 
@@ -35,10 +35,10 @@ Default permission **resources** and **actions**:
 import { requireAuth } from "~/utils/require-auth";
 
 export default function AdminPage() {
-  const session = requireAuth({
-    permissions: { user: ["list", "ban"] },
-  });
-  // ...
+    const session = requireAuth({
+        permissions: { user: ["list", "ban"] },
+    });
+    // ...
 }
 ```
 
@@ -49,16 +49,16 @@ import { authClient } from "~/utils/auth-client";
 
 // Async check - hits the server
 const result = await authClient.admin.hasPermission({
-  permissions: { user: ["delete"] },
+    permissions: { user: ["delete"] },
 });
 if (result.data?.success) {
-  /* allowed */
+    /* allowed */
 }
 
 // Sync check - checks role definition locally (no network call)
 const allowed = authClient.admin.checkRolePermission({
-  permissions: { user: ["delete"] },
-  role: "admin",
+    permissions: { user: ["delete"] },
+    role: "admin",
 });
 ```
 
@@ -68,10 +68,10 @@ const allowed = authClient.admin.checkRolePermission({
 import { auth } from "~/utils/auth";
 
 await auth.api.userHasPermission({
-  body: {
-    userId: "some-user-id",
-    permissions: { user: ["ban"] },
-  },
+    body: {
+        userId: "some-user-id",
+        permissions: { user: ["ban"] },
+    },
 });
 ```
 
@@ -83,8 +83,8 @@ Roles are assigned via the admin API. The caller must have admin privileges.
 
 ```ts
 await authClient.admin.setRole({
-  userId: "target-user-id",
-  role: "admin", // or "user", or a custom role name
+    userId: "target-user-id",
+    role: "admin", // or "user", or a custom role name
 });
 ```
 
@@ -96,8 +96,8 @@ Set the user back to the default:
 
 ```ts
 await authClient.admin.setRole({
-  userId: "target-user-id",
-  role: "user",
+    userId: "target-user-id",
+    role: "user",
 });
 ```
 
@@ -107,12 +107,12 @@ To create the first admin without an existing admin, use the `adminUserIds` conf
 
 ```ts
 export const auth = betterAuth({
-  plugins: [
-    admin({
-      adminUserIds: ["your-user-id-here"],
-    }),
-  ],
-  // ...
+    plugins: [
+        admin({
+            adminUserIds: ["your-user-id-here"],
+        }),
+    ],
+    // ...
 });
 ```
 
@@ -126,30 +126,27 @@ Create `src/utils/permissions.ts`:
 
 ```ts
 import { createAccessControl } from "better-auth/plugins/access";
-import {
-  defaultStatements,
-  adminAc,
-} from "better-auth/plugins/admin/access";
+import { defaultStatements, adminAc } from "better-auth/plugins/admin/access";
 
 // Define your custom resources and actions
 const statement = {
-  ...defaultStatements,
-  project: ["create", "update", "delete", "share"],
-  post: ["create", "edit", "publish", "delete"],
+    ...defaultStatements,
+    project: ["create", "update", "delete", "share"],
+    post: ["create", "edit", "publish", "delete"],
 } as const;
 
 export const ac = createAccessControl(statement);
 
 // Define roles with specific permissions
 export const user = ac.newRole({
-  project: ["create"],
-  post: ["create", "edit"],
+    project: ["create"],
+    post: ["create", "edit"],
 });
 
 export const admin = ac.newRole({
-  project: ["create", "update", "delete", "share"],
-  post: ["create", "edit", "publish", "delete"],
-  ...adminAc.statements, // include default admin permissions
+    project: ["create", "update", "delete", "share"],
+    post: ["create", "edit", "publish", "delete"],
+    ...adminAc.statements, // include default admin permissions
 });
 ```
 
@@ -162,13 +159,13 @@ import { admin as adminPlugin } from "better-auth/plugins";
 import { ac, admin, user } from "~/utils/permissions";
 
 export const auth = betterAuth({
-  plugins: [
-    adminPlugin({
-      ac,
-      roles: { admin, user },
-    }),
-  ],
-  // ...
+    plugins: [
+        adminPlugin({
+            ac,
+            roles: { admin, user },
+        }),
+    ],
+    // ...
 });
 ```
 
@@ -181,12 +178,12 @@ import { adminClient } from "better-auth/client/plugins";
 import { ac, admin, user } from "~/utils/permissions";
 
 export const authClient = createAuthClient({
-  plugins: [
-    adminClient({
-      ac,
-      roles: { admin, user },
-    }),
-  ],
+    plugins: [
+        adminClient({
+            ac,
+            roles: { admin, user },
+        }),
+    ],
 });
 ```
 
@@ -194,16 +191,16 @@ export const authClient = createAuthClient({
 
 ```ts
 const session = requireAuth({
-  permissions: { project: ["create"] },
+    permissions: { project: ["create"] },
 });
 ```
 
 ## Key Files
 
-| File                            | Purpose                                          |
-| ------------------------------- | ------------------------------------------------ |
-| `src/utils/auth.ts`            | Server-side auth config with admin plugin        |
-| `src/utils/auth-client.ts`     | Client-side auth with adminClient plugin         |
-| `src/utils/require-auth.ts`    | Route guard that checks auth + permissions       |
+| File                           | Purpose                                              |
+| ------------------------------ | ---------------------------------------------------- |
+| `src/utils/auth.ts`            | Server-side auth config with admin plugin            |
+| `src/utils/auth-client.ts`     | Client-side auth with adminClient plugin             |
+| `src/utils/require-auth.ts`    | Route guard that checks auth + permissions           |
 | `src/database/schemas/auth.ts` | User/session/account schema (includes `role` column) |
-| `src/routes/forbidden.tsx`     | 403 page shown when permissions fail             |
+| `src/routes/forbidden.tsx`     | 403 page shown when permissions fail                 |

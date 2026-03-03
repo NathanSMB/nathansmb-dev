@@ -4,12 +4,7 @@ import prettier from "eslint-config-prettier";
 
 export default tseslint.config(
     {
-        ignores: [
-            "node_modules/",
-            ".vinxi/",
-            ".output/",
-            "dist/",
-        ],
+        ignores: ["node_modules/", ".vinxi/", ".output/", "dist/"],
     },
     ...tseslint.configs.recommended,
     solid,

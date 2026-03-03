@@ -1,40 +1,40 @@
 {
-  "name": "example-basic",
-  "type": "module",
-  "scripts": {
-    "predev": "bun run prebuild",
-    "dev": "vinxi dev",
-    "prebuild": "bun run generate-auth-schema -y",
-    "build": "vinxi build",
-    "start": "vinxi start",
-    "version": "vinxi version",
-    "generate-auth-schema": "better-auth generate --config ./src/auth/core.ts --output ./src/database/schemas/auth.ts",
-    "push-schemas": "bunx drizzle-kit push",
-    "lint": "eslint src/",
-    "format": "prettier --write src/"
-  },
-  "dependencies": {
-    "@neondatabase/serverless": "^1.0.2",
-    "@solidjs/meta": "^0.29.4",
-    "@solidjs/router": "^0.15.0",
-    "@solidjs/start": "^1.1.0",
-    "better-auth": "^1.4.20",
-    "dotenv": "^17.3.1",
-    "drizzle-orm": "^0.45.1",
-    "solid-js": "^1.9.5",
-    "vinxi": "^0.5.7"
-  },
-  "engines": {
-    "node": ">=22"
-  },
-  "devDependencies": {
-    "@better-auth/cli": "^1.4.20",
-    "drizzle-kit": "^0.31.9",
-    "eslint": "^10.0.2",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-solid": "^0.14.5",
-    "prettier": "^3.8.1",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.1"
-  }
+    "name": "example-basic",
+    "type": "module",
+    "scripts": {
+        "predev": "bun run prebuild",
+        "dev": "vinxi dev",
+        "prebuild": "bun run generate-auth-schema -y",
+        "build": "vinxi build",
+        "start": "vinxi start",
+        "version": "vinxi version",
+        "generate-auth-schema": "better-auth generate --config ./src/auth/core.ts --output ./src/database/schemas/auth.ts",
+        "push-schemas": "bunx drizzle-kit push",
+        "lint": "eslint src/",
+        "format": "prettier --write src/"
+    },
+    "dependencies": {
+        "@neondatabase/serverless": "^1.0.2",
+        "@solidjs/meta": "^0.29.4",
+        "@solidjs/router": "^0.15.0",
+        "@solidjs/start": "^1.1.0",
+        "better-auth": "^1.4.20",
+        "dotenv": "^17.3.1",
+        "drizzle-orm": "^0.45.1",
+        "solid-js": "^1.9.5",
+        "vinxi": "^0.5.7"
+    },
+    "engines": {
+        "node": ">=22"
+    },
+    "devDependencies": {
+        "@better-auth/cli": "^1.4.20",
+        "drizzle-kit": "^0.31.9",
+        "eslint": "^10.0.2",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-solid": "^0.14.5",
+        "prettier": "^3.8.1",
+        "typescript": "^5.9.3",
+        "typescript-eslint": "^8.56.1"
+    }
 }

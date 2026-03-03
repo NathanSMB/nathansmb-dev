@@ -46,7 +46,7 @@ import "~/styles/page-narrow.css";
 import "./profile.css";
 
 export default function ProfilePage() {
-  return <main class="page-narrow">...</main>;
+    return <main class="page-narrow">...</main>;
 }
 ```
 
@@ -61,17 +61,18 @@ import { Show } from "solid-js";
 import css from "./Example.css?inline";
 
 interface ExampleProps {
-  option?: "first-option" | "second-option";
+    option?: "first-option" | "second-option";
 }
 
 export default function Example(props: ExampleProps) {
-  const cls = () => `some-cls ${props.size === "firstoption" ? "some-other-cls" : "and-another-cls"}`;
+    const cls = () =>
+        `some-cls ${props.size === "firstoption" ? "some-other-cls" : "and-another-cls"}`;
 
-  return (
-    <>
-      <style>{css}</style>
-      <span class={cls()}>Example</span>
-    </>
-  );
+    return (
+        <>
+            <style>{css}</style>
+            <span class={cls()}>Example</span>
+        </>
+    );
 }
 ```
