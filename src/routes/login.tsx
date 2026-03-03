@@ -1,4 +1,4 @@
-import { createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { useNavigate, useSearchParams } from "@solidjs/router";
 import { authClient } from "~/auth/auth-client";
@@ -51,38 +51,40 @@ export default function Login() {
     }
 
     return (
-        <main class="page-narrow">
-            <Title>Log in</Title>
-            <h1>Log in</h1>
-            <Banner variant="error" message={error()} />
-            <Form onSubmit={handleSubmit}>
-                <FormLabel>
-                    Email
-                    <TextInput
-                        type="email"
-                        variant="form"
-                        value={email()}
-                        onInput={setEmail}
-                        required
-                    />
-                </FormLabel>
-                <FormLabel>
-                    Password
-                    <TextInput
-                        type="password"
-                        variant="form"
-                        value={password()}
-                        onInput={setPassword}
-                        required
-                    />
-                </FormLabel>
-                <Button variant="form" type="submit" disabled={loading()}>
-                    {loading() ? "Logging in..." : "Log in"}
-                </Button>
-            </Form>
-            <p>
-                Don't have an account? <a href="/register">Create one</a>
-            </p>
-        </main>
+        <Show when={!session().isPending && !session().data}>
+            <main class="page-narrow">
+                <Title>Log in</Title>
+                <h1>Log in</h1>
+                <Banner variant="error" message={error()} />
+                <Form onSubmit={handleSubmit}>
+                    <FormLabel>
+                        Email
+                        <TextInput
+                            type="email"
+                            variant="form"
+                            value={email()}
+                            onInput={setEmail}
+                            required
+                        />
+                    </FormLabel>
+                    <FormLabel>
+                        Password
+                        <TextInput
+                            type="password"
+                            variant="form"
+                            value={password()}
+                            onInput={setPassword}
+                            required
+                        />
+                    </FormLabel>
+                    <Button variant="form" type="submit" disabled={loading()}>
+                        {loading() ? "Logging in..." : "Log in"}
+                    </Button>
+                </Form>
+                <p>
+                    Don't have an account? <a href="/register">Create one</a>
+                </p>
+            </main>
+        </Show>
     );
 }

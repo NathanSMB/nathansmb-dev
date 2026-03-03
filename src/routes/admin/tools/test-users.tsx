@@ -12,7 +12,7 @@ import TextInput from "~/components/ui/TextInput";
 import "./test-users.css";
 
 export default function TestUserGenerator() {
-    requireAuth({
+    const { authorized } = requireAuth({
         permissions: { user: ["list"] },
     });
 
@@ -98,53 +98,55 @@ export default function TestUserGenerator() {
     }
 
     return (
-        <main class="test-users-page">
-            <Title>Generate Test Users</Title>
-            <h1>Generate Test Users</h1>
-            <p class="back-link">
-                <a href="/admin">&larr; Back to admin</a>
-            </p>
+        <Show when={authorized()}>
+            <main class="test-users-page">
+                <Title>Generate Test Users</Title>
+                <h1>Generate Test Users</h1>
+                <p class="back-link">
+                    <a href="/admin">&larr; Back to admin</a>
+                </p>
 
-            <Banner variant="error" message={error()} />
+                <Banner variant="error" message={error()} />
 
-            <Banner
-                variant="info"
-                message={
-                    nextNumber() !== null
-                        ? `Next test user: TestUser${nextNumber()} (testuser${nextNumber()}@example.com)`
-                        : undefined
-                }
-            />
+                <Banner
+                    variant="info"
+                    message={
+                        nextNumber() !== null
+                            ? `Next test user: TestUser${nextNumber()} (testuser${nextNumber()}@example.com)`
+                            : undefined
+                    }
+                />
 
-            <Form onSubmit={handleSubmit}>
-                <FormLabel>
-                    Number of users to create
-                    <TextInput
-                        type="number"
-                        min={1}
-                        max={100}
-                        value={String(count())}
-                        onInput={(v) => setCount(parseInt(v) || 1)}
-                        required
-                    />
-                </FormLabel>
-
-                <Show when={progress()}>
-                    {(p) => (
-                        <ProgressBar
-                            current={p().current}
-                            total={p().total}
-                            label="created"
+                <Form onSubmit={handleSubmit}>
+                    <FormLabel>
+                        Number of users to create
+                        <TextInput
+                            type="number"
+                            min={1}
+                            max={100}
+                            value={String(count())}
+                            onInput={(v) => setCount(parseInt(v) || 1)}
+                            required
                         />
-                    )}
-                </Show>
+                    </FormLabel>
 
-                <Button type="submit" disabled={loading()}>
-                    {loading()
-                        ? `Creating... (${progress()?.current ?? 0}/${progress()?.total ?? count()})`
-                        : `Create ${count()} test user(s)`}
-                </Button>
-            </Form>
-        </main>
+                    <Show when={progress()}>
+                        {(p) => (
+                            <ProgressBar
+                                current={p().current}
+                                total={p().total}
+                                label="created"
+                            />
+                        )}
+                    </Show>
+
+                    <Button type="submit" disabled={loading()}>
+                        {loading()
+                            ? `Creating... (${progress()?.current ?? 0}/${progress()?.total ?? count()})`
+                            : `Create ${count()} test user(s)`}
+                    </Button>
+                </Form>
+            </main>
+        </Show>
     );
 }

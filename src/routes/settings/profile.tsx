@@ -13,7 +13,7 @@ import "~/styles/page-narrow.css";
 import "./profile.css";
 
 export default function ProfileSettings() {
-    const session = requireAuth();
+    const { session, authorized } = requireAuth();
 
     const [name, setName] = createSignal("");
     const [email, setEmail] = createSignal("");
@@ -97,68 +97,78 @@ export default function ProfileSettings() {
     }
 
     return (
-        <main class="page-narrow">
-            <Title>Profile settings</Title>
-            <h1>Profile settings</h1>
-            <Banner variant="error" message={error()} />
-            <Banner variant="success" message={success()} />
-            <Show when={session().data}>
-                <Form onSubmit={handleSubmit}>
-                    <FormLabel>
-                        Name
-                        <TextInput
-                            variant="form"
-                            value={name()}
-                            onInput={setName}
-                            required
-                        />
-                    </FormLabel>
-                    <FormLabel>
-                        Email
-                        <TextInput
-                            type="email"
-                            variant="form"
-                            value={email()}
-                            onInput={setEmail}
-                            required
-                        />
-                    </FormLabel>
-                    <FormLabel>
-                        Profile image URL
-                        <div class="image-field">
-                            <Avatar image={image()} name={name()} size="lg" />
+        <Show when={authorized()}>
+            <main class="page-narrow">
+                <Title>Profile settings</Title>
+                <h1>Profile settings</h1>
+                <Banner variant="error" message={error()} />
+                <Banner variant="success" message={success()} />
+                <Show when={session().data}>
+                    <Form onSubmit={handleSubmit}>
+                        <FormLabel>
+                            Name
                             <TextInput
-                                type="url"
                                 variant="form"
-                                value={image()}
-                                onInput={setImage}
-                                placeholder="https://example.com/photo.jpg"
+                                value={name()}
+                                onInput={setName}
+                                required
                             />
-                        </div>
-                    </FormLabel>
-                    <Button variant="form" type="submit" disabled={loading()}>
-                        {loading() ? "Saving..." : "Save changes"}
-                    </Button>
-                </Form>
-                <Show when={hasAdmins() === false}>
-                    <div>
-                        <p>
-                            No administrators exist yet. You can claim the admin
-                            role.
-                        </p>
+                        </FormLabel>
+                        <FormLabel>
+                            Email
+                            <TextInput
+                                type="email"
+                                variant="form"
+                                value={email()}
+                                onInput={setEmail}
+                                required
+                            />
+                        </FormLabel>
+                        <FormLabel>
+                            Profile image URL
+                            <div class="image-field">
+                                <Avatar
+                                    image={image()}
+                                    name={name()}
+                                    size="lg"
+                                />
+                                <TextInput
+                                    type="url"
+                                    variant="form"
+                                    value={image()}
+                                    onInput={setImage}
+                                    placeholder="https://example.com/photo.jpg"
+                                />
+                            </div>
+                        </FormLabel>
                         <Button
-                            type="button"
-                            onClick={handleBecomeAdmin}
+                            variant="form"
+                            type="submit"
                             disabled={loading()}
                         >
-                            {loading() ? "Promoting..." : "Become Admin"}
+                            {loading() ? "Saving..." : "Save changes"}
                         </Button>
-                    </div>
+                    </Form>
+                    <Show when={hasAdmins() === false}>
+                        <div>
+                            <p>
+                                No administrators exist yet. You can claim the
+                                admin role.
+                            </p>
+                            <Button
+                                type="button"
+                                onClick={handleBecomeAdmin}
+                                disabled={loading()}
+                            >
+                                {loading() ? "Promoting..." : "Become Admin"}
+                            </Button>
+                        </div>
+                    </Show>
+                    <p>
+                        <a href="/settings/password">Change password</a>
+                    </p>
                 </Show>
-                <p>
-                    <a href="/settings/password">Change password</a>
-                </p>
-            </Show>
-        </main>
+            </main>
+        </Show>
     );
 }

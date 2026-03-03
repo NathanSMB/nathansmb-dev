@@ -1,4 +1,4 @@
-import { createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { useNavigate } from "@solidjs/router";
 import { authClient } from "~/auth/auth-client";
@@ -46,47 +46,49 @@ export default function Register() {
     }
 
     return (
-        <main class="page-narrow">
-            <Title>Create account</Title>
-            <h1>Create account</h1>
-            <Banner variant="error" message={error()} />
-            <Form onSubmit={handleSubmit}>
-                <FormLabel>
-                    Name
-                    <TextInput
-                        variant="form"
-                        value={name()}
-                        onInput={setName}
-                        required
-                    />
-                </FormLabel>
-                <FormLabel>
-                    Email
-                    <TextInput
-                        type="email"
-                        variant="form"
-                        value={email()}
-                        onInput={setEmail}
-                        required
-                    />
-                </FormLabel>
-                <FormLabel>
-                    Password
-                    <TextInput
-                        type="password"
-                        variant="form"
-                        value={password()}
-                        onInput={setPassword}
-                        required
-                    />
-                </FormLabel>
-                <Button variant="form" type="submit" disabled={loading()}>
-                    {loading() ? "Creating account..." : "Create account"}
-                </Button>
-            </Form>
-            <p>
-                Already have an account? <a href="/login">Log in</a>
-            </p>
-        </main>
+        <Show when={!session().isPending && !session().data}>
+            <main class="page-narrow">
+                <Title>Create account</Title>
+                <h1>Create account</h1>
+                <Banner variant="error" message={error()} />
+                <Form onSubmit={handleSubmit}>
+                    <FormLabel>
+                        Name
+                        <TextInput
+                            variant="form"
+                            value={name()}
+                            onInput={setName}
+                            required
+                        />
+                    </FormLabel>
+                    <FormLabel>
+                        Email
+                        <TextInput
+                            type="email"
+                            variant="form"
+                            value={email()}
+                            onInput={setEmail}
+                            required
+                        />
+                    </FormLabel>
+                    <FormLabel>
+                        Password
+                        <TextInput
+                            type="password"
+                            variant="form"
+                            value={password()}
+                            onInput={setPassword}
+                            required
+                        />
+                    </FormLabel>
+                    <Button variant="form" type="submit" disabled={loading()}>
+                        {loading() ? "Creating account..." : "Create account"}
+                    </Button>
+                </Form>
+                <p>
+                    Already have an account? <a href="/login">Log in</a>
+                </p>
+            </main>
+        </Show>
     );
 }
