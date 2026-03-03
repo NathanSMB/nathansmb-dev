@@ -35,6 +35,7 @@ export function requireAuth(options?: { permissions?: Permissions }) {
             }
         }
 
+        await new Promise<void>((r) => requestAnimationFrame(() => r()));
         setAuthorized(true);
     });
 

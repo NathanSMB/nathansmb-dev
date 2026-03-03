@@ -4,6 +4,7 @@ import { FileRoutes } from "@solidjs/start/router";
 import { Show, Suspense } from "solid-js";
 import { authClient } from "~/auth/auth-client";
 import Avatar from "~/components/ui/Avatar";
+import Spinner from "~/components/ui/Spinner";
 import "./app.css";
 import Button from "./components/ui/Button";
 
@@ -65,7 +66,9 @@ export default function App() {
                                 </Show>
                             </div>
                         </header>
-                        <Suspense>{props.children}</Suspense>
+                        <Suspense fallback={<Spinner />}>
+                            {props.children}
+                        </Suspense>
                     </MetaProvider>
                 );
             }}
