@@ -1,8 +1,8 @@
 .banner {
-    font-size: 0.9rem;
-    padding: 0.5em 0.8em;
-    border-radius: 0.3em;
-    margin-bottom: 1rem;
+    font-size: var(--text-base);
+    padding: var(--pad-control);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-lg);
 }
 
 .banner-error {

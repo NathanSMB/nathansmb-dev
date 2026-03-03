@@ -1,13 +1,13 @@
 /* Inline ban form row */
 .ban-form-row td {
-    padding: 0.5em 0.8em;
-    border-bottom: 1px solid var(--color-text-faint);
+    padding: var(--pad-control);
+    border-bottom: var(--border-thin) solid var(--color-text-faint);
 }
 
 .ban-form {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--gap-inline);
 }
 
 .ban-form .form {

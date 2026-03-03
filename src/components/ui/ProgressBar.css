@@ -1,26 +1,26 @@
 .progress-bar {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: var(--gap-tight);
 }
 
 .progress-bar-label {
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     font-weight: 500;
 }
 
 .progress-bar-track {
     height: 0.5rem;
-    border-radius: 0.25rem;
+    border-radius: var(--radius-track);
     background: oklch(from var(--progress-color) l c h / 0.15);
     overflow: hidden;
 }
 
 .progress-bar-fill {
     height: 100%;
-    border-radius: 0.25rem;
+    border-radius: var(--radius-track);
     background: var(--progress-color);
-    transition: width 0.2s ease;
+    transition: width var(--duration-normal) ease;
 }
 
 .progress-bar-primary {

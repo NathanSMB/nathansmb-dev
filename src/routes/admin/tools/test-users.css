@@ -1,23 +1,23 @@
 .test-users-page {
-    max-width: 32rem;
+    max-width: var(--width-medium);
     margin: 0 auto;
-    padding: 1.5rem 2rem;
+    padding: var(--pad-page);
     text-align: left;
 }
 
 .test-users-page h1 {
-    font-size: 1.8rem;
-    margin: 1rem 0 1.5rem;
+    font-size: var(--text-xl);
+    margin: var(--space-lg) 0 var(--space-xl);
 }
 
 .test-users-page .back-link {
-    margin: 0 0 1rem;
+    margin: 0 0 var(--space-lg);
 }
 
 .test-users-page .back-link a {
     color: var(--color-primary);
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: var(--text-base);
 }
 
 .test-users-page .back-link a:hover {

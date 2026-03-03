@@ -1,12 +1,12 @@
 /* Click-to-edit text */
 .click-to-edit {
     cursor: pointer;
-    padding: 0.2em 0.4em;
-    border-radius: 0.3em;
-    border: 1.5px solid transparent;
+    padding: var(--pad-inline-edit);
+    border-radius: var(--radius-sm);
+    border: var(--border-control) solid transparent;
     transition:
-        border-color 0.15s,
-        background 0.15s;
+        border-color var(--duration-fast),
+        background var(--duration-fast);
 }
 
 .click-to-edit:hover {
@@ -26,7 +26,7 @@
 
 .avatar-cell:hover .avatar,
 .avatar-cell:hover .avatar-placeholder {
-    opacity: 0.35;
+    opacity: var(--opacity-avatar-hover);
 }
 
 .avatar-overlay {
@@ -35,10 +35,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     color: var(--color-primary);
     opacity: 0;
-    transition: opacity 0.15s;
+    transition: opacity var(--duration-fast);
     pointer-events: none;
 }
 
@@ -49,5 +49,5 @@
 /* Action buttons layout */
 .admin-actions {
     display: flex;
-    gap: 0.4rem;
+    gap: var(--gap-tight);
 }

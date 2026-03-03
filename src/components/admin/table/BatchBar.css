@@ -2,12 +2,12 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem;
-    margin-top: 0.75rem;
+    gap: var(--gap-inline);
+    padding: var(--pad-bar);
+    margin-top: var(--space-md);
     background: var(--color-neutral);
-    border-radius: 0.5em;
-    font-size: 0.9rem;
+    border-radius: var(--radius-control);
+    font-size: var(--text-base);
 }
 
 .batch-ban-reason {

@@ -1,8 +1,8 @@
 .form-label {
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: var(--gap-label);
     text-align: left;
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     color: var(--color-text-muted);
 }

@@ -1,21 +1,21 @@
 .admin-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.9rem;
+    font-size: var(--text-base);
 }
 
 .admin-table th {
     text-align: left;
-    padding: 0.7em 0.8em;
+    padding: var(--pad-cell);
     background: var(--color-primary-hover);
     color: var(--color-text-on-colored);
     font-weight: 600;
-    border-bottom: 2px solid var(--color-text-faint);
+    border-bottom: var(--border-medium) solid var(--color-text-faint);
 }
 
 .admin-table td {
-    padding: 0.7em 0.8em;
-    border-bottom: 1px solid var(--color-text-faint);
+    padding: var(--pad-cell);
+    border-bottom: var(--border-thin) solid var(--color-text-faint);
     vertical-align: middle;
 }
 
@@ -47,5 +47,5 @@
 .admin-empty {
     text-align: center;
     color: var(--color-text-faint);
-    padding: 2rem;
+    padding: var(--pad-page-narrow);
 }

@@ -1,21 +1,21 @@
 .shape-btn {
-    font-size: 0.9rem;
-    padding: 0.5em 0.8em;
-    border-radius: 0.5em;
+    font-size: var(--text-base);
+    padding: var(--pad-control);
+    border-radius: var(--radius-control);
 }
 
 .shape-pill {
     display: inline-block;
-    font-size: 0.8rem;
+    font-size: var(--text-xs);
     font-weight: 600;
-    padding: 0.2em 0.6em;
-    border-radius: 1em;
+    padding: var(--pad-pill);
+    border-radius: var(--radius-pill);
 }
 
 .shape-form {
-    font-size: 1rem;
-    padding: 0.7em;
+    font-size: var(--text-md);
+    padding: var(--pad-field);
     width: 100%;
-    border-radius: 0.5em;
-    margin-top: 0.5rem;
+    border-radius: var(--radius-control);
+    margin-top: var(--space-sm);
 }

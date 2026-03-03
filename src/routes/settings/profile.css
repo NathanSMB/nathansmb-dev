@@ -1,7 +1,7 @@
 .image-field {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--gap-group);
 }
 
 .image-field input {
