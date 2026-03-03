@@ -55,12 +55,11 @@ export async function createTestUsers(
   }
 
   const startNumber = (await getMaxTestUserNumber()) + 1;
-  let created = 0;
 
-  for (let i = 0; i < count; i++) {
-    const n = startNumber + i;
-    try {
-      await auth.api.createUser({
+  const results = await Promise.allSettled(
+    Array.from({ length: count }, (_, i) => {
+      const n = startNumber + i;
+      return auth.api.createUser({
         body: {
           name: `TestUser${n}`,
           email: `testuser${n}@example.com`,
@@ -68,9 +67,15 @@ export async function createTestUsers(
           role: "user",
         },
       });
+    }),
+  );
+
+  let created = 0;
+  for (const [i, result] of results.entries()) {
+    if (result.status === "fulfilled") {
       created++;
-    } catch (err) {
-      console.error(`Failed to create TestUser${n}:`, err);
+    } else {
+      console.error(`Failed to create TestUser${startNumber + i}:`, result.reason);
     }
   }
 

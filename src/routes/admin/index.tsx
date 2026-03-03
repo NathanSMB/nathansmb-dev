@@ -275,15 +275,18 @@ export default function Admin() {
     setSuccess("");
     const ids = [...selectedIds()];
     const reason = batchBanReason();
-    let failed = 0;
+    const results = await Promise.allSettled(
+      ids.map((userId) =>
+        authClient.admin.banUser({
+          userId,
+          banReason: reason || undefined,
+        }),
+      ),
+    );
 
-    for (const userId of ids) {
-      const result = await authClient.admin.banUser({
-        userId,
-        banReason: reason || undefined,
-      });
-      if (result.error) failed++;
-    }
+    const failed = results.filter(
+      (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.error),
+    ).length;
 
     if (failed > 0) {
       setError(`Failed to ban ${failed} user(s)`);
@@ -353,14 +356,14 @@ export default function Admin() {
         });
       }
     } else {
-      let failed = 0;
-      let succeeded = 0;
+      const results = await Promise.allSettled(
+        target.userIds.map((userId) => authClient.admin.removeUser({ userId })),
+      );
 
-      for (const userId of target.userIds) {
-        const result = await authClient.admin.removeUser({ userId });
-        if (result.error) failed++;
-        else succeeded++;
-      }
+      const failed = results.filter(
+        (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.error),
+      ).length;
+      const succeeded = results.length - failed;
 
       setDeleteLoading(false);
       setDeleteTarget(null);
