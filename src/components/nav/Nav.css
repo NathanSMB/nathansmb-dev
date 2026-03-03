@@ -1,0 +1,267 @@
+/* ── Reset global link margin inside nav ── */
+.nav a {
+    margin-right: 0;
+}
+
+.nav a:visited {
+    color: inherit;
+}
+
+/* ── Nav container · top bar (default) ── */
+.nav {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-group);
+    padding: var(--pad-bar) var(--pad-header);
+    background: oklch(from var(--color-surface) l c h / 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: none;
+    border-radius: var(--radius-lg);
+    position: sticky;
+    top: var(--pad-bar);
+    margin: var(--pad-bar);
+    margin-bottom: 0;
+    z-index: calc(var(--z-modal) - 1);
+}
+
+/* ── Links row ── */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+}
+
+.nav-links a {
+    padding: 0.35em 0.65em;
+    border-radius: var(--radius-control);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-size: var(--text-base);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition:
+        color var(--duration-fast),
+        background var(--duration-fast);
+}
+
+.nav-links a:hover {
+    color: var(--color-text);
+    background: oklch(from var(--color-primary) l c h / 0.07);
+}
+
+.nav-links a.active {
+    color: var(--color-primary-ink);
+    background: oklch(from var(--color-primary) l c h / 0.13);
+    font-weight: 600;
+}
+
+/* ── Session area ── */
+.nav-session {
+    margin-left: auto;
+    position: relative;
+}
+
+/* ── Session trigger button ── */
+.session-trigger {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-tight);
+    padding: 0.25em 0.55em;
+    border: var(--border-thin) solid transparent;
+    border-radius: var(--radius-control);
+    background: none;
+    color: var(--color-text);
+    cursor: pointer;
+    font: inherit;
+    font-size: var(--text-base);
+    transition:
+        background var(--duration-fast),
+        border-color var(--duration-fast);
+}
+
+.session-trigger:hover {
+    background: oklch(from var(--color-primary) l c h / 0.06);
+    border-color: oklch(from var(--color-primary) l c h / 0.1);
+}
+
+.session-trigger[aria-expanded="true"] {
+    background: oklch(from var(--color-primary) l c h / 0.09);
+    border-color: oklch(from var(--color-primary) l c h / 0.15);
+}
+
+.session-name {
+    font-weight: 500;
+    max-width: 10rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.session-chevron {
+    display: inline-flex;
+    font-size: 0.65em;
+    transition: transform var(--duration-normal) ease;
+    color: var(--color-text-subtle);
+}
+
+.session-trigger[aria-expanded="true"] .session-chevron {
+    transform: rotate(180deg);
+}
+
+/* ── Session menu (dropdown) ── */
+.session-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.35rem);
+    min-width: 100%;
+    box-sizing: border-box;
+    background: var(--color-surface);
+    border: var(--border-thin) solid
+        oklch(from var(--color-primary) l c h / 0.1);
+    border-radius: var(--radius-lg);
+    box-shadow:
+        0 6px 20px oklch(0% 0 none / 0.12),
+        0 1.5px 6px oklch(0% 0 none / 0.06);
+    padding: 0.3rem;
+    animation: menu-enter-down var(--duration-normal) ease-out both;
+    z-index: var(--z-modal);
+}
+
+.session-menu a,
+.session-menu button {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-inline);
+    width: 100%;
+    padding: 0.4em 0.6em;
+    border: none;
+    border-radius: var(--radius-md);
+    background: none;
+    color: var(--color-text);
+    text-decoration: none;
+    font: inherit;
+    font-size: var(--text-base);
+    cursor: pointer;
+    transition: background var(--duration-fast);
+}
+
+.session-menu a:hover,
+.session-menu button:hover {
+    background: oklch(from var(--color-primary) l c h / 0.08);
+}
+
+.session-menu-separator {
+    height: var(--border-thin);
+    background: oklch(from var(--color-text) l c h / 0.08);
+    margin: 0.25rem 0.5rem;
+}
+
+.session-menu .logout-btn {
+    color: var(--color-error-ink);
+}
+
+.session-menu .logout-btn:hover {
+    background: oklch(from var(--color-error) l c h / 0.15);
+}
+
+/* ── Login link (unauthenticated) ── */
+.nav-login {
+    font-size: var(--text-base);
+    font-weight: 500;
+    color: var(--color-link);
+    text-decoration: none;
+    padding: 0.35em 0.65em;
+    border-radius: var(--radius-control);
+    transition: background var(--duration-fast);
+}
+
+.nav-login:hover {
+    background: oklch(from var(--color-primary) l c h / 0.07);
+}
+
+/* ── Animations ── */
+@keyframes menu-enter-down {
+    from {
+        opacity: 0;
+        transform: translateY(-4px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes menu-enter-up {
+    from {
+        opacity: 0;
+        transform: translateY(4px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ── Sidebar mode (landscape / wide viewports) ── */
+@media (aspect-ratio > 1) {
+    .nav {
+        flex-direction: column;
+        align-items: stretch;
+        width: 15rem;
+        height: calc(100dvh - 2 * var(--pad-bar));
+        box-sizing: border-box;
+        padding: var(--pad-header);
+        border-bottom: none;
+        border-right: none;
+        border-radius: var(--radius-lg);
+        position: sticky;
+        top: var(--pad-bar);
+        margin: var(--pad-bar);
+        margin-right: 0;
+        overflow-y: auto;
+        flex-shrink: 0;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 0.1rem;
+    }
+
+    .nav-links a {
+        padding: 0.4em 0.65em;
+        border-left: var(--border-medium) solid transparent;
+        border-radius: 0 var(--radius-md) var(--radius-md) 0;
+        transition:
+            color var(--duration-fast),
+            background var(--duration-fast),
+            border-color var(--duration-fast);
+    }
+
+    .nav-links a.active {
+        border-left-color: var(--color-primary-ink);
+    }
+
+    .nav-session {
+        margin-left: 0;
+        margin-top: auto;
+    }
+
+    .session-trigger {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .session-menu {
+        right: 0;
+        left: 0;
+        top: auto;
+        bottom: calc(100% + 0.35rem);
+        animation-name: menu-enter-up;
+    }
+
+    .session-menu a,
+    .session-menu button {
+        justify-content: center;
+    }
+}

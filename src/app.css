@@ -147,6 +147,8 @@
 }
 
 body {
+    padding: 0;
+    margin: 0;
     font-family:
         Gordita, Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
         "Helvetica Neue", sans-serif;
@@ -167,24 +169,25 @@ main {
     margin: 0 auto;
 }
 
-/* Header layout */
-header {
+/* App layout */
+.app-layout {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--pad-header);
-    border-bottom: var(--border-thin) solid
-        oklch(from var(--color-primary) l c h / 0.15);
+    flex-direction: column;
+    min-height: 100dvh;
 }
 
-header nav a {
-    margin-right: var(--space-lg);
-}
+@media (aspect-ratio > 1) {
+    .app-layout {
+        flex-direction: row;
+        height: 100dvh;
+        overflow: hidden;
+    }
 
-header .auth-controls {
-    display: flex;
-    align-items: center;
-    gap: var(--gap-group);
+    .app-layout > main {
+        flex: 1;
+        overflow-y: auto;
+        min-height: 0;
+    }
 }
 
 @media (min-width: 480px) {
