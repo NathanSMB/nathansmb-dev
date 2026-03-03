@@ -2,7 +2,7 @@ import { createSignal, createEffect, on, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { authClient } from "~/auth/auth-client";
 import { requireAuth } from "~/auth/require-auth";
-import ConfirmModal from "~/components/ConfirmModal";
+import ConfirmModal from "~/components/admin/ConfirmModal";
 import type { AdminUser, EditingField, Role } from "~/components/admin/types";
 import Button from "~/components/ui/Button";
 import Form from "~/components/ui/Form";
