@@ -1,22 +1,16 @@
 import { createSignal, Show, onMount } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { useNavigate } from "@solidjs/router";
-import { requireAuth } from "~/auth/require-auth";
 import { getNextTestUserNumber } from "~/auth/test-users";
 import Banner from "~/components/ui/Banner";
 import Button from "~/components/ui/Button";
 import Form from "~/components/ui/Form";
 import FormLabel from "~/components/ui/FormLabel";
 import ProgressBar from "~/components/ui/ProgressBar";
-import Spinner from "~/components/ui/Spinner";
 import TextInput from "~/components/ui/TextInput";
 import "./test-users.css";
 
 export default function TestUserGenerator() {
-    const { authorized } = requireAuth({
-        permissions: { user: ["list"] },
-    });
-
     const navigate = useNavigate();
     const [count, setCount] = createSignal(10);
     const [loading, setLoading] = createSignal(false);
@@ -99,55 +93,53 @@ export default function TestUserGenerator() {
     }
 
     return (
-        <Show when={authorized()} fallback={<Spinner />}>
-            <main class="test-users-page">
-                <Title>Generate Test Users</Title>
-                <h1>Generate Test Users</h1>
-                <p class="back-link">
-                    <a href="/admin">&larr; Back to admin</a>
-                </p>
+        <main class="test-users-page">
+            <Title>Generate Test Users</Title>
+            <h1>Generate Test Users</h1>
+            <p class="back-link">
+                <a href="/admin">&larr; Back to admin</a>
+            </p>
 
-                <Banner variant="error" message={error()} />
+            <Banner variant="error" message={error()} />
 
-                <Banner
-                    variant="info"
-                    message={
-                        nextNumber() !== null
-                            ? `Next test user: TestUser${nextNumber()} (testuser${nextNumber()}@example.com)`
-                            : undefined
-                    }
-                />
+            <Banner
+                variant="info"
+                message={
+                    nextNumber() !== null
+                        ? `Next test user: TestUser${nextNumber()} (testuser${nextNumber()}@example.com)`
+                        : undefined
+                }
+            />
 
-                <Form onSubmit={handleSubmit}>
-                    <FormLabel>
-                        Number of users to create
-                        <TextInput
-                            type="number"
-                            min={1}
-                            max={100}
-                            value={String(count())}
-                            onInput={(v) => setCount(parseInt(v) || 1)}
-                            required
+            <Form onSubmit={handleSubmit}>
+                <FormLabel>
+                    Number of users to create
+                    <TextInput
+                        type="number"
+                        min={1}
+                        max={100}
+                        value={String(count())}
+                        onInput={(v) => setCount(parseInt(v) || 1)}
+                        required
+                    />
+                </FormLabel>
+
+                <Show when={progress()}>
+                    {(p) => (
+                        <ProgressBar
+                            current={p().current}
+                            total={p().total}
+                            label="created"
                         />
-                    </FormLabel>
+                    )}
+                </Show>
 
-                    <Show when={progress()}>
-                        {(p) => (
-                            <ProgressBar
-                                current={p().current}
-                                total={p().total}
-                                label="created"
-                            />
-                        )}
-                    </Show>
-
-                    <Button type="submit" disabled={loading()}>
-                        {loading()
-                            ? `Creating... (${progress()?.current ?? 0}/${progress()?.total ?? count()})`
-                            : `Create ${count()} test user(s)`}
-                    </Button>
-                </Form>
-            </main>
-        </Show>
+                <Button type="submit" disabled={loading()}>
+                    {loading()
+                        ? `Creating... (${progress()?.current ?? 0}/${progress()?.total ?? count()})`
+                        : `Create ${count()} test user(s)`}
+                </Button>
+            </Form>
+        </main>
     );
 }

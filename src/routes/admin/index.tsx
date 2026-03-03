@@ -1,7 +1,6 @@
 import { createSignal, createEffect, on, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { authClient } from "~/auth/auth-client";
-import { requireAuth } from "~/auth/require-auth";
 import ConfirmModal from "~/components/admin/ConfirmModal";
 import type { AdminUser, EditingField, Role } from "~/components/admin/types";
 import Button from "~/components/ui/Button";
@@ -10,23 +9,11 @@ import Select from "~/components/ui/Select";
 import TextInput from "~/components/ui/TextInput";
 import { UserTable, BatchBar, Pagination } from "~/components/admin/table";
 import Banner from "~/components/ui/Banner";
-import Spinner from "~/components/ui/Spinner";
 import { consumeBatchStream } from "~/utils/batch-stream";
 import "./admin.css";
 
 export default function Admin() {
-    const { session, authorized } = requireAuth({
-        permissions: {
-            user: [
-                "list",
-                "set-role",
-                "ban",
-                "update",
-                "delete",
-                "set-password",
-            ],
-        },
-    });
+    const session = authClient.useSession();
 
     const [users, setUsers] = createSignal<AdminUser[]>([]);
     const [total, setTotal] = createSignal(0);
@@ -550,164 +537,158 @@ export default function Admin() {
     }
 
     return (
-        <Show when={authorized()} fallback={<Spinner />}>
-            <main class="admin-page">
-                <Title>User management</Title>
-                <h1>User management</h1>
+        <main class="admin-page">
+            <Title>User management</Title>
+            <h1>User management</h1>
 
-                <Banner variant="error" message={error()} />
-                <Banner variant="success" message={success()} />
+            <Banner variant="error" message={error()} />
+            <Banner variant="success" message={success()} />
 
-                <div class="admin-toolbar">
-                    <Form
-                        variant="inline"
-                        class="admin-search-form"
-                        onSubmit={handleSearch}
-                    >
-                        <TextInput
-                            variant="toolbar"
-                            placeholder={`Search by ${searchField()}...`}
-                            value={search()}
-                            onInput={setSearch}
-                        />
-                        <Select
-                            value={searchField()}
-                            options={[
-                                { value: "name", label: "Name" },
-                                { value: "email", label: "Email" },
-                            ]}
-                            onChange={(v) =>
-                                setSearchField(v as "name" | "email")
-                            }
-                        />
-                        <Button type="submit">Search</Button>
-                    </Form>
+            <div class="admin-toolbar">
+                <Form
+                    variant="inline"
+                    class="admin-search-form"
+                    onSubmit={handleSearch}
+                >
+                    <TextInput
+                        variant="toolbar"
+                        placeholder={`Search by ${searchField()}...`}
+                        value={search()}
+                        onInput={setSearch}
+                    />
                     <Select
-                        value={roleFilter()}
+                        value={searchField()}
                         options={[
-                            { value: "", label: "All roles" },
-                            { value: "user", label: "User" },
-                            { value: "admin", label: "Admin" },
+                            { value: "name", label: "Name" },
+                            { value: "email", label: "Email" },
                         ]}
-                        onChange={(v) => {
-                            setRoleFilter(v);
-                            setPage(0);
-                        }}
+                        onChange={(v) => setSearchField(v as "name" | "email")}
                     />
-                    <a href="/admin/tools/test-users">Generate test users</a>
-                </div>
-
-                <Show when={!loading()} fallback={<p>Loading...</p>}>
-                    <UserTable
-                        users={users()}
-                        currentUserId={currentUserId()}
-                        selectedIds={selectedIds()}
-                        allSelected={allSelected()}
-                        sortBy={sortBy()}
-                        sortDirection={sortDirection()}
-                        onSort={handleSort}
-                        editingField={editingField()}
-                        editValue={editValue()}
-                        banningUserId={banningUserId()}
-                        banReason={banReason()}
-                        settingPasswordUserId={settingPasswordUserId()}
-                        newPassword={newPassword()}
-                        onToggleSelectAll={toggleSelectAll}
-                        onToggleSelect={toggleSelect}
-                        onStartFieldEdit={startFieldEdit}
-                        onSetEditingField={setEditingField}
-                        onSetEditValue={setEditValue}
-                        onSaveField={saveField}
-                        onFieldKeyDown={handleFieldKeyDown}
-                        onSetRole={handleSetRole}
-                        onSetPasswordClick={(userId) => {
-                            setSettingPasswordUserId(
-                                settingPasswordUserId() === userId
-                                    ? null
-                                    : userId,
-                            );
-                            setNewPassword("");
-                            setBanningUserId(null);
-                            setBanReason("");
-                        }}
-                        onSetNewPassword={setNewPassword}
-                        onConfirmSetPassword={handleSetPassword}
-                        onCancelSetPassword={() => {
-                            setSettingPasswordUserId(null);
-                            setNewPassword("");
-                        }}
-                        onBanClick={(userId) => {
-                            setBanningUserId(
-                                banningUserId() === userId ? null : userId,
-                            );
-                            setBanReason("");
-                            setSettingPasswordUserId(null);
-                            setNewPassword("");
-                        }}
-                        onUnban={handleUnban}
-                        onDeleteClick={(userId, userName) =>
-                            setDeleteTarget({
-                                mode: "single",
-                                userId,
-                                userName,
-                            })
-                        }
-                        onSetBanReason={setBanReason}
-                        onConfirmBan={handleBan}
-                        onCancelBan={() => setBanningUserId(null)}
-                        isFieldEditing={isFieldEditing}
-                    />
-                </Show>
-
-                <Pagination
-                    page={page()}
-                    totalPages={totalPages()}
-                    hasPrevious={page() > 0}
-                    hasNext={(page() + 1) * pageSize() < total()}
-                    pageSize={pageSize()}
-                    onFirst={() => setPage(0)}
-                    onPrevious={() => setPage((p) => p - 1)}
-                    onNext={() => setPage((p) => p + 1)}
-                    onLast={() => setPage(totalPages() - 1)}
-                    onPageSizeChange={(size) => {
-                        setPageSize(size);
+                    <Button type="submit">Search</Button>
+                </Form>
+                <Select
+                    value={roleFilter()}
+                    options={[
+                        { value: "", label: "All roles" },
+                        { value: "user", label: "User" },
+                        { value: "admin", label: "Admin" },
+                    ]}
+                    onChange={(v) => {
+                        setRoleFilter(v);
                         setPage(0);
                     }}
                 />
+                <a href="/admin/tools/test-users">Generate test users</a>
+            </div>
 
-                <Show when={selectedIds().size > 0}>
-                    <BatchBar
-                        selectedCount={selectedIds().size}
-                        batchProgress={batchProgress()}
-                        batchRole={batchRole()}
-                        batchBanReason={batchBanReason()}
-                        onSetBatchRole={setBatchRole}
-                        onBatchSetRole={handleBatchSetRole}
-                        onSetBatchBanReason={setBatchBanReason}
-                        onBatchBan={handleBatchBan}
-                        onBatchUnban={handleBatchUnban}
-                        onBatchDelete={() => {
-                            const ids = [...selectedIds()];
-                            setDeleteTarget({
-                                mode: "batch",
-                                userIds: ids,
-                                count: ids.length,
-                            });
-                        }}
-                    />
-                </Show>
-
-                <ConfirmModal
-                    open={deleteTarget() !== null}
-                    title={deleteModalProps().title}
-                    message={deleteModalProps().message}
-                    details={deleteModalProps().details}
-                    confirmLabel={deleteModalProps().confirmLabel}
-                    onConfirm={confirmDelete}
-                    onCancel={() => setDeleteTarget(null)}
-                    loading={deleteLoading()}
+            <Show when={!loading()} fallback={<p>Loading...</p>}>
+                <UserTable
+                    users={users()}
+                    currentUserId={currentUserId()}
+                    selectedIds={selectedIds()}
+                    allSelected={allSelected()}
+                    sortBy={sortBy()}
+                    sortDirection={sortDirection()}
+                    onSort={handleSort}
+                    editingField={editingField()}
+                    editValue={editValue()}
+                    banningUserId={banningUserId()}
+                    banReason={banReason()}
+                    settingPasswordUserId={settingPasswordUserId()}
+                    newPassword={newPassword()}
+                    onToggleSelectAll={toggleSelectAll}
+                    onToggleSelect={toggleSelect}
+                    onStartFieldEdit={startFieldEdit}
+                    onSetEditingField={setEditingField}
+                    onSetEditValue={setEditValue}
+                    onSaveField={saveField}
+                    onFieldKeyDown={handleFieldKeyDown}
+                    onSetRole={handleSetRole}
+                    onSetPasswordClick={(userId) => {
+                        setSettingPasswordUserId(
+                            settingPasswordUserId() === userId ? null : userId,
+                        );
+                        setNewPassword("");
+                        setBanningUserId(null);
+                        setBanReason("");
+                    }}
+                    onSetNewPassword={setNewPassword}
+                    onConfirmSetPassword={handleSetPassword}
+                    onCancelSetPassword={() => {
+                        setSettingPasswordUserId(null);
+                        setNewPassword("");
+                    }}
+                    onBanClick={(userId) => {
+                        setBanningUserId(
+                            banningUserId() === userId ? null : userId,
+                        );
+                        setBanReason("");
+                        setSettingPasswordUserId(null);
+                        setNewPassword("");
+                    }}
+                    onUnban={handleUnban}
+                    onDeleteClick={(userId, userName) =>
+                        setDeleteTarget({
+                            mode: "single",
+                            userId,
+                            userName,
+                        })
+                    }
+                    onSetBanReason={setBanReason}
+                    onConfirmBan={handleBan}
+                    onCancelBan={() => setBanningUserId(null)}
+                    isFieldEditing={isFieldEditing}
                 />
-            </main>
-        </Show>
+            </Show>
+
+            <Pagination
+                page={page()}
+                totalPages={totalPages()}
+                hasPrevious={page() > 0}
+                hasNext={(page() + 1) * pageSize() < total()}
+                pageSize={pageSize()}
+                onFirst={() => setPage(0)}
+                onPrevious={() => setPage((p) => p - 1)}
+                onNext={() => setPage((p) => p + 1)}
+                onLast={() => setPage(totalPages() - 1)}
+                onPageSizeChange={(size) => {
+                    setPageSize(size);
+                    setPage(0);
+                }}
+            />
+
+            <Show when={selectedIds().size > 0}>
+                <BatchBar
+                    selectedCount={selectedIds().size}
+                    batchProgress={batchProgress()}
+                    batchRole={batchRole()}
+                    batchBanReason={batchBanReason()}
+                    onSetBatchRole={setBatchRole}
+                    onBatchSetRole={handleBatchSetRole}
+                    onSetBatchBanReason={setBatchBanReason}
+                    onBatchBan={handleBatchBan}
+                    onBatchUnban={handleBatchUnban}
+                    onBatchDelete={() => {
+                        const ids = [...selectedIds()];
+                        setDeleteTarget({
+                            mode: "batch",
+                            userIds: ids,
+                            count: ids.length,
+                        });
+                    }}
+                />
+            </Show>
+
+            <ConfirmModal
+                open={deleteTarget() !== null}
+                title={deleteModalProps().title}
+                message={deleteModalProps().message}
+                details={deleteModalProps().details}
+                confirmLabel={deleteModalProps().confirmLabel}
+                onConfirm={confirmDelete}
+                onCancel={() => setDeleteTarget(null)}
+                loading={deleteLoading()}
+            />
+        </main>
     );
 }
