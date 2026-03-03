@@ -1,4 +1,6 @@
 :root {
+    font-size: 16px;
+
     /* Semantic colors */
     --color-primary: oklch(92% 0.06 150);
     --color-primary-hover: oklch(96% 0.06 150);
