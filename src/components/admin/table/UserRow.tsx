@@ -176,21 +176,22 @@ export default function UserRow(props: UserRowProps) {
                                 Set Password
                             </Button>
                         </Show>
-                        <Show
-                            when={props.user.banned}
-                            fallback={
-                                <Button
-                                    color="danger"
-                                    onClick={props.onBanClick}
-                                    disabled={props.isSelf}
-                                >
-                                    Ban
+                        <Show when={!props.isSelf}>
+                            <Show
+                                when={props.user.banned}
+                                fallback={
+                                    <Button
+                                        color="danger"
+                                        onClick={props.onBanClick}
+                                    >
+                                        Ban
+                                    </Button>
+                                }
+                            >
+                                <Button color="success" onClick={props.onUnban}>
+                                    Unban
                                 </Button>
-                            }
-                        >
-                            <Button color="success" onClick={props.onUnban}>
-                                Unban
-                            </Button>
+                            </Show>
                         </Show>
                         <Show when={!props.isSelf}>
                             <Button
