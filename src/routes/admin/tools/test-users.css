@@ -13,7 +13,3 @@
 .test-users-page .back-link {
     margin: 0 0 var(--space-lg);
 }
-
-.test-users-page .back-link a {
-    font-size: var(--text-base);
-}
