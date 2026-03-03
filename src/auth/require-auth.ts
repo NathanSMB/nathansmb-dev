@@ -35,7 +35,7 @@ export function requireAuth(options?: { permissions?: Permissions }) {
             }
         }
 
-        await new Promise<void>((r) => requestAnimationFrame(() => r()));
+        await new Promise<void>((r) => requestAnimationFrame(() => r())); // Note the spinner won't load on some pages without this.
         setAuthorized(true);
     });
 
