@@ -6,16 +6,16 @@
 }
 
 .banner-error {
-    color: var(--color-error);
+    color: var(--color-error-ink);
     background: oklch(from var(--color-error) l c h / 0.08);
 }
 
 .banner-success {
-    color: var(--color-success);
+    color: var(--color-success-ink);
     background: oklch(from var(--color-success) l c h / 0.08);
 }
 
 .banner-info {
-    color: var(--color-primary);
+    color: var(--color-primary-ink);
     background: oklch(from var(--color-primary) l c h / 0.08);
 }
