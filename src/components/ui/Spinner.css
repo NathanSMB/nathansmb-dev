@@ -48,7 +48,7 @@
 }
 
 .spinner-center {
-    min-height: 50vh;
+    flex: 1;
 }
 
 @keyframes spin {
