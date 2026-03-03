@@ -14,7 +14,7 @@ import "./admin.css";
 
 export default function Admin() {
   const session = requireAuth({
-    permissions: { user: ["list", "set-role", "ban", "update", "delete"] },
+    permissions: { user: ["list", "set-role", "ban", "update", "delete", "set-password"] },
   });
 
   const [users, setUsers] = createSignal<AdminUser[]>([]);
@@ -29,6 +29,8 @@ export default function Admin() {
   const [success, setSuccess] = createSignal("");
   const [banningUserId, setBanningUserId] = createSignal<string | null>(null);
   const [banReason, setBanReason] = createSignal("");
+  const [settingPasswordUserId, setSettingPasswordUserId] = createSignal<string | null>(null);
+  const [newPassword, setNewPassword] = createSignal("");
   const [selectedIds, setSelectedIds] = createSignal<Set<string>>(new Set());
   const [batchRole, setBatchRole] = createSignal<Role>("user");
   const [batchBanReason, setBatchBanReason] = createSignal("");
@@ -167,6 +169,20 @@ export default function Admin() {
             : u
         )
       );
+    }
+  }
+
+  async function handleSetPassword(userId: string) {
+    setError("");
+    setSuccess("");
+    const password = newPassword();
+    const result = await authClient.admin.setUserPassword({ userId, newPassword: password });
+    if (result.error) {
+      setError(result.error.message ?? "Failed to set password");
+    } else {
+      setSuccess("Password updated");
+      setSettingPasswordUserId(null);
+      setNewPassword("");
     }
   }
 
@@ -426,6 +442,8 @@ export default function Admin() {
           editValue={editValue()}
           banningUserId={banningUserId()}
           banReason={banReason()}
+          settingPasswordUserId={settingPasswordUserId()}
+          newPassword={newPassword()}
           onToggleSelectAll={toggleSelectAll}
           onToggleSelect={toggleSelect}
           onStartFieldEdit={startFieldEdit}
@@ -434,9 +452,20 @@ export default function Admin() {
           onSaveField={saveField}
           onFieldKeyDown={handleFieldKeyDown}
           onSetRole={handleSetRole}
+          onSetPasswordClick={(userId) => {
+            setSettingPasswordUserId(settingPasswordUserId() === userId ? null : userId);
+            setNewPassword("");
+            setBanningUserId(null);
+            setBanReason("");
+          }}
+          onSetNewPassword={setNewPassword}
+          onConfirmSetPassword={handleSetPassword}
+          onCancelSetPassword={() => { setSettingPasswordUserId(null); setNewPassword(""); }}
           onBanClick={(userId) => {
             setBanningUserId(banningUserId() === userId ? null : userId);
             setBanReason("");
+            setSettingPasswordUserId(null);
+            setNewPassword("");
           }}
           onUnban={handleUnban}
           onDeleteClick={(userId, userName) =>

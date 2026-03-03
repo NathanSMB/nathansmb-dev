@@ -14,7 +14,7 @@ export default function Form(props: FormProps) {
   return (
     <>
       <style>{css}</style>
-      <form class={cls()} onSubmit={props.onSubmit}>{props.children}</form>
+      <form class={cls()} onSubmit={(e) => { e.preventDefault(); props.onSubmit(e); }}>{props.children}</form>
     </>
   );
 }

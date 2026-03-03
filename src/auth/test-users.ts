@@ -6,6 +6,12 @@ import { auth } from "~/auth/core";
 import { connection } from "~/database/connection";
 import { user } from "~/database/schema";
 
+function generateRandomPassword(): string {
+  const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*";
+  const bytes = crypto.getRandomValues(new Uint8Array(24));
+  return Array.from(bytes, (b) => chars[b % chars.length]).join("");
+}
+
 function extractTestUserNumber(email: string): number | null {
   const match = email.match(/^testuser(\d+)@example\.com$/);
   return match ? parseInt(match[1], 10) : null;
@@ -58,7 +64,7 @@ export async function createTestUsers(
         body: {
           name: `TestUser${n}`,
           email: `testuser${n}@example.com`,
-          password: "password",
+          password: generateRandomPassword(),
           role: "user",
         },
       });

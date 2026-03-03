@@ -8,6 +8,7 @@ import Select from "~/components/ui/Select";
 import TextInput from "~/components/ui/TextInput";
 import BanFormRow from "./BanFormRow";
 import ImageFormRow from "./ImageFormRow";
+import SetPasswordFormRow from "./SetPasswordFormRow";
 import css from "./UserRow.css?inline";
 
 interface UserRowProps {
@@ -18,6 +19,8 @@ interface UserRowProps {
   editValue: string;
   isBanning: boolean;
   banReason: string;
+  isSettingPassword: boolean;
+  newPassword: string;
   onToggleSelect: () => void;
   onStartFieldEdit: (field: "name" | "email" | "image", currentValue: string) => void;
   onSetEditingField: (value: EditingField | null) => void;
@@ -25,6 +28,10 @@ interface UserRowProps {
   onSaveField: () => void;
   onFieldKeyDown: (e: KeyboardEvent) => void;
   onSetRole: (role: "user" | "admin") => void;
+  onSetPasswordClick: () => void;
+  onSetNewPassword: (value: string) => void;
+  onConfirmSetPassword: () => void;
+  onCancelSetPassword: () => void;
   onBanClick: () => void;
   onUnban: () => void;
   onDeleteClick: () => void;
@@ -130,6 +137,11 @@ export default function UserRow(props: UserRowProps) {
         </td>
         <td>
           <div class="admin-actions">
+            <Show when={!props.isSelf}>
+              <Button color="neutral" onClick={props.onSetPasswordClick}>
+                Set Password
+              </Button>
+            </Show>
             <Show
               when={props.user.banned}
               fallback={
@@ -169,6 +181,14 @@ export default function UserRow(props: UserRowProps) {
           onSetBanReason={props.onSetBanReason}
           onConfirm={props.onConfirmBan}
           onCancel={props.onCancelBan}
+        />
+      </Show>
+      <Show when={props.isSettingPassword}>
+        <SetPasswordFormRow
+          newPassword={props.newPassword}
+          onSetNewPassword={props.onSetNewPassword}
+          onConfirm={props.onConfirmSetPassword}
+          onCancel={props.onCancelSetPassword}
         />
       </Show>
     </>
