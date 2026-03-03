@@ -10,6 +10,7 @@ import Select from "~/components/ui/Select";
 import TextInput from "~/components/ui/TextInput";
 import { UserTable, BatchBar, Pagination } from "~/components/admin/table";
 import Banner from "~/components/ui/Banner";
+import { consumeBatchStream } from "~/utils/batch-stream";
 import "./admin.css";
 
 export default function Admin() {
@@ -44,6 +45,11 @@ export default function Admin() {
     | null
   >(null);
   const [deleteLoading, setDeleteLoading] = createSignal(false);
+  const [batchProgress, setBatchProgress] = createSignal<{
+    current: number;
+    total: number;
+    label: string;
+  } | null>(null);
 
   const currentUserId = () => session()?.data?.user?.id;
   const totalPages = () => Math.max(1, Math.ceil(total() / pageSize()));
@@ -262,89 +268,105 @@ export default function Admin() {
   }
 
   async function handleBatchSetRole() {
+    if (batchProgress()) return;
     setError("");
     setSuccess("");
     const ids = [...selectedIds()];
     const role = batchRole();
-    let failed = 0;
 
-    for (const userId of ids) {
-      const result = await authClient.admin.setRole({ userId, role });
-      if (result.error) failed++;
-    }
+    setBatchProgress({ current: 0, total: ids.length, label: "Setting roles" });
 
-    if (failed > 0) {
-      setError(`Failed to update role for ${failed} user(s)`);
-    } else {
-      setSuccess(`Role set to "${role}" for ${ids.length} user(s)`);
-    }
-
-    setUsers((prev) =>
-      prev.map((u) =>
-        ids.includes(u.id) ? { ...u, role } : u
-      )
+    await consumeBatchStream(
+      "/api/admin/batch/set-role",
+      { userIds: ids, role },
+      (p) => setBatchProgress({ current: p.completed, total: p.total, label: "Setting roles" }),
+      (result) => {
+        setBatchProgress(null);
+        if (result.failedCount > 0) {
+          setError(`Failed to update role for ${result.failedCount} user(s)`);
+        }
+        if (result.succeededIds.length > 0) {
+          setSuccess(`Role set to "${role}" for ${result.succeededIds.length} user(s)`);
+          const succeeded = new Set(result.succeededIds);
+          setUsers((prev) => prev.map((u) => succeeded.has(u.id) ? { ...u, role } : u));
+        }
+        setSelectedIds(new Set<string>());
+      },
+      (msg) => {
+        setBatchProgress(null);
+        setError(msg);
+      },
     );
-    setSelectedIds(new Set<string>());
   }
 
   async function handleBatchBan() {
+    if (batchProgress()) return;
     setError("");
     setSuccess("");
     const ids = [...selectedIds()];
     const reason = batchBanReason();
-    const results = await Promise.allSettled(
-      ids.map((userId) =>
-        authClient.admin.banUser({
-          userId,
-          banReason: reason || undefined,
-        }),
-      ),
+
+    setBatchProgress({ current: 0, total: ids.length, label: "Banning users" });
+
+    await consumeBatchStream(
+      "/api/admin/batch/ban",
+      { userIds: ids, banReason: reason || undefined },
+      (p) => setBatchProgress({ current: p.completed, total: p.total, label: "Banning users" }),
+      (result) => {
+        setBatchProgress(null);
+        if (result.failedCount > 0) {
+          setError(`Failed to ban ${result.failedCount} user(s)`);
+        }
+        if (result.succeededIds.length > 0) {
+          setSuccess(`Banned ${result.succeededIds.length} user(s)`);
+          const succeeded = new Set(result.succeededIds);
+          setUsers((prev) =>
+            prev.map((u) =>
+              succeeded.has(u.id) ? { ...u, banned: true, banReason: reason || null } : u,
+            ),
+          );
+        }
+        setSelectedIds(new Set<string>());
+        setBatchBanReason("");
+      },
+      (msg) => {
+        setBatchProgress(null);
+        setError(msg);
+      },
     );
-
-    const failed = results.filter(
-      (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.error),
-    ).length;
-
-    if (failed > 0) {
-      setError(`Failed to ban ${failed} user(s)`);
-    } else {
-      setSuccess(`Banned ${ids.length} user(s)`);
-    }
-
-    setUsers((prev) =>
-      prev.map((u) =>
-        ids.includes(u.id)
-          ? { ...u, banned: true, banReason: reason || null }
-          : u
-      )
-    );
-    setSelectedIds(new Set<string>());
-    setBatchBanReason("");
   }
 
   async function handleBatchUnban() {
+    if (batchProgress()) return;
     setError("");
     setSuccess("");
     const ids = [...selectedIds()];
-    let failed = 0;
 
-    for (const userId of ids) {
-      const result = await authClient.admin.unbanUser({ userId });
-      if (result.error) failed++;
-    }
+    setBatchProgress({ current: 0, total: ids.length, label: "Unbanning users" });
 
-    if (failed > 0) {
-      setError(`Failed to unban ${failed} user(s)`);
-    } else {
-      setSuccess(`Unbanned ${ids.length} user(s)`);
-    }
-
-    setUsers((prev) =>
-      prev.map((u) =>
-        ids.includes(u.id) ? { ...u, banned: false, banReason: null } : u
-      )
+    await consumeBatchStream(
+      "/api/admin/batch/unban",
+      { userIds: ids },
+      (p) => setBatchProgress({ current: p.completed, total: p.total, label: "Unbanning users" }),
+      (result) => {
+        setBatchProgress(null);
+        if (result.failedCount > 0) {
+          setError(`Failed to unban ${result.failedCount} user(s)`);
+        }
+        if (result.succeededIds.length > 0) {
+          setSuccess(`Unbanned ${result.succeededIds.length} user(s)`);
+          const succeeded = new Set(result.succeededIds);
+          setUsers((prev) =>
+            prev.map((u) => succeeded.has(u.id) ? { ...u, banned: false, banReason: null } : u),
+          );
+        }
+        setSelectedIds(new Set<string>());
+      },
+      (msg) => {
+        setBatchProgress(null);
+        setError(msg);
+      },
     );
-    setSelectedIds(new Set<string>());
   }
 
   async function confirmDelete() {
@@ -373,23 +395,26 @@ export default function Admin() {
         });
       }
     } else {
-      const results = await Promise.allSettled(
-        target.userIds.map((userId) => authClient.admin.removeUser({ userId })),
-      );
-
-      const failed = results.filter(
-        (r) => r.status === "rejected" || (r.status === "fulfilled" && r.value.error),
-      ).length;
-      const succeeded = results.length - failed;
-
       setDeleteLoading(false);
       setDeleteTarget(null);
+      setBatchProgress({ current: 0, total: target.userIds.length, label: "Deleting users" });
 
-      if (failed > 0) setError(`Failed to delete ${failed} user(s)`);
-      if (succeeded > 0) setSuccess(`Deleted ${succeeded} user(s)`);
-
-      setSelectedIds(new Set<string>());
-      fetchUsers();
+      await consumeBatchStream(
+        "/api/admin/batch/delete",
+        { userIds: target.userIds },
+        (p) => setBatchProgress({ current: p.completed, total: p.total, label: "Deleting users" }),
+        (result) => {
+          setBatchProgress(null);
+          if (result.failedCount > 0) setError(`Failed to delete ${result.failedCount} user(s)`);
+          if (result.succeededIds.length > 0) setSuccess(`Deleted ${result.succeededIds.length} user(s)`);
+          setSelectedIds(new Set<string>());
+          fetchUsers();
+        },
+        (msg) => {
+          setBatchProgress(null);
+          setError(msg);
+        },
+      );
     }
   }
 
@@ -519,6 +544,7 @@ export default function Admin() {
       <Show when={selectedIds().size > 0}>
         <BatchBar
           selectedCount={selectedIds().size}
+          batchProgress={batchProgress()}
           batchRole={batchRole()}
           batchBanReason={batchBanReason()}
           onSetBatchRole={setBatchRole}

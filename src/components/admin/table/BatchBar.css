@@ -84,3 +84,19 @@
 .admin-batch-bar .batch-delete:hover {
   background: oklch(from var(--color-error) l c h / 0.9);
 }
+
+.admin-batch-bar .progress-bar {
+  flex: 1;
+}
+
+.admin-batch-bar .progress-bar-label {
+  color: var(--color-text-on-colored);
+}
+
+.admin-batch-bar .progress-bar-track {
+  background: oklch(from var(--color-on-primary) l c h / 0.15);
+}
+
+.admin-batch-bar .progress-bar-fill {
+  background: var(--color-text-on-colored);
+}

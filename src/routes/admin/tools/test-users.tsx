@@ -39,7 +39,7 @@ export default function TestUserGenerator() {
     setProgress({ current: 0, total: count() });
 
     try {
-      const response = await fetch("/api/admin/tools/create-test-users", {
+      const response = await fetch("/api/admin/batch/create-test-users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ count: count() }),
