@@ -1,5 +1,6 @@
 import { Show, For } from "solid-js";
 import type { AdminUser, EditingField } from "../types";
+import Checkbox from "~/components/ui/Checkbox";
 import UserRow from "./UserRow";
 import css from "./UserTable.css?inline";
 
@@ -53,11 +54,7 @@ export default function UserTable(props: UserTableProps) {
       <thead>
         <tr>
           <th>
-            <input
-              type="checkbox"
-              checked={props.allSelected}
-              onChange={props.onToggleSelectAll}
-            />
+            <Checkbox checked={props.allSelected} onChange={props.onToggleSelectAll} />
           </th>
           <th></th>
           <th class="sortable" onClick={() => props.onSort("name")}>Name{sortIndicator("name")}</th>

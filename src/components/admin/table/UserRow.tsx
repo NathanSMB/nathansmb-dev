@@ -3,6 +3,7 @@ import type { AdminUser, EditingField } from "../types";
 import { isValidRole } from "../types";
 import Avatar from "~/components/ui/Avatar";
 import Button from "~/components/ui/Button";
+import Checkbox from "~/components/ui/Checkbox";
 import Pill from "~/components/ui/Pill";
 import Select from "~/components/ui/Select";
 import TextInput from "~/components/ui/TextInput";
@@ -52,12 +53,7 @@ export default function UserRow(props: UserRowProps) {
       <style>{css}</style>
       <tr>
         <td>
-          <input
-            type="checkbox"
-            checked={props.isSelected}
-            onChange={props.onToggleSelect}
-            disabled={props.isSelf}
-          />
+          <Checkbox checked={props.isSelected} onChange={props.onToggleSelect} disabled={props.isSelf} />
         </td>
         <td>
           <div
