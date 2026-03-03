@@ -6,7 +6,7 @@ import { auth } from "~/auth/core";
 import { connection } from "~/database/connection";
 import { user } from "~/database/schema";
 
-function generateRandomPassword(): string {
+export function generateRandomPassword(): string {
   const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*";
   const bytes = crypto.getRandomValues(new Uint8Array(24));
   return Array.from(bytes, (b) => chars[b % chars.length]).join("");
@@ -17,7 +17,7 @@ function extractTestUserNumber(email: string): number | null {
   return match ? parseInt(match[1], 10) : null;
 }
 
-async function requireAdmin() {
+export async function requireAdmin() {
   const session = await auth.api.getSession({
     headers: getWebRequest().headers,
   });
@@ -26,7 +26,7 @@ async function requireAdmin() {
   return session;
 }
 
-async function getMaxTestUserNumber(): Promise<number> {
+export async function getMaxTestUserNumber(): Promise<number> {
   const testUsers = await connection
     .select({ email: user.email })
     .from(user)

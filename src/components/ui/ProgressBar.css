@@ -1,0 +1,28 @@
+.progress-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.progress-bar-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.progress-bar-track {
+  height: 0.5rem;
+  border-radius: 0.25rem;
+  background: oklch(from var(--progress-color) l c h / 0.15);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 0.25rem;
+  background: var(--progress-color);
+  transition: width 0.2s ease;
+}
+
+.progress-bar-primary { --progress-color: var(--color-primary); }
+.progress-bar-error   { --progress-color: var(--color-error); }
+.progress-bar-success { --progress-color: var(--color-success); }

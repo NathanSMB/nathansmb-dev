@@ -1,12 +1,13 @@
-import { createSignal, onMount } from "solid-js";
+import { createSignal, Show, onMount } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { useNavigate } from "@solidjs/router";
 import { requireAuth } from "~/auth/require-auth";
-import { getNextTestUserNumber, createTestUsers } from "~/auth/test-users";
+import { getNextTestUserNumber } from "~/auth/test-users";
 import Banner from "~/components/ui/Banner";
 import Button from "~/components/ui/Button";
 import Form from "~/components/ui/Form";
 import FormLabel from "~/components/ui/FormLabel";
+import ProgressBar from "~/components/ui/ProgressBar";
 import TextInput from "~/components/ui/TextInput";
 import "./test-users.css";
 
@@ -20,6 +21,7 @@ export default function TestUserGenerator() {
   const [loading, setLoading] = createSignal(false);
   const [error, setError] = createSignal("");
   const [nextNumber, setNextNumber] = createSignal<number | null>(null);
+  const [progress, setProgress] = createSignal<{ current: number; total: number } | null>(null);
 
   onMount(async () => {
     try {
@@ -34,18 +36,56 @@ export default function TestUserGenerator() {
     e.preventDefault();
     setError("");
     setLoading(true);
+    setProgress({ current: 0, total: count() });
 
     try {
-      const result = await createTestUsers(count());
-      if (result.error) {
-        setError(result.error);
+      const response = await fetch("/api/admin/tools/create-test-users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ count: count() }),
+      });
+
+      if (!response.ok) {
+        setError(await response.text());
         setLoading(false);
-      } else {
-        navigate("/admin", { replace: true });
+        setProgress(null);
+        return;
+      }
+
+      const reader = response.body!.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n\n");
+        buffer = lines.pop()!;
+
+        for (const line of lines) {
+          const match = line.match(/^data: (.+)$/m);
+          if (!match) continue;
+
+          const data = JSON.parse(match[1]);
+          if (data.done) {
+            if (data.created < count()) {
+              setError(`Only ${data.created} of ${count()} users were created`);
+              setLoading(false);
+              setProgress(null);
+            } else {
+              navigate("/admin", { replace: true });
+            }
+          } else {
+            setProgress({ current: data.completed, total: data.total });
+          }
+        }
       }
     } catch {
       setError("Failed to create test users");
       setLoading(false);
+      setProgress(null);
     }
   }
 
@@ -73,8 +113,13 @@ export default function TestUserGenerator() {
             required
           />
         </FormLabel>
+
+        <Show when={progress()}>
+          {(p) => <ProgressBar current={p().current} total={p().total} label="created" />}
+        </Show>
+
         <Button type="submit" disabled={loading()}>
-          {loading() ? "Creating..." : `Create ${count()} test user(s)`}
+          {loading() ? `Creating... (${progress()?.current ?? 0}/${progress()?.total ?? count()})` : `Create ${count()} test user(s)`}
         </Button>
       </Form>
     </main>
