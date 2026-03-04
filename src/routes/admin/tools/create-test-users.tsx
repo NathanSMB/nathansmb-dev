@@ -9,7 +9,7 @@ import Form from "~/components/ui/Form";
 import FormLabel from "~/components/ui/FormLabel";
 import ProgressBar from "~/components/ui/ProgressBar";
 import Slider from "~/components/ui/Slider";
-import "./test-users.css";
+import "./create-test-users.css";
 
 export default function TestUserGenerator() {
     const navigate = useNavigate();
@@ -95,8 +95,8 @@ export default function TestUserGenerator() {
 
     return (
         <main class="test-users-page">
-            <Title>Generate Test Users</Title>
-            <h1>Generate Test Users</h1>
+            <Title>Create test users</Title>
+            <h1>Create test users</h1>
 
             <Banner variant="error" message={error()} />
 
