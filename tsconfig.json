@@ -12,8 +12,10 @@
         "noEmit": true,
         "types": ["vinxi/types/client", "vitest/globals"],
         "isolatedModules": true,
+        "skipLibCheck": true,
         "paths": {
             "~/*": ["./src/*"]
         }
-    }
+    },
+    "include": ["src", "tests"]
 }

@@ -33,6 +33,14 @@
                 "hooks": [
                     {
                         "type": "command",
+                        "command": "bun run typecheck || exit 2"
+                    }
+                ]
+            },
+            {
+                "hooks": [
+                    {
+                        "type": "command",
                         "command": "bun run build || exit 2"
                     }
                 ]

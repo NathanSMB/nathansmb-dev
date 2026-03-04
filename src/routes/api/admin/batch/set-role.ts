@@ -14,7 +14,7 @@ export async function POST(event: APIEvent) {
     if (
         !Array.isArray(userIds) ||
         !userIds.length ||
-        typeof role !== "string"
+        (role !== "user" && role !== "admin")
     ) {
         return new Response("Invalid request body", { status: 400 });
     }
