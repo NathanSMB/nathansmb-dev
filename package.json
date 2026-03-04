@@ -11,7 +11,8 @@
         "generate-auth-schema": "better-auth generate --config ./src/auth/core.ts --output ./src/database/schemas/auth.ts",
         "push-schemas": "bunx drizzle-kit push",
         "lint": "eslint src/",
-        "format": "prettier --write src/"
+        "format": "prettier --write src/",
+        "test": "vitest run --passWithNoTests"
     },
     "dependencies": {
         "@neondatabase/serverless": "^1.0.2",
@@ -34,8 +35,11 @@
         "eslint": "^10.0.2",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-solid": "^0.14.5",
+        "jsdom": "^28.1.0",
         "prettier": "^3.8.1",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.56.1"
+        "typescript-eslint": "^8.56.1",
+        "vite-plugin-solid": "^2.11.10",
+        "vitest": "^4.0.18"
     }
 }
