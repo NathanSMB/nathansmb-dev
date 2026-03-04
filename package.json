@@ -4,7 +4,7 @@
     "scripts": {
         "predev": "bun run prebuild",
         "dev": "vinxi dev",
-        "prebuild": "bun run generate-auth-schema -y",
+        "prebuild": "mkdir -p ./src/database/schemas && touch ./src/database/schemas/auth.ts && bun run generate-auth-schema -y",
         "build": "vinxi build",
         "start": "vinxi start",
         "version": "vinxi version",
