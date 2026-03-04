@@ -1,20 +1,29 @@
-import { createSignal, onCleanup, type JSX } from "solid-js";
-
 export interface NavLink {
     href: string;
     label: string;
 }
 
-const [sectionLinks, setSectionLinks] = createSignal<NavLink[] | undefined>();
+const sectionLinksConfig: { prefix: string; links: NavLink[] }[] = [
+    {
+        prefix: "/admin",
+        links: [
+            { href: "/admin", label: "Users" },
+            { href: "/admin/tools/test-users", label: "Test Users" },
+        ],
+    },
+];
 
-export { sectionLinks };
-
-export function NavLinksProvider(props: {
-    links: NavLink[];
-    children: JSX.Element;
-}) {
-    setSectionLinks(props.links);
-    onCleanup(() => setSectionLinks(undefined));
-
-    return <>{props.children}</>;
+export function getSectionLinks(pathname: string): NavLink[] | undefined {
+    let best: NavLink[] | undefined;
+    let bestLen = 0;
+    for (const { prefix, links } of sectionLinksConfig) {
+        if (
+            prefix.length > bestLen &&
+            (pathname === prefix || pathname.startsWith(prefix + "/"))
+        ) {
+            best = links;
+            bestLen = prefix.length;
+        }
+    }
+    return best;
 }

@@ -97,7 +97,7 @@ export default function TestUserGenerator() {
         <main class="test-users-page">
             <Title>Generate Test Users</Title>
             <h1>Generate Test Users</h1>
-            
+
             <Banner variant="error" message={error()} />
 
             <Show when={nextNumber() !== null} fallback={<Spinner size="lg" />}>

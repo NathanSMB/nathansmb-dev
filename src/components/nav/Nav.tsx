@@ -3,7 +3,7 @@ import { useLocation } from "@solidjs/router";
 import { authClient } from "~/auth/auth-client";
 import Avatar from "~/components/ui/Avatar";
 import Spinner from "~/components/ui/Spinner";
-import { sectionLinks, type NavLink } from "./nav-links";
+import { getSectionLinks, type NavLink } from "./nav-links";
 import css from "./Nav.css?inline";
 
 const defaultLinks: NavLink[] = [
@@ -17,7 +17,7 @@ export default function Nav() {
     const [menuOpen, setMenuOpen] = createSignal(false);
     const [linksOpen, setLinksOpen] = createSignal(false);
     let navRef: HTMLElement | undefined;
-    const links = () => sectionLinks() ?? defaultLinks;
+    const links = () => getSectionLinks(location.pathname) ?? defaultLinks;
 
     const isActive = (path: string) => location.pathname === path;
 
@@ -122,7 +122,9 @@ export default function Nav() {
                                     <Show when={menuOpen()}>
                                         <div class="session-menu">
                                             <Show
-                                                when={sectionLinks()}
+                                                when={getSectionLinks(
+                                                    location.pathname,
+                                                )}
                                                 fallback={
                                                     <>
                                                         <Show
