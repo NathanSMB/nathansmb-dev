@@ -3,6 +3,7 @@ import { useLocation } from "@solidjs/router";
 import { authClient } from "~/auth/auth-client";
 import Avatar from "~/components/ui/Avatar";
 import Spinner from "~/components/ui/Spinner";
+import { TbOutlineLogin } from "solid-icons/tb";
 import { defaultLinks, getSectionLinks } from "./nav-links";
 import css from "./Nav.css?inline";
 
@@ -90,6 +91,7 @@ export default function Nav() {
                                     href={`/login?redirect=${encodeURIComponent(location.pathname)}`}
                                 >
                                     Log in
+                                    <TbOutlineLogin />
                                 </a>
                             }
                         >

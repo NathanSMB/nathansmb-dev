@@ -271,32 +271,37 @@
 }
 
 /* ── Login link (unauthenticated) ── */
+.nav-login svg {
+    font-size: 1.15em;
+    margin-top: 0.1em;
+}
+
 .nav-login {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gap-tight);
     font-size: var(--text-base);
     font-weight: 600;
-    color: var(--color-primary-ink);
+    color: var(--color-text-on-colored);
     text-decoration: none;
     padding: 0.7em 1em;
-    border: var(--border-thin) solid
-        oklch(from var(--color-primary) l c h / 0.2);
+    border: var(--border-thin) solid transparent;
     border-radius: var(--radius-control);
-    background: oklch(from var(--color-primary) l c h / 0.08);
+    background: var(--color-primary-accent);
     box-shadow:
-        inset 0 1px 0 oklch(100% 0 none / 0.04),
-        inset 0 -1px 2px oklch(0% 0 none / 0.1);
+        inset 0 1px 0 oklch(100% 0 none / 0.15),
+        inset 0 -1px 2px oklch(0% 0 none / 0.15);
     transition:
-        color var(--duration-fast),
         background var(--duration-fast),
-        border-color var(--duration-fast),
         box-shadow var(--duration-fast);
 }
 
 .nav-login:hover {
-    background: oklch(from var(--color-primary) l c h / 0.18);
-    border-color: oklch(from var(--color-primary) l c h / 0.3);
+    background: oklch(from var(--color-primary-accent) l c h / 0.85);
     box-shadow:
-        inset 0 1px 0 oklch(100% 0 none / 0.06),
-        0 1px 4px oklch(from var(--color-primary) l c h / 0.12);
+        inset 0 1px 0 oklch(100% 0 none / 0.15),
+        inset 0 -1px 2px oklch(0% 0 none / 0.15),
+        0 0 12px oklch(from var(--color-primary-accent) l c h / 0.3);
 }
 
 /* ── Animations ── */
@@ -368,10 +373,10 @@
     }
 
     .nav-login {
-        display: block;
+        display: flex;
+        justify-content: center;
         width: 100%;
         box-sizing: border-box;
-        text-align: center;
         padding: 0.55em 0.85em;
     }
 
