@@ -1,0 +1,94 @@
+import { onMount, onCleanup, createSignal, Show } from "solid-js";
+import type { GameStateSnapshot } from "./engine/types";
+import { GameEngine } from "./engine/GameEngine";
+import { PLAYER } from "./engine/constants";
+import HUD from "./ui/HUD";
+import StartScreen from "./ui/StartScreen";
+import GameOverOverlay from "./ui/GameOverOverlay";
+import Leaderboard from "./ui/Leaderboard";
+import css from "./SpaceInvadersGame.css?inline";
+
+interface SpaceInvadersGameProps {
+    showLeaderboard?: boolean;
+}
+
+export default function SpaceInvadersGame(props: SpaceInvadersGameProps) {
+    let canvasRef!: HTMLCanvasElement;
+    let engine: GameEngine;
+
+    const defaultState: GameStateSnapshot = {
+        phase: "start",
+        score: 0,
+        wave: 1,
+        hp: PLAYER.hp,
+        maxHp: PLAYER.hp,
+        shield: PLAYER.shield,
+        maxShield: PLAYER.shield,
+        activePowerUps: [],
+    };
+
+    const [gameState, setGameState] =
+        createSignal<GameStateSnapshot>(defaultState);
+    const [finalScore, setFinalScore] = createSignal(0);
+    const [finalWave, setFinalWave] = createSignal(0);
+    const [leaderboardKey, setLeaderboardKey] = createSignal(0);
+    const [muted, setMuted] = createSignal(false);
+
+    onMount(() => {
+        engine = new GameEngine({
+            onStateChange: (state) => setGameState(state),
+            onGameOver: (score, wave) => {
+                setFinalScore(score);
+                setFinalWave(wave);
+            },
+        });
+        engine.mount(canvasRef);
+    });
+
+    onCleanup(() => {
+        engine?.unmount();
+    });
+
+    function handlePlayAgain() {
+        engine.startGame();
+    }
+
+    function handleScoreSubmitted() {
+        setLeaderboardKey((k) => k + 1);
+    }
+
+    function handleToggleMute() {
+        const isMuted = engine.toggleMute();
+        setMuted(isMuted);
+    }
+
+    return (
+        <>
+            <style>{css}</style>
+            <div class="si-game-wrapper">
+                <canvas ref={canvasRef!} class="si-game-canvas" />
+
+                <Show when={gameState().phase === "start"}>
+                    <StartScreen />
+                </Show>
+
+                <Show when={gameState().phase === "playing"}>
+                    <HUD state={gameState()} />
+                </Show>
+
+                <Show when={gameState().phase === "game-over"}>
+                    <GameOverOverlay
+                        score={finalScore()}
+                        wave={finalWave()}
+                        onPlayAgain={handlePlayAgain}
+                        onScoreSubmitted={handleScoreSubmitted}
+                    />
+                </Show>
+
+                <button class="si-mute-btn" onClick={handleToggleMute}>
+                    {muted() ? "UNMUTE" : "MUTE"}
+                </button>
+            </div>
+        </>
+    );
+}

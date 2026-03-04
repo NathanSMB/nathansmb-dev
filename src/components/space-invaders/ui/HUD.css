@@ -1,0 +1,97 @@
+.si-hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none;
+    font-family: "Courier New", monospace;
+    color: #00ffff;
+    text-shadow: 0 0 8px #00ffff80;
+    z-index: 10;
+}
+
+.si-hud-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.si-hud-score {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.si-hud-wave {
+    font-size: 0.9rem;
+    color: #ff00ff;
+    text-shadow: 0 0 8px #ff00ff80;
+}
+
+.si-hud-right {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+}
+
+.si-hud-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+}
+
+.si-hud-bar-track {
+    width: 120px;
+    height: 8px;
+    background: #ffffff15;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.si-hud-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.1s ease;
+}
+
+.si-hud-bar-fill--hp {
+    background: #ff0044;
+    box-shadow: 0 0 6px #ff004480;
+}
+
+.si-hud-bar-fill--shield {
+    background: #0088ff;
+    box-shadow: 0 0 6px #0088ff80;
+}
+
+.si-hud-powerups {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.si-hud-powerup {
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #ffffff15;
+    border: 1px solid currentColor;
+}
+
+.si-hud-powerup--rapid-fire {
+    color: #ff8800;
+}
+.si-hud-powerup--spread-shot {
+    color: #00ff00;
+}
+.si-hud-powerup--score-multiplier {
+    color: #ffdd00;
+}
+.si-hud-powerup--piercing {
+    color: #ff00ff;
+}

@@ -13,7 +13,11 @@ export default function Nav() {
     const [menuOpen, setMenuOpen] = createSignal(false);
     const [linksOpen, setLinksOpen] = createSignal(false);
     let navRef: HTMLElement | undefined;
-    const links = () => getSectionLinks(location.pathname) ?? defaultLinks;
+    const links = () => {
+        const base = getSectionLinks(location.pathname) ?? defaultLinks;
+        const loggedIn = !!session().data;
+        return base.filter((l) => !l.auth || loggedIn);
+    };
 
     const isActive = (path: string) => location.pathname === path;
 
@@ -52,37 +56,39 @@ export default function Nav() {
         <>
             <style>{css}</style>
             <nav class="nav" ref={navRef}>
-                <button
-                    class={`nav-hamburger${linksOpen() ? " open" : ""}`}
-                    aria-label="Menu"
-                    aria-expanded={linksOpen()}
-                    onClick={() => {
-                        setLinksOpen(!linksOpen());
-                        closeMenu();
-                    }}
+                <Show
+                    when={!session().isPending}
+                    fallback={<Spinner size="md" center />}
                 >
-                    <span />
-                    <span />
-                    <span />
-                </button>
-                <div class={`nav-links${linksOpen() ? " nav-links-open" : ""}`}>
-                    <For each={links()}>
-                        {(link) => (
-                            <a
-                                href={link.href}
-                                class={isActive(link.href) ? "active" : ""}
-                                onClick={closeLinks}
-                            >
-                                {link.label}
-                            </a>
-                        )}
-                    </For>
-                </div>
-                <div class="nav-session">
-                    <Show
-                        when={!session().isPending}
-                        fallback={<Spinner size="sm" />}
+                    <button
+                        class={`nav-hamburger${linksOpen() ? " open" : ""}`}
+                        aria-label="Menu"
+                        aria-expanded={linksOpen()}
+                        onClick={() => {
+                            setLinksOpen(!linksOpen());
+                            closeMenu();
+                        }}
                     >
+                        <span />
+                        <span />
+                        <span />
+                    </button>
+                    <div
+                        class={`nav-links${linksOpen() ? " nav-links-open" : ""}`}
+                    >
+                        <For each={links()}>
+                            {(link) => (
+                                <a
+                                    href={link.href}
+                                    class={isActive(link.href) ? "active" : ""}
+                                    onClick={closeLinks}
+                                >
+                                    {link.label}
+                                </a>
+                            )}
+                        </For>
+                    </div>
+                    <div class="nav-session">
                         <Show
                             when={session().data}
                             fallback={
@@ -168,8 +174,8 @@ export default function Nav() {
                                 </>
                             )}
                         </Show>
-                    </Show>
-                </div>
+                    </div>
+                </Show>
             </nav>
         </>
     );

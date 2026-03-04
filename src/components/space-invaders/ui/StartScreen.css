@@ -1,0 +1,58 @@
+.si-start {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.si-start-title {
+    font-family: "Courier New", monospace;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #ff00ff;
+    text-shadow:
+        0 0 20px #ff00ff80,
+        0 0 40px #ff00ff40;
+    text-align: center;
+    letter-spacing: 4px;
+}
+
+.si-start-subtitle {
+    font-family: "Courier New", monospace;
+    font-size: 1rem;
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff80;
+    animation: si-blink 1.2s ease-in-out infinite;
+}
+
+.si-start-controls {
+    font-family: "Courier New", monospace;
+    font-size: 0.75rem;
+    color: #ffffff80;
+    text-align: center;
+    line-height: 1.8;
+}
+
+.si-start-controls kbd {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px solid #ffffff40;
+    border-radius: 4px;
+    background: #ffffff10;
+    font-family: inherit;
+}
+
+@keyframes si-blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}

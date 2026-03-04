@@ -1,0 +1,32 @@
+.si-page {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+    height: calc(100vh - 64px);
+    box-sizing: border-box;
+}
+
+.si-page-game {
+    min-height: 0;
+}
+
+.si-page-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+}
+
+@media (max-width: 800px) {
+    .si-page {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+
+    .si-page-game {
+        min-height: 500px;
+    }
+}

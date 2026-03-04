@@ -3,11 +3,13 @@ import { navLinks as adminLinks } from "~/routes/admin";
 export interface NavLink {
     href: string;
     label: string;
+    auth?: boolean;
 }
 
 export const defaultLinks: NavLink[] = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
+    { href: "/games/space-invaders", label: "Space Invaders", auth: true },
 ];
 
 const sectionLinksConfig: { prefix: string; links: NavLink[] }[] = [

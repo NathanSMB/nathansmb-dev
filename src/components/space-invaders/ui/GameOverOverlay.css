@@ -1,0 +1,80 @@
+.si-gameover {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: #0a001480;
+    backdrop-filter: blur(4px);
+    z-index: 20;
+}
+
+.si-gameover-title {
+    font-family: "Courier New", monospace;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #ff0044;
+    text-shadow: 0 0 20px #ff004480;
+}
+
+.si-gameover-score {
+    font-family: "Courier New", monospace;
+    font-size: 1.5rem;
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff80;
+}
+
+.si-gameover-wave {
+    font-family: "Courier New", monospace;
+    font-size: 0.9rem;
+    color: #ff00ff;
+}
+
+.si-gameover-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.si-gameover-btn {
+    font-family: "Courier New", monospace;
+    font-size: 0.9rem;
+    padding: 8px 24px;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.si-gameover-btn:hover {
+    background: #ffffff15;
+}
+
+.si-gameover-btn--submit {
+    color: #00ff88;
+    text-shadow: 0 0 8px #00ff8880;
+}
+
+.si-gameover-btn--play {
+    color: #00ffff;
+    text-shadow: 0 0 8px #00ffff80;
+}
+
+.si-gameover-btn--submitted {
+    color: #ffffff60;
+    border-color: #ffffff40;
+    cursor: default;
+}
+
+.si-gameover-login {
+    font-family: "Courier New", monospace;
+    font-size: 0.8rem;
+    color: #ffdd00;
+    text-decoration: underline;
+    text-shadow: 0 0 8px #ffdd0060;
+}

@@ -8,10 +8,15 @@ vi.mock("~/routes/admin", () => ({
 import { getSectionLinks, defaultLinks } from "~/components/nav/nav-links";
 
 describe("defaultLinks", () => {
-    it("contains Home and About links", () => {
+    it("contains Home, About, and Space Invaders links", () => {
         expect(defaultLinks).toEqual([
             { href: "/", label: "Home" },
             { href: "/about", label: "About" },
+            {
+                href: "/games/space-invaders",
+                label: "Space Invaders",
+                auth: true,
+            },
         ]);
     });
 });
