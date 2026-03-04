@@ -50,6 +50,25 @@ export default function ProfilePage() {
 }
 ```
 
+### Icons
+
+Icons come from the `solid-icons` package using the Tabler icon set (`solid-icons/tb`). Import icons with the `TbOutline` prefix.
+
+#### Example (login button in Nav):
+
+```tsx
+import { TbOutlineLogin } from "solid-icons/tb";
+
+<a class="nav-login" href="/login">
+    Log in
+    <TbOutlineLogin />
+</a>;
+```
+
+#### Documentation:
+
+- [Solid Icons - Tabler](https://solid-icons.vercel.app/search/package/tb)
+
 ### Components
 
 For components use the `?inline` parameter for css imports.
@@ -76,3 +95,12 @@ export default function Example(props: ExampleProps) {
     );
 }
 ```
+
+## Testing
+
+Tests live in `tests/` mirroring the `src/` structure (e.g. `tests/components/ui/Button.test.tsx`). The test runner is Vitest with `jsdom` and `@solidjs/testing-library` for component tests. Run tests with `bun run test`.
+
+#### Documentation:
+
+- [Vitest](https://vitest.dev/guide/)
+- [Solid Testing Library](https://github.com/solidjs/solid-testing-library)

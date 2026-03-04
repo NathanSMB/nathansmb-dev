@@ -45,6 +45,17 @@
                     }
                 ]
             }
+        ],
+        "TaskCompleted": [
+            {
+                "hooks": [
+                    {
+                        "type": "agent",
+                        "prompt": "You are a test coverage reviewer. A task was just completed. Analyze the task description and any files that were likely changed. Determine if unit tests should be written. Answer NO if: the task is a config change, documentation, styling-only, or tests already exist for the changed code. Answer YES if: new functions, utilities, API routes, or components with logic were added or significantly modified and lack corresponding test coverage. Check the tests/ directory for existing test files that may already cover the changes. If tests are needed, respond with a clear message describing what should be tested.",
+                        "timeout": 120
+                    }
+                ]
+            }
         ]
     }
 }
