@@ -1,9 +1,15 @@
-import { Show, createSignal, onMount, onCleanup } from "solid-js";
+import { Show, For, createSignal, onMount, onCleanup } from "solid-js";
 import { useLocation } from "@solidjs/router";
 import { authClient } from "~/auth/auth-client";
 import Avatar from "~/components/ui/Avatar";
 import Spinner from "~/components/ui/Spinner";
+import { sectionLinks, type NavLink } from "./nav-links";
 import css from "./Nav.css?inline";
+
+const defaultLinks: NavLink[] = [
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
+];
 
 export default function Nav() {
     const session = authClient.useSession();
@@ -11,11 +17,9 @@ export default function Nav() {
     const [menuOpen, setMenuOpen] = createSignal(false);
     const [linksOpen, setLinksOpen] = createSignal(false);
     let navRef: HTMLElement | undefined;
+    const links = () => sectionLinks() ?? defaultLinks;
 
-    const isActive = (path: string) =>
-        path === "/"
-            ? location.pathname === "/"
-            : location.pathname.startsWith(path);
+    const isActive = (path: string) => location.pathname === path;
 
     const closeMenu = () => setMenuOpen(false);
     const closeLinks = () => setLinksOpen(false);
@@ -66,20 +70,17 @@ export default function Nav() {
                     <span />
                 </button>
                 <div class={`nav-links${linksOpen() ? " nav-links-open" : ""}`}>
-                    <a
-                        href="/"
-                        class={isActive("/") ? "active" : ""}
-                        onClick={closeLinks}
-                    >
-                        Home
-                    </a>
-                    <a
-                        href="/about"
-                        class={isActive("/about") ? "active" : ""}
-                        onClick={closeLinks}
-                    >
-                        About
-                    </a>
+                    <For each={links()}>
+                        {(link) => (
+                            <a
+                                href={link.href}
+                                class={isActive(link.href) ? "active" : ""}
+                                onClick={closeLinks}
+                            >
+                                {link.label}
+                            </a>
+                        )}
+                    </For>
                 </div>
                 <div class="nav-session">
                     <Show
@@ -121,21 +122,38 @@ export default function Nav() {
                                     <Show when={menuOpen()}>
                                         <div class="session-menu">
                                             <Show
-                                                when={s().user.role === "admin"}
+                                                when={sectionLinks()}
+                                                fallback={
+                                                    <>
+                                                        <Show
+                                                            when={
+                                                                s().user
+                                                                    .role ===
+                                                                "admin"
+                                                            }
+                                                        >
+                                                            <a
+                                                                href="/admin"
+                                                                onClick={
+                                                                    closeMenu
+                                                                }
+                                                            >
+                                                                Admin
+                                                            </a>
+                                                        </Show>
+                                                        <a
+                                                            href="/settings/profile"
+                                                            onClick={closeMenu}
+                                                        >
+                                                            Settings
+                                                        </a>
+                                                    </>
+                                                }
                                             >
-                                                <a
-                                                    href="/admin"
-                                                    onClick={closeMenu}
-                                                >
-                                                    Admin
+                                                <a href="/" onClick={closeMenu}>
+                                                    Home
                                                 </a>
                                             </Show>
-                                            <a
-                                                href="/settings/profile"
-                                                onClick={closeMenu}
-                                            >
-                                                Settings
-                                            </a>
                                             <div class="session-menu-separator" />
                                             <button
                                                 class="logout-btn"

@@ -579,7 +579,6 @@ export default function Admin() {
                         setPage(0);
                     }}
                 />
-                <a href="/admin/tools/test-users">Generate test users</a>
             </div>
 
             <Show when={!loading()} fallback={<Spinner size="lg" />}>
