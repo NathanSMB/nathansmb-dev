@@ -1,16 +1,17 @@
+import { navLinks as adminLinks } from "~/routes/admin";
+
 export interface NavLink {
     href: string;
     label: string;
 }
 
+export const defaultLinks: NavLink[] = [
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
+];
+
 const sectionLinksConfig: { prefix: string; links: NavLink[] }[] = [
-    {
-        prefix: "/admin",
-        links: [
-            { href: "/admin", label: "Users" },
-            { href: "/admin/tools/test-users", label: "Test Users" },
-        ],
-    },
+    { prefix: "/admin", links: adminLinks },
 ];
 
 export function getSectionLinks(pathname: string): NavLink[] | undefined {

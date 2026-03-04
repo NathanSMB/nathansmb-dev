@@ -3,13 +3,8 @@ import { useLocation } from "@solidjs/router";
 import { authClient } from "~/auth/auth-client";
 import Avatar from "~/components/ui/Avatar";
 import Spinner from "~/components/ui/Spinner";
-import { getSectionLinks, type NavLink } from "./nav-links";
+import { defaultLinks, getSectionLinks } from "./nav-links";
 import css from "./Nav.css?inline";
-
-const defaultLinks: NavLink[] = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-];
 
 export default function Nav() {
     const session = authClient.useSession();
