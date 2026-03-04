@@ -1,4 +1,5 @@
 import { Show, onCleanup, createEffect } from "solid-js";
+import Banner from "~/components/ui/Banner";
 import css from "./ConfirmModal.css?inline";
 
 interface ConfirmModalProps {
@@ -36,9 +37,7 @@ export default function ConfirmModal(props: ConfirmModalProps) {
                         <div class="modal-icon">&#9888;</div>
                         <h2 class="modal-title">{props.title}</h2>
                         <p class="modal-message">{props.message}</p>
-                        <Show when={props.details}>
-                            <p class="modal-details">{props.details}</p>
-                        </Show>
+                        <Banner variant="error" message={props.details} />
                         <div class="modal-actions">
                             <button
                                 class="modal-cancel"

@@ -34,14 +34,14 @@
 
 .modal-icon {
     font-size: var(--text-icon);
-    color: var(--color-error);
+    color: var(--color-error-ink);
     margin-bottom: var(--space-sm);
 }
 
 .modal-title {
     font-size: var(--text-lg);
     font-weight: 700;
-    color: var(--color-error);
+    color: var(--color-error-ink);
     margin: 0 0 var(--space-md);
 }
 
@@ -50,19 +50,6 @@
     color: var(--color-text);
     line-height: 1.5;
     margin: 0 0 var(--space-sm);
-}
-
-.modal-details {
-    font-size: var(--text-sm);
-    color: var(--color-text-subtle);
-    background: oklch(from var(--color-error) l c h / 0.06);
-    border: var(--border-thin) solid oklch(from var(--color-error) l c h / 0.15);
-    border-radius: var(--radius-md);
-    padding: var(--pad-input);
-    margin: var(--space-md) 0;
-    max-height: 6rem;
-    overflow-y: auto;
-    text-align: left;
 }
 
 .modal-actions {
@@ -84,11 +71,11 @@
 
 .modal-cancel {
     color: var(--color-text-muted);
-    background: oklch(from var(--color-neutral) l c h / 0.08);
+    background: var(--color-neutral);
 }
 
 .modal-cancel:hover:not(:disabled) {
-    background: oklch(from var(--color-neutral) l c h / 0.14);
+    background: var(--color-neutral-hover);
 }
 
 .modal-confirm-destructive {

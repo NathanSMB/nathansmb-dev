@@ -7,15 +7,15 @@
 
 .banner-error {
     color: var(--color-error-ink);
-    background: oklch(from var(--color-error) l c h / 0.08);
+    background: var(--color-error);
 }
 
 .banner-success {
     color: var(--color-success-ink);
-    background: oklch(from var(--color-success) l c h / 0.08);
+    background: var(--color-success);
 }
 
 .banner-info {
     color: var(--color-primary-ink);
-    background: oklch(from var(--color-primary) l c h / 0.08);
+    background: var(--color-primary);
 }

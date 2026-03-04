@@ -2,15 +2,18 @@
     font-size: 16px;
 
     /* Semantic colors */
-    --color-primary: oklch(84% 0.08 290);
-    --color-primary-hover: oklch(88% 0.08 290);
-    --color-primary-ink: oklch(38% 0.12 290);
-    --color-error: oklch(88% 0.12 29);
-    --color-error-hover: oklch(92% 0.12 29);
-    --color-error-ink: oklch(42% 0.14 29);
-    --color-success: oklch(88% 0.1 152);
-    --color-success-hover: oklch(92% 0.1 152);
-    --color-success-ink: oklch(40% 0.12 152);
+    --color-primary: oklch(90% 0.07 290);
+    --color-primary-hover: oklch(95% 0.07 290);
+    --color-primary-ink: oklch(35% 0.12 290);
+    --color-primary-accent: oklch(75% 0.18 290);
+    --color-error: oklch(90% 0.12 29);
+    --color-error-hover: oklch(95% 0.12 29);
+    --color-error-ink: oklch(35% 0.14 29);
+    --color-error-accent: oklch(75% 0.2 29);
+    --color-success: oklch(90% 0.1 152);
+    --color-success-hover: oklch(95% 0.1 152);
+    --color-success-ink: oklch(35% 0.12 152);
+    --color-success-accent: oklch(75% 0.18 152);
 
     /* Text */
     --color-text: oklch(23% 0.012 300);
@@ -22,13 +25,13 @@
     --color-link: oklch(45% 0.14 290);
 
     /* Surfaces */
-    --color-surface: oklch(93% 0.012 300);
-    --color-page-bg: oklch(89% 0.022 300);
+    --color-surface: oklch(95.5% 0.018 300);
+    --color-page-bg: oklch(98% 0.008 300);
 
     /* Contrast / overlay */
     --color-text-on-colored: oklch(0% 0 none);
-    --color-neutral: oklch(84% 0.025 300);
-    --color-neutral-hover: oklch(88% 0.025 300);
+    --color-neutral: oklch(90% 0.02 300);
+    --color-neutral-hover: oklch(94% 0.02 300);
     --color-overlay: oklch(0% 0 none / 0.5);
     --color-shadow: oklch(0% 0 none / 0.2);
 
@@ -126,15 +129,18 @@
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
     :root {
-        --color-primary: oklch(42% 0.12 290);
-        --color-primary-hover: oklch(38% 0.12 290);
-        --color-primary-ink: oklch(82% 0.1 290);
-        --color-error: oklch(46% 0.16 29);
-        --color-error-hover: oklch(42% 0.16 29);
-        --color-error-ink: oklch(78% 0.12 29);
-        --color-success: oklch(50% 0.14 152);
-        --color-success-hover: oklch(44% 0.14 152);
-        --color-success-ink: oklch(80% 0.1 152);
+        --color-primary: oklch(30% 0.12 290);
+        --color-primary-hover: oklch(20% 0.12 290);
+        --color-primary-ink: oklch(90% 0.1 290);
+        --color-primary-accent: oklch(50% 0.18 290);
+        --color-error: oklch(30% 0.16 29);
+        --color-error-hover: oklch(20% 0.16 29);
+        --color-error-ink: oklch(90% 0.12 29);
+        --color-error-accent: oklch(50% 0.2 29);
+        --color-success: oklch(30% 0.14 152);
+        --color-success-hover: oklch(20% 0.14 152);
+        --color-success-ink: oklch(90% 0.1 152);
+        --color-success-accent: oklch(50% 0.18 152);
 
         --color-text: oklch(92% 0.012 300);
         --color-text-muted: oklch(81% 0.012 300);
@@ -147,8 +153,8 @@
         --color-page-bg: oklch(16% 0.025 285);
 
         --color-text-on-colored: oklch(100% 0 none);
-        --color-neutral: oklch(22% 0.02 285);
-        --color-neutral-hover: oklch(18% 0.02 285);
+        --color-neutral: oklch(32% 0.02 285);
+        --color-neutral-hover: oklch(28% 0.02 285);
     }
 
     body {
