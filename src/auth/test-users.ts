@@ -13,7 +13,7 @@ export function generateRandomPassword(): string {
     return Array.from(bytes, (b) => chars[b % chars.length]).join("");
 }
 
-function extractTestUserNumber(email: string): number | null {
+export function extractTestUserNumber(email: string): number | null {
     const match = email.match(/^testuser(\d+)@example\.com$/);
     return match ? parseInt(match[1], 10) : null;
 }
