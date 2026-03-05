@@ -19,13 +19,27 @@ export const PLAYER = {
 } as const;
 
 export const ENEMY = {
-    basic: { hp: 1, speed: 3, score: 100, canShoot: false },
-    fast: { hp: 1, speed: 7.5, score: 150, canShoot: false },
-    shielded: { hp: 3, speed: 2.1, score: 300, canShoot: false },
-    bomber: { hp: 2, speed: 2.4, score: 250, canShoot: true, fireRate: 2 },
-    rare: { hp: 1, speed: 4.5, score: 500, canShoot: false },
-    elite: { hp: 5, speed: 1.8, score: 400, canShoot: true, fireRate: 1.5 },
-    swarm: { hp: 1, speed: 3.6, score: 50, canShoot: false },
+    basic: { hp: 1, speed: 3, score: 100, canShoot: false, radius: 0.5 },
+    fast: { hp: 1, speed: 7.5, score: 150, canShoot: false, radius: 0.45 },
+    shielded: { hp: 3, speed: 2.1, score: 300, canShoot: false, radius: 0.5 },
+    bomber: {
+        hp: 2,
+        speed: 2.4,
+        score: 250,
+        canShoot: true,
+        fireRate: 2,
+        radius: 0.5,
+    },
+    rare: { hp: 1, speed: 4.5, score: 500, canShoot: false, radius: 0.45 },
+    elite: {
+        hp: 5,
+        speed: 1.8,
+        score: 400,
+        canShoot: true,
+        fireRate: 1,
+        radius: 0.85,
+    },
+    swarm: { hp: 1, speed: 3.6, score: 50, canShoot: false, radius: 0.25 },
 } as const;
 
 export const ENEMY_PROJECTILE_SPEED = 10;
@@ -33,6 +47,7 @@ export const ENEMY_PROJECTILE_DAMAGE = 15;
 
 export const POWERUP = {
     dropChance: 0.15,
+    prdC: 0.02228,
     duration: 8,
     types: [
         "rapid-fire",
@@ -50,7 +65,7 @@ export const DIFFICULTY = {
     speedScalePerMinute: 0.15,
     swarmUnlockTime: 60,
     eliteUnlockTime: 120,
-    bomberUnlockTime: 120,
+    bomberUnlockTime: 45,
     rareInterval: 15,
     waveIncrementTime: 30,
 } as const;
@@ -60,12 +75,12 @@ export const COLORS = {
     gridLines: 0x00ffff,
     player: 0x00ffff,
     enemyBasic: 0xff00ff,
-    enemyFast: 0xffff00,
+    enemyFast: 0xc0c0c0,
     enemyShielded: 0x00ff88,
     enemyBomber: 0xff4400,
     enemyRare: 0xffd700,
     enemyElite: 0xff0044,
-    enemySwarm: 0xcc66ff,
+    enemySwarm: 0x4488ff,
     playerProjectile: 0x00ffff,
     enemyProjectile: 0xff0066,
     powerUpRapidFire: 0xff8800,
@@ -83,7 +98,7 @@ export const COLLISION = {
 } as const;
 
 export const BLOOM = {
-    strength: 1.5,
-    threshold: 0.2,
-    radius: 0.8,
+    strength: 0.8,
+    threshold: 0.35,
+    radius: 0.4,
 } as const;

@@ -17,7 +17,10 @@ import {
 import { createGameScene, type SceneContext } from "../scene/createScene";
 import { InputSystem } from "../systems/InputSystem";
 import { updateMovement } from "../systems/MovementSystem";
-import { detectCollisions } from "../systems/CollisionSystem";
+import {
+    detectCollisions,
+    detectCollisionsWithRadii,
+} from "../systems/CollisionSystem";
 import {
     applyDamage,
     updateShieldRecharge,
@@ -103,6 +106,7 @@ export class GameEngine {
         this.state.elapsedTime = 0;
         this.state.activePowerUps = [];
         this.state.difficulty = 0;
+        this.state.powerUpPrdCount = 0;
         this.spawnSystem.reset();
         this.particleSystem.clear();
         this.music.start();
@@ -130,6 +134,7 @@ export class GameEngine {
             activePowerUps: [],
             particles: [],
             difficulty: 0,
+            powerUpPrdCount: 0,
         };
     }
 
@@ -271,7 +276,7 @@ export class GameEngine {
                 enemy.active = false;
                 this.sceneCtx.scene.remove(enemy.mesh);
                 if (enemy.type !== "rare") {
-                    const dead = applyDamage(this.state.player, 20);
+                    const dead = applyDamage(this.state.player, 20 * enemy.hp);
                     this.sfx.hit();
                     if (dead) {
                         this.gameOver();
@@ -312,11 +317,11 @@ export class GameEngine {
             (p) => !p.isPlayerProjectile,
         );
 
-        const projEnemyHits = detectCollisions(
+        const projEnemyHits = detectCollisionsWithRadii(
             playerProjectiles,
-            COLLISION.projectileRadius,
+            () => COLLISION.projectileRadius,
             s.enemies,
-            COLLISION.enemyRadius,
+            (e) => (e as EnemyState).collisionRadius,
         );
 
         const hitEnemies = new Set<number>();
@@ -355,11 +360,13 @@ export class GameEngine {
                     15,
                 );
 
-                const pu = createPowerUp(
+                const { powerUp: pu, prdCount: newPrdCount } = createPowerUp(
                     enemy.mesh.position.x,
                     enemy.mesh.position.z,
                     scene,
+                    s.powerUpPrdCount,
                 );
+                s.powerUpPrdCount = newPrdCount;
                 if (pu) s.powerUps.push(pu);
 
                 scene.remove(enemy.mesh);
@@ -408,11 +415,11 @@ export class GameEngine {
             }
         }
 
-        const enemyPlayerHits = detectCollisions(
+        const enemyPlayerHits = detectCollisionsWithRadii(
             s.enemies,
-            COLLISION.enemyRadius,
+            (e) => (e as EnemyState).collisionRadius,
             [s.player],
-            COLLISION.playerRadius,
+            () => COLLISION.playerRadius,
         );
 
         for (const { a } of enemyPlayerHits) {
@@ -421,7 +428,7 @@ export class GameEngine {
             enemy.active = false;
             scene.remove(enemy.mesh);
 
-            const dead = applyDamage(s.player, 30);
+            const dead = applyDamage(s.player, 30 * enemy.hp);
             this.sfx.hit();
 
             if (dead) {
@@ -466,6 +473,21 @@ export class GameEngine {
             shouldSpawnRare(this.state.elapsedTime, this.spawnSystem.lastRare)
         ) {
             this.spawnSystem.lastRare = this.state.elapsedTime;
+            const side = Math.random() < 0.5 ? -1 : 1;
+            const rareEnemies = spawnEnemies(
+                [
+                    {
+                        type: "rare" as const,
+                        x: side * (PLAYFIELD.halfWidth + 1),
+                        z: (Math.random() - 0.5) * 4,
+                        count: 1,
+                    },
+                ],
+                diff.speedMultiplier,
+                this.sceneCtx.scene,
+                this.state.elapsedTime,
+            );
+            this.state.enemies.push(...rareEnemies);
         }
 
         const requests = this.spawnSystem.update(this.state.elapsedTime, diff);

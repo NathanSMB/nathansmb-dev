@@ -2,6 +2,7 @@ import * as THREE from "three";
 import type { EnemyState, EnemyType } from "../engine/types";
 import { ENEMY, COLORS, PLAYFIELD } from "../engine/constants";
 import { createNeonMaterial } from "../scene/materials";
+import { createEnemyModel } from "./meshes";
 
 const ENEMY_COLORS: Record<EnemyType, number> = {
     basic: COLORS.enemyBasic,
@@ -13,73 +14,20 @@ const ENEMY_COLORS: Record<EnemyType, number> = {
     swarm: COLORS.enemySwarm,
 };
 
+const ENEMY_EMISSIVE: Record<EnemyType, number> = {
+    basic: 2.0,
+    fast: 1.5,
+    shielded: 1.0,
+    bomber: 2.0,
+    rare: 1.0,
+    elite: 2.0,
+    swarm: 2.0,
+};
+
 function createEnemyMesh(type: EnemyType): THREE.Object3D {
     const color = ENEMY_COLORS[type];
-    const mat = createNeonMaterial(color, 2.5);
-
-    switch (type) {
-        case "basic": {
-            const geo = new THREE.BoxGeometry(0.7, 0.3, 0.7);
-            return new THREE.Mesh(geo, mat);
-        }
-        case "fast": {
-            const geo = new THREE.ConeGeometry(0.35, 0.8, 3);
-            const mesh = new THREE.Mesh(geo, mat);
-            mesh.rotation.x = Math.PI / 2;
-            return mesh;
-        }
-        case "shielded": {
-            const group = new THREE.Group();
-            const core = new THREE.Mesh(
-                new THREE.BoxGeometry(0.6, 0.3, 0.6),
-                mat,
-            );
-            group.add(core);
-            const shieldGeo = new THREE.RingGeometry(0.5, 0.6, 6);
-            const shieldMat = createNeonMaterial(color, 1);
-            shieldMat.transparent = true;
-            shieldMat.opacity = 0.4;
-            const shield = new THREE.Mesh(shieldGeo, shieldMat);
-            shield.rotation.x = -Math.PI / 2;
-            shield.position.y = 0.2;
-            group.add(shield);
-            return group;
-        }
-        case "bomber": {
-            const geo = new THREE.OctahedronGeometry(0.45, 0);
-            return new THREE.Mesh(geo, mat);
-        }
-        case "rare": {
-            const geo = new THREE.TorusGeometry(0.35, 0.12, 6, 8);
-            const mesh = new THREE.Mesh(geo, mat);
-            mesh.rotation.x = Math.PI / 2;
-            return mesh;
-        }
-        case "elite": {
-            const group = new THREE.Group();
-            const body = new THREE.Mesh(
-                new THREE.DodecahedronGeometry(0.45, 0),
-                mat,
-            );
-            group.add(body);
-            const spike1 = new THREE.Mesh(
-                new THREE.ConeGeometry(0.15, 0.4, 4),
-                mat,
-            );
-            spike1.position.set(0.5, 0, 0);
-            spike1.rotation.z = -Math.PI / 2;
-            group.add(spike1);
-            const spike2 = spike1.clone();
-            spike2.position.set(-0.5, 0, 0);
-            spike2.rotation.z = Math.PI / 2;
-            group.add(spike2);
-            return group;
-        }
-        case "swarm": {
-            const geo = new THREE.TetrahedronGeometry(0.25, 0);
-            return new THREE.Mesh(geo, mat);
-        }
-    }
+    const mat = createNeonMaterial(color, ENEMY_EMISSIVE[type]);
+    return createEnemyModel(type, mat);
 }
 
 export function createEnemy(
@@ -121,6 +69,7 @@ export function createEnemy(
         lastShotTime: time,
         canShoot: "fireRate" in config,
         spawnTime: time,
+        collisionRadius: config.radius,
     };
 }
 

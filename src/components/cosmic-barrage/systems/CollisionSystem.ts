@@ -37,3 +37,34 @@ export function detectCollisions(
     }
     return pairs;
 }
+
+export function detectCollisionsWithRadii(
+    groupA: Entity[],
+    getRadiusA: (e: Entity) => number,
+    groupB: Entity[],
+    getRadiusB: (e: Entity) => number,
+): CollisionPair[] {
+    const pairs: CollisionPair[] = [];
+    for (let i = 0; i < groupA.length; i++) {
+        if (!groupA[i].active) continue;
+        const a = groupA[i];
+        const ra = getRadiusA(a);
+        for (let j = 0; j < groupB.length; j++) {
+            if (!groupB[j].active) continue;
+            const b = groupB[j];
+            if (
+                checkAABBOverlap(
+                    a.mesh.position.x,
+                    a.mesh.position.z,
+                    ra,
+                    b.mesh.position.x,
+                    b.mesh.position.z,
+                    getRadiusB(b),
+                )
+            ) {
+                pairs.push({ a: i, b: j });
+            }
+        }
+    }
+    return pairs;
+}

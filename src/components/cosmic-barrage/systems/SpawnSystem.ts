@@ -27,7 +27,12 @@ export class SpawnSystem {
 
         this.lastSpawnTime = elapsedTime;
 
-        const type = pickType(difficulty.availableTypes);
+        let type = pickType(difficulty.availableTypes);
+        if (type === "elite" && Math.random() < 0.5) {
+            type = pickType(
+                difficulty.availableTypes.filter((t) => t !== "elite"),
+            );
+        }
         const hw = PLAYFIELD.halfWidth - 1;
 
         if (type === "swarm") {

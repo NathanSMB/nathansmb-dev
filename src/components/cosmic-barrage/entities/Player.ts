@@ -7,12 +7,18 @@ export function createPlayer(scene: THREE.Scene): PlayerState {
     const group = new THREE.Group();
 
     const bodyGeo = new THREE.ConeGeometry(0.5, 1.2, 4);
-    const body = new THREE.Mesh(bodyGeo, createNeonMaterial(COLORS.player, 3));
+    const body = new THREE.Mesh(
+        bodyGeo,
+        createNeonMaterial(COLORS.player, 1.5),
+    );
     body.rotation.x = -Math.PI / 2;
     group.add(body);
 
     const wingGeo = new THREE.BoxGeometry(1.6, 0.05, 0.4);
-    const wing = new THREE.Mesh(wingGeo, createNeonMaterial(COLORS.player, 2));
+    const wing = new THREE.Mesh(
+        wingGeo,
+        createNeonMaterial(COLORS.player, 1.2),
+    );
     wing.position.z = 0.2;
     group.add(wing);
 

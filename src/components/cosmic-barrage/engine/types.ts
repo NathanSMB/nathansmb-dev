@@ -40,6 +40,7 @@ export interface EnemyState extends Entity {
     lastShotTime: number;
     canShoot: boolean;
     spawnTime: number;
+    collisionRadius: number;
 }
 
 export interface ProjectileState extends Entity {
@@ -78,6 +79,7 @@ export interface GameState {
     activePowerUps: ActivePowerUp[];
     particles: ParticleData[];
     difficulty: number;
+    powerUpPrdCount: number;
 }
 
 export interface GameCallbacks {

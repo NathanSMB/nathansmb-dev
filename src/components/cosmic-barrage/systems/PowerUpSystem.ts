@@ -2,6 +2,7 @@ import * as THREE from "three";
 import type { PowerUpState, ActivePowerUp, PowerUpType } from "../engine/types";
 import { POWERUP, COLORS } from "../engine/constants";
 import { createNeonMaterial } from "../scene/materials";
+import { createPowerUpModel } from "../entities/meshes";
 
 const POWERUP_COLORS: Record<PowerUpType, number> = {
     "rapid-fire": COLORS.powerUpRapidFire,
@@ -11,27 +12,45 @@ const POWERUP_COLORS: Record<PowerUpType, number> = {
     piercing: COLORS.powerUpPiercing,
 };
 
-const powerUpGeo = new THREE.OctahedronGeometry(0.3, 0);
+const POWERUP_EMISSIVE: Record<PowerUpType, number> = {
+    "rapid-fire": 1.5,
+    "spread-shot": 1.5,
+    "shield-recharge": 1.5,
+    "score-multiplier": 1.5,
+    piercing: 1.5,
+};
 
 export function createPowerUp(
     x: number,
     z: number,
     scene: THREE.Scene,
-): PowerUpState | null {
-    if (Math.random() > POWERUP.dropChance) return null;
+    prdCount: number,
+): { powerUp: PowerUpState | null; prdCount: number } {
+    const nextCount = prdCount + 1;
+    const chance = POWERUP.prdC * nextCount;
+
+    if (Math.random() > chance) {
+        return { powerUp: null, prdCount: nextCount };
+    }
 
     const type =
         POWERUP.types[Math.floor(Math.random() * POWERUP.types.length)];
     const color = POWERUP_COLORS[type];
-    const mesh = new THREE.Mesh(powerUpGeo, createNeonMaterial(color, 3));
+    const mesh = createPowerUpModel(
+        type,
+        createNeonMaterial(color, POWERUP_EMISSIVE[type]),
+    );
     mesh.position.set(x, 0.5, z);
     scene.add(mesh);
 
     return {
-        mesh,
-        velocity: new THREE.Vector3(0, 0, POWERUP.floatSpeed),
-        active: true,
-        type,
+        powerUp: {
+            mesh,
+            velocity: new THREE.Vector3(0, 0, POWERUP.floatSpeed),
+            active: true,
+            type,
+        },
+        prdCount: 0,
     };
 }
 

@@ -32,7 +32,7 @@ export function createGameScene(canvas: HTMLCanvasElement): SceneContext {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(canvas.clientWidth, canvas.clientHeight);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
+    renderer.toneMappingExposure = 1.0;
 
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
