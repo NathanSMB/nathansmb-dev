@@ -30,7 +30,7 @@ export function createGameScene(canvas: HTMLCanvasElement): SceneContext {
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.0;
 
@@ -53,7 +53,7 @@ export function createGameScene(canvas: HTMLCanvasElement): SceneContext {
         const h = canvas.clientHeight;
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
-        renderer.setSize(w, h);
+        renderer.setSize(w, h, false);
         composer.setSize(w, h);
         bloomPass.resolution.set(w, h);
     };

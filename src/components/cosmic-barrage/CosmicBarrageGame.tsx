@@ -1,4 +1,5 @@
 import { onMount, onCleanup, createSignal, Show } from "solid-js";
+import { TbOutlineMaximize, TbOutlineMinimize } from "solid-icons/tb";
 import type { GameStateSnapshot } from "./engine/types";
 import { GameEngine } from "./engine/GameEngine";
 import { PLAYER } from "./engine/constants";
@@ -14,6 +15,7 @@ interface CosmicBarrageGameProps {
 
 export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
     let canvasRef!: HTMLCanvasElement;
+    let wrapperRef!: HTMLDivElement;
     let engine: GameEngine;
 
     const defaultState: GameStateSnapshot = {
@@ -33,8 +35,15 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
     const [finalWave, setFinalWave] = createSignal(0);
     const [leaderboardKey, setLeaderboardKey] = createSignal(0);
     const [muted, setMuted] = createSignal(false);
+    const [fullscreen, setFullscreen] = createSignal(false);
+
+    function onFullscreenChange() {
+        setFullscreen(!!document.fullscreenElement);
+        engine?.resize();
+    }
 
     onMount(() => {
+        document.addEventListener("fullscreenchange", onFullscreenChange);
         engine = new GameEngine({
             onStateChange: (state) => setGameState(state),
             onGameOver: (score, wave) => {
@@ -46,6 +55,7 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
     });
 
     onCleanup(() => {
+        document.removeEventListener("fullscreenchange", onFullscreenChange);
         engine?.unmount();
     });
 
@@ -62,10 +72,18 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
         setMuted(isMuted);
     }
 
+    function handleToggleFullscreen() {
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        } else {
+            wrapperRef.requestFullscreen();
+        }
+    }
+
     return (
         <>
             <style>{css}</style>
-            <div class="cb-game-wrapper">
+            <div class="cb-game-wrapper" ref={wrapperRef!}>
                 <canvas ref={canvasRef!} class="cb-game-canvas" />
 
                 <Show when={gameState().phase === "start"}>
@@ -85,9 +103,21 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
                     />
                 </Show>
 
-                <button class="cb-mute-btn" onClick={handleToggleMute}>
-                    {muted() ? "UNMUTE" : "MUTE"}
-                </button>
+                <div class="cb-btn-row">
+                    <button class="cb-ctrl-btn" onClick={handleToggleMute}>
+                        {muted() ? "UNMUTE" : "MUTE"}
+                    </button>
+                    <button
+                        class="cb-ctrl-btn"
+                        onClick={handleToggleFullscreen}
+                    >
+                        {fullscreen() ? (
+                            <TbOutlineMinimize />
+                        ) : (
+                            <TbOutlineMaximize />
+                        )}
+                    </button>
+                </div>
             </div>
         </>
     );

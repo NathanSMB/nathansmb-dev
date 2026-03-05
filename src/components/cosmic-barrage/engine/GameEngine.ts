@@ -77,11 +77,17 @@ export class GameEngine {
 
         this.state = this.createInitialState();
 
-        this.resizeObserver = new ResizeObserver(() => this.sceneCtx.resize());
+        this.resizeObserver = new ResizeObserver(() => {
+            requestAnimationFrame(() => this.sceneCtx.resize());
+        });
         this.resizeObserver.observe(canvas);
 
         this.emitState();
         this.loop(performance.now());
+    }
+
+    resize() {
+        this.sceneCtx.resize();
     }
 
     unmount() {

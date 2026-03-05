@@ -2,15 +2,24 @@
     display: grid;
     grid-template-columns: 1fr 280px;
     gap: 16px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 16px;
-    height: calc(100vh - 64px);
+    flex: 1;
+    min-height: 0;
+    margin: 0;
     box-sizing: border-box;
+}
+
+/* In landscape, nav is a sidebar — use full main height */
+@media (aspect-ratio > 1) {
+    .cb-page {
+        height: 100%;
+    }
 }
 
 .cb-page-game {
     min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cb-page-sidebar {
@@ -23,6 +32,7 @@
 @media (max-width: 800px) {
     .cb-page {
         grid-template-columns: 1fr;
+        flex: initial;
         height: auto;
     }
 
