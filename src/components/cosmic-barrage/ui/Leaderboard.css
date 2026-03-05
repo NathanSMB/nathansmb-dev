@@ -1,4 +1,4 @@
-.si-leaderboard {
+.cb-leaderboard {
     font-family: "Courier New", monospace;
     color: #e0e0e0;
     background: #0a0014;
@@ -8,7 +8,7 @@
     min-width: 240px;
 }
 
-.si-leaderboard-title {
+.cb-leaderboard-title {
     font-size: 1.1rem;
     font-weight: bold;
     color: #ff00ff;
@@ -17,7 +17,7 @@
     text-align: center;
 }
 
-.si-leaderboard-list {
+.cb-leaderboard-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -26,7 +26,7 @@
     gap: 6px;
 }
 
-.si-leaderboard-entry {
+.cb-leaderboard-entry {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -35,28 +35,28 @@
     font-size: 0.8rem;
 }
 
-.si-leaderboard-entry:nth-child(1) {
+.cb-leaderboard-entry:nth-child(1) {
     background: #ffd70015;
     color: #ffd700;
 }
 
-.si-leaderboard-entry:nth-child(2) {
+.cb-leaderboard-entry:nth-child(2) {
     background: #c0c0c010;
     color: #c0c0c0;
 }
 
-.si-leaderboard-entry:nth-child(3) {
+.cb-leaderboard-entry:nth-child(3) {
     background: #cd7f3210;
     color: #cd7f32;
 }
 
-.si-leaderboard-rank {
+.cb-leaderboard-rank {
     width: 24px;
     text-align: center;
     opacity: 0.6;
 }
 
-.si-leaderboard-name {
+.cb-leaderboard-name {
     flex: 1;
     margin-left: 8px;
     overflow: hidden;
@@ -64,13 +64,13 @@
     white-space: nowrap;
 }
 
-.si-leaderboard-score {
+.cb-leaderboard-score {
     font-weight: bold;
     color: #00ffff;
     text-shadow: 0 0 6px #00ffff60;
 }
 
-.si-leaderboard-empty {
+.cb-leaderboard-empty {
     text-align: center;
     color: #ffffff40;
     font-size: 0.8rem;

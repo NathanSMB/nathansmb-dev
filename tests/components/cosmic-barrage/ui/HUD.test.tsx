@@ -1,6 +1,6 @@
 import { render } from "@solidjs/testing-library";
-import HUD from "~/components/space-invaders/ui/HUD";
-import type { GameStateSnapshot } from "~/components/space-invaders/engine/types";
+import HUD from "~/components/cosmic-barrage/ui/HUD";
+import type { GameStateSnapshot } from "~/components/cosmic-barrage/engine/types";
 
 function makeState(overrides?: Partial<GameStateSnapshot>): GameStateSnapshot {
     return {
@@ -32,10 +32,10 @@ describe("HUD", () => {
     it("renders HP and shield bars", () => {
         const { container } = render(() => <HUD state={makeState()} />);
         const hpBar = container.querySelector(
-            ".si-hud-bar-fill--hp",
+            ".cb-hud-bar-fill--hp",
         ) as HTMLElement;
         const shieldBar = container.querySelector(
-            ".si-hud-bar-fill--shield",
+            ".cb-hud-bar-fill--shield",
         ) as HTMLElement;
         expect(hpBar).toBeTruthy();
         expect(shieldBar).toBeTruthy();
@@ -53,6 +53,6 @@ describe("HUD", () => {
 
     it("hides power-ups section when none active", () => {
         const { container } = render(() => <HUD state={makeState()} />);
-        expect(container.querySelector(".si-hud-powerups")).toBeFalsy();
+        expect(container.querySelector(".cb-hud-powerups")).toBeFalsy();
     });
 });

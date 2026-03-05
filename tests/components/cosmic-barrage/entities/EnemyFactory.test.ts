@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { spawnEnemies } from "~/components/space-invaders/entities/EnemyFactory";
-import type { SpawnRequest } from "~/components/space-invaders/systems/SpawnSystem";
+import { spawnEnemies } from "~/components/cosmic-barrage/entities/EnemyFactory";
+import type { SpawnRequest } from "~/components/cosmic-barrage/systems/SpawnSystem";
 
 function makeScene(): THREE.Scene {
     return new THREE.Scene();

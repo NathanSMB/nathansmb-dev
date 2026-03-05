@@ -39,8 +39,8 @@ export const defaultLinks: NavLink[] = [
         label: "Games",
         children: [
             {
-                href: "/games/space-invaders",
-                label: "Space Invaders",
+                href: "/games/cosmic-barrage",
+                label: "Cosmic Barrage",
                 auth: true,
             },
         ],

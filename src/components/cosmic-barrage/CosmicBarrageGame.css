@@ -1,4 +1,4 @@
-.si-game-wrapper {
+.cb-game-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
@@ -8,13 +8,13 @@
     overflow: hidden;
 }
 
-.si-game-canvas {
+.cb-game-canvas {
     display: block;
     width: 100%;
     height: 100%;
 }
 
-.si-mute-btn {
+.cb-mute-btn {
     position: absolute;
     bottom: 12px;
     right: 12px;
@@ -32,7 +32,7 @@
         border-color 0.2s;
 }
 
-.si-mute-btn:hover {
+.cb-mute-btn:hover {
     color: #ffffffcc;
     border-color: #ffffff60;
 }

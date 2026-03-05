@@ -1,4 +1,4 @@
-.si-start {
+.cb-start {
     position: absolute;
     inset: 0;
     display: flex;
@@ -10,7 +10,7 @@
     z-index: 20;
 }
 
-.si-start-title {
+.cb-start-title {
     font-family: "Courier New", monospace;
     font-size: 2.5rem;
     font-weight: bold;
@@ -22,15 +22,15 @@
     letter-spacing: 4px;
 }
 
-.si-start-subtitle {
+.cb-start-subtitle {
     font-family: "Courier New", monospace;
     font-size: 1rem;
     color: #00ffff;
     text-shadow: 0 0 10px #00ffff80;
-    animation: si-blink 1.2s ease-in-out infinite;
+    animation: cb-blink 1.2s ease-in-out infinite;
 }
 
-.si-start-controls {
+.cb-start-controls {
     font-family: "Courier New", monospace;
     font-size: 0.75rem;
     color: #ffffff80;
@@ -38,7 +38,7 @@
     line-height: 1.8;
 }
 
-.si-start-controls kbd {
+.cb-start-controls kbd {
     display: inline-block;
     padding: 2px 8px;
     border: 1px solid #ffffff40;
@@ -47,7 +47,7 @@
     font-family: inherit;
 }
 
-@keyframes si-blink {
+@keyframes cb-blink {
     0%,
     100% {
         opacity: 1;

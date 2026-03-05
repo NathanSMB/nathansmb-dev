@@ -1,8 +1,8 @@
 import {
     getDifficulty,
     shouldSpawnRare,
-} from "~/components/space-invaders/systems/DifficultySystem";
-import { DIFFICULTY } from "~/components/space-invaders/engine/constants";
+} from "~/components/cosmic-barrage/systems/DifficultySystem";
+import { DIFFICULTY } from "~/components/cosmic-barrage/engine/constants";
 
 describe("DifficultySystem", () => {
     describe("getDifficulty", () => {

@@ -2,25 +2,25 @@ import { Show } from "solid-js";
 import { clientOnly } from "@solidjs/start";
 import { requireAuth } from "~/auth/require-auth";
 import Spinner from "~/components/ui/Spinner";
-import "./space-invaders.css";
+import "./cosmic-barrage.css";
 
-const SpaceInvadersGame = clientOnly(
-    () => import("~/components/space-invaders/SpaceInvadersGame"),
+const CosmicBarrageGame = clientOnly(
+    () => import("~/components/cosmic-barrage/CosmicBarrageGame"),
 );
 const Leaderboard = clientOnly(
-    () => import("~/components/space-invaders/ui/Leaderboard"),
+    () => import("~/components/cosmic-barrage/ui/Leaderboard"),
 );
 
-export default function SpaceInvadersPage() {
+export default function CosmicBarragePage() {
     const { authorized } = requireAuth();
 
     return (
         <Show when={authorized()} fallback={<Spinner size="xl" center />}>
-            <main class="si-page">
-                <div class="si-page-game">
-                    <SpaceInvadersGame />
+            <main class="cb-page">
+                <div class="cb-page-game">
+                    <CosmicBarrageGame />
                 </div>
-                <div class="si-page-sidebar">
+                <div class="cb-page-sidebar">
                     <Leaderboard />
                 </div>
             </main>

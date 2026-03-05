@@ -108,7 +108,7 @@ const id = crypto.randomUUID();
 await connection.insert(gameScore).values({
     id,
     userId: session.user.id,
-    game: "space-invaders",
+    game: "cosmic-barrage",
     score: 1500,
     wave: 3,
 });

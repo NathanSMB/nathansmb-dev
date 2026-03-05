@@ -2,9 +2,9 @@ import {
     activatePowerUp,
     cleanupActivePowerUps,
     hasPowerUp,
-} from "~/components/space-invaders/systems/PowerUpSystem";
-import type { ActivePowerUp } from "~/components/space-invaders/engine/types";
-import { POWERUP } from "~/components/space-invaders/engine/constants";
+} from "~/components/cosmic-barrage/systems/PowerUpSystem";
+import type { ActivePowerUp } from "~/components/cosmic-barrage/engine/types";
+import { POWERUP } from "~/components/cosmic-barrage/engine/constants";
 
 describe("PowerUpSystem", () => {
     describe("activatePowerUp", () => {

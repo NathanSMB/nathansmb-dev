@@ -47,7 +47,7 @@ Use `NavLinkGroup` with a `children` array:
 {
     label: "Games",
     children: [
-        { href: "/games/space-invaders", label: "Space Invaders", auth: true },
+        { href: "/games/cosmic-barrage", label: "Cosmic Barrage", auth: true },
         { href: "/games/tetris", label: "Tetris" },
     ],
 },

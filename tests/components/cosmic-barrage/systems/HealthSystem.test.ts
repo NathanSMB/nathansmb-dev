@@ -1,11 +1,11 @@
 import * as THREE from "three";
-import type { PlayerState } from "~/components/space-invaders/engine/types";
-import { PLAYER } from "~/components/space-invaders/engine/constants";
+import type { PlayerState } from "~/components/cosmic-barrage/engine/types";
+import { PLAYER } from "~/components/cosmic-barrage/engine/constants";
 import {
     applyDamage,
     updateShieldRecharge,
     rechargeShieldFull,
-} from "~/components/space-invaders/systems/HealthSystem";
+} from "~/components/cosmic-barrage/systems/HealthSystem";
 
 function makePlayer(overrides?: Partial<PlayerState>): PlayerState {
     return {

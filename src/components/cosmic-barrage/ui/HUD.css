@@ -1,4 +1,4 @@
-.si-hud {
+.cb-hud {
     position: absolute;
     top: 0;
     left: 0;
@@ -14,38 +14,38 @@
     z-index: 10;
 }
 
-.si-hud-left {
+.cb-hud-left {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-.si-hud-score {
+.cb-hud-score {
     font-size: 1.5rem;
     font-weight: bold;
 }
 
-.si-hud-wave {
+.cb-hud-wave {
     font-size: 0.9rem;
     color: #ff00ff;
     text-shadow: 0 0 8px #ff00ff80;
 }
 
-.si-hud-right {
+.cb-hud-right {
     display: flex;
     flex-direction: column;
     gap: 6px;
     align-items: flex-end;
 }
 
-.si-hud-bar {
+.cb-hud-bar {
     display: flex;
     align-items: center;
     gap: 8px;
     font-size: 0.75rem;
 }
 
-.si-hud-bar-track {
+.cb-hud-bar-track {
     width: 120px;
     height: 8px;
     background: #ffffff15;
@@ -53,29 +53,29 @@
     overflow: hidden;
 }
 
-.si-hud-bar-fill {
+.cb-hud-bar-fill {
     height: 100%;
     border-radius: 4px;
     transition: width 0.1s ease;
 }
 
-.si-hud-bar-fill--hp {
+.cb-hud-bar-fill--hp {
     background: #ff0044;
     box-shadow: 0 0 6px #ff004480;
 }
 
-.si-hud-bar-fill--shield {
+.cb-hud-bar-fill--shield {
     background: #0088ff;
     box-shadow: 0 0 6px #0088ff80;
 }
 
-.si-hud-powerups {
+.cb-hud-powerups {
     display: flex;
     gap: 6px;
     margin-top: 4px;
 }
 
-.si-hud-powerup {
+.cb-hud-powerup {
     font-size: 0.65rem;
     padding: 2px 6px;
     border-radius: 4px;
@@ -83,15 +83,15 @@
     border: 1px solid currentColor;
 }
 
-.si-hud-powerup--rapid-fire {
+.cb-hud-powerup--rapid-fire {
     color: #ff8800;
 }
-.si-hud-powerup--spread-shot {
+.cb-hud-powerup--spread-shot {
     color: #00ff00;
 }
-.si-hud-powerup--score-multiplier {
+.cb-hud-powerup--score-multiplier {
     color: #ffdd00;
 }
-.si-hud-powerup--piercing {
+.cb-hud-powerup--piercing {
     color: #ff00ff;
 }

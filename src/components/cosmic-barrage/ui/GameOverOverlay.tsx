@@ -22,7 +22,7 @@ export default function GameOverOverlay(props: GameOverOverlayProps) {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    game: "space-invaders",
+                    game: "cosmic-barrage",
                     score: props.score,
                     wave: props.wave,
                 }),
@@ -39,19 +39,19 @@ export default function GameOverOverlay(props: GameOverOverlayProps) {
     return (
         <>
             <style>{css}</style>
-            <div class="si-gameover">
-                <div class="si-gameover-title">GAME OVER</div>
-                <div class="si-gameover-score">
+            <div class="cb-gameover">
+                <div class="cb-gameover-title">GAME OVER</div>
+                <div class="cb-gameover-score">
                     {props.score.toLocaleString()}
                 </div>
-                <div class="si-gameover-wave">WAVE {props.wave}</div>
-                <div class="si-gameover-actions">
+                <div class="cb-gameover-wave">WAVE {props.wave}</div>
+                <div class="cb-gameover-actions">
                     <Show
                         when={session()?.data}
                         fallback={
                             <a
-                                class="si-gameover-login"
-                                href="/login?redirect=/games/space-invaders"
+                                class="cb-gameover-login"
+                                href="/login?redirect=/games/cosmic-barrage"
                             >
                                 Log in to submit score
                             </a>
@@ -61,7 +61,7 @@ export default function GameOverOverlay(props: GameOverOverlayProps) {
                             when={!submitted()}
                             fallback={
                                 <button
-                                    class="si-gameover-btn si-gameover-btn--submitted"
+                                    class="cb-gameover-btn cb-gameover-btn--submitted"
                                     disabled
                                 >
                                     Score Submitted
@@ -69,7 +69,7 @@ export default function GameOverOverlay(props: GameOverOverlayProps) {
                             }
                         >
                             <button
-                                class="si-gameover-btn si-gameover-btn--submit"
+                                class="cb-gameover-btn cb-gameover-btn--submit"
                                 onClick={submitScore}
                                 disabled={submitting()}
                             >
@@ -80,7 +80,7 @@ export default function GameOverOverlay(props: GameOverOverlayProps) {
                         </Show>
                     </Show>
                     <button
-                        class="si-gameover-btn si-gameover-btn--play"
+                        class="cb-gameover-btn cb-gameover-btn--play"
                         onClick={props.onPlayAgain}
                     >
                         Play Again

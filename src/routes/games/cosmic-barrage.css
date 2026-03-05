@@ -1,4 +1,4 @@
-.si-page {
+.cb-page {
     display: grid;
     grid-template-columns: 1fr 280px;
     gap: 16px;
@@ -9,11 +9,11 @@
     box-sizing: border-box;
 }
 
-.si-page-game {
+.cb-page-game {
     min-height: 0;
 }
 
-.si-page-sidebar {
+.cb-page-sidebar {
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -21,12 +21,12 @@
 }
 
 @media (max-width: 800px) {
-    .si-page {
+    .cb-page {
         grid-template-columns: 1fr;
         height: auto;
     }
 
-    .si-page-game {
+    .cb-page-game {
         min-height: 500px;
     }
 }

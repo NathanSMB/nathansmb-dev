@@ -9,7 +9,7 @@ Create a `.tsx` file in `src/routes/` — the file path becomes the URL.
 | File                                  | URL                     |
 | ------------------------------------- | ----------------------- |
 | `src/routes/about.tsx`                | `/about`                |
-| `src/routes/games/space-invaders.tsx` | `/games/space-invaders` |
+| `src/routes/games/cosmic-barrage.tsx` | `/games/cosmic-barrage` |
 | `src/routes/admin/index.tsx`          | `/admin`                |
 
 ### Basic page (no auth)

@@ -16,7 +16,7 @@ interface LeaderboardProps {
 async function fetchScores(): Promise<LeaderboardEntry[]> {
     if (isServer) return [];
     const res = await fetch(
-        "/api/games/leaderboard?game=space-invaders&limit=10",
+        "/api/games/leaderboard?game=cosmic-barrage&limit=10",
     );
     if (!res.ok) return [];
     return res.json();
@@ -30,25 +30,25 @@ export default function Leaderboard(props: LeaderboardProps) {
     return (
         <>
             <style>{css}</style>
-            <div class="si-leaderboard">
-                <div class="si-leaderboard-title">TOP SCORES</div>
+            <div class="cb-leaderboard">
+                <div class="cb-leaderboard-title">TOP SCORES</div>
                 <Show
                     when={scores()?.length}
                     fallback={
-                        <div class="si-leaderboard-empty">No scores yet</div>
+                        <div class="cb-leaderboard-empty">No scores yet</div>
                     }
                 >
-                    <ol class="si-leaderboard-list">
+                    <ol class="cb-leaderboard-list">
                         <For each={scores()}>
                             {(entry, i) => (
-                                <li class="si-leaderboard-entry">
-                                    <span class="si-leaderboard-rank">
+                                <li class="cb-leaderboard-entry">
+                                    <span class="cb-leaderboard-rank">
                                         {i() + 1}
                                     </span>
-                                    <span class="si-leaderboard-name">
+                                    <span class="cb-leaderboard-name">
                                         {entry.userName}
                                     </span>
-                                    <span class="si-leaderboard-score">
+                                    <span class="cb-leaderboard-score">
                                         {entry.score.toLocaleString()}
                                     </span>
                                 </li>

@@ -17,30 +17,30 @@ export default function HUD(props: HUDProps) {
     return (
         <>
             <style>{css}</style>
-            <div class="si-hud">
-                <div class="si-hud-left">
-                    <div class="si-hud-score">
+            <div class="cb-hud">
+                <div class="cb-hud-left">
+                    <div class="cb-hud-score">
                         {props.state.score.toLocaleString()}
                     </div>
-                    <div class="si-hud-wave">WAVE {props.state.wave}</div>
+                    <div class="cb-hud-wave">WAVE {props.state.wave}</div>
                 </div>
-                <div class="si-hud-right">
-                    <div class="si-hud-bar">
+                <div class="cb-hud-right">
+                    <div class="cb-hud-bar">
                         <span>HP</span>
-                        <div class="si-hud-bar-track">
+                        <div class="cb-hud-bar-track">
                             <div
-                                class="si-hud-bar-fill si-hud-bar-fill--hp"
+                                class="cb-hud-bar-fill cb-hud-bar-fill--hp"
                                 style={{
                                     width: `${(props.state.hp / props.state.maxHp) * 100}%`,
                                 }}
                             />
                         </div>
                     </div>
-                    <div class="si-hud-bar">
+                    <div class="cb-hud-bar">
                         <span>SH</span>
-                        <div class="si-hud-bar-track">
+                        <div class="cb-hud-bar-track">
                             <div
-                                class="si-hud-bar-fill si-hud-bar-fill--shield"
+                                class="cb-hud-bar-fill cb-hud-bar-fill--shield"
                                 style={{
                                     width: `${(props.state.shield / props.state.maxShield) * 100}%`,
                                 }}
@@ -48,11 +48,11 @@ export default function HUD(props: HUDProps) {
                         </div>
                     </div>
                     <Show when={props.state.activePowerUps.length > 0}>
-                        <div class="si-hud-powerups">
+                        <div class="cb-hud-powerups">
                             <For each={props.state.activePowerUps}>
                                 {(pu) => (
                                     <span
-                                        class={`si-hud-powerup si-hud-powerup--${pu.type}`}
+                                        class={`cb-hud-powerup cb-hud-powerup--${pu.type}`}
                                     >
                                         {POWERUP_LABELS[pu.type] ?? pu.type}
                                     </span>

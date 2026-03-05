@@ -1,5 +1,5 @@
-import { SpawnSystem } from "~/components/space-invaders/systems/SpawnSystem";
-import type { DifficultyState } from "~/components/space-invaders/systems/DifficultySystem";
+import { SpawnSystem } from "~/components/cosmic-barrage/systems/SpawnSystem";
+import type { DifficultyState } from "~/components/cosmic-barrage/systems/DifficultySystem";
 
 function makeDifficulty(overrides?: Partial<DifficultyState>): DifficultyState {
     return {

@@ -4,10 +4,10 @@ export default function StartScreen() {
     return (
         <>
             <style>{css}</style>
-            <div class="si-start">
-                <div class="si-start-title">SPACE INVADERS</div>
-                <div class="si-start-subtitle">PRESS SPACE TO START</div>
-                <div class="si-start-controls">
+            <div class="cb-start">
+                <div class="cb-start-title">COSMIC BARRAGE</div>
+                <div class="cb-start-subtitle">PRESS SPACE TO START</div>
+                <div class="cb-start-controls">
                     <kbd>A</kbd> / <kbd>D</kbd> or <kbd>&larr;</kbd> /{" "}
                     <kbd>&rarr;</kbd> to move
                     <br />

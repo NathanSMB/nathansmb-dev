@@ -1,9 +1,9 @@
 import {
     checkAABBOverlap,
     detectCollisions,
-} from "~/components/space-invaders/systems/CollisionSystem";
+} from "~/components/cosmic-barrage/systems/CollisionSystem";
 import * as THREE from "three";
-import type { Entity } from "~/components/space-invaders/engine/types";
+import type { Entity } from "~/components/cosmic-barrage/engine/types";
 
 function makeEntity(x: number, z: number, active = true): Entity {
     const mesh = new THREE.Object3D();

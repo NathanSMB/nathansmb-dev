@@ -1,4 +1,4 @@
-import { InputSystem } from "~/components/space-invaders/systems/InputSystem";
+import { InputSystem } from "~/components/cosmic-barrage/systems/InputSystem";
 
 describe("InputSystem", () => {
     let input: InputSystem;

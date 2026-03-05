@@ -6,13 +6,13 @@ import HUD from "./ui/HUD";
 import StartScreen from "./ui/StartScreen";
 import GameOverOverlay from "./ui/GameOverOverlay";
 import Leaderboard from "./ui/Leaderboard";
-import css from "./SpaceInvadersGame.css?inline";
+import css from "./CosmicBarrageGame.css?inline";
 
-interface SpaceInvadersGameProps {
+interface CosmicBarrageGameProps {
     showLeaderboard?: boolean;
 }
 
-export default function SpaceInvadersGame(props: SpaceInvadersGameProps) {
+export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
     let canvasRef!: HTMLCanvasElement;
     let engine: GameEngine;
 
@@ -65,8 +65,8 @@ export default function SpaceInvadersGame(props: SpaceInvadersGameProps) {
     return (
         <>
             <style>{css}</style>
-            <div class="si-game-wrapper">
-                <canvas ref={canvasRef!} class="si-game-canvas" />
+            <div class="cb-game-wrapper">
+                <canvas ref={canvasRef!} class="cb-game-canvas" />
 
                 <Show when={gameState().phase === "start"}>
                     <StartScreen />
@@ -85,7 +85,7 @@ export default function SpaceInvadersGame(props: SpaceInvadersGameProps) {
                     />
                 </Show>
 
-                <button class="si-mute-btn" onClick={handleToggleMute}>
+                <button class="cb-mute-btn" onClick={handleToggleMute}>
                     {muted() ? "UNMUTE" : "MUTE"}
                 </button>
             </div>
