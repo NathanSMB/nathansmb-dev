@@ -6,7 +6,6 @@ import { PLAYER } from "./engine/constants";
 import HUD from "./ui/HUD";
 import StartScreen from "./ui/StartScreen";
 import GameOverOverlay from "./ui/GameOverOverlay";
-import Leaderboard from "./ui/Leaderboard";
 import css from "./CosmicBarrageGame.css?inline";
 
 interface CosmicBarrageGameProps {
@@ -33,7 +32,6 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
         createSignal<GameStateSnapshot>(defaultState);
     const [finalScore, setFinalScore] = createSignal(0);
     const [finalWave, setFinalWave] = createSignal(0);
-    const [leaderboardKey, setLeaderboardKey] = createSignal(0);
     const [muted, setMuted] = createSignal(false);
     const [fullscreen, setFullscreen] = createSignal(false);
 
@@ -64,7 +62,7 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
     }
 
     function handleScoreSubmitted() {
-        setLeaderboardKey((k) => k + 1);
+        window.dispatchEvent(new Event("leaderboard-refresh"));
     }
 
     function handleToggleMute() {

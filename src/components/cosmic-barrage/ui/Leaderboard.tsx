@@ -1,4 +1,4 @@
-import { createResource, For, Show, onMount } from "solid-js";
+import { createResource, For, Show, onMount, onCleanup } from "solid-js";
 import { isServer } from "solid-js/web";
 import css from "./Leaderboard.css?inline";
 
@@ -7,10 +7,6 @@ interface LeaderboardEntry {
     score: number;
     wave: number;
     userName: string;
-}
-
-interface LeaderboardProps {
-    refreshSignal?: number;
 }
 
 async function fetchScores(): Promise<LeaderboardEntry[]> {
@@ -22,10 +18,18 @@ async function fetchScores(): Promise<LeaderboardEntry[]> {
     return res.json();
 }
 
-export default function Leaderboard(props: LeaderboardProps) {
+export default function Leaderboard() {
     const [scores, { refetch }] = createResource(fetchScores);
 
-    const refresh = () => refetch();
+    const onRefresh = () => refetch();
+
+    onMount(() => {
+        window.addEventListener("leaderboard-refresh", onRefresh);
+    });
+
+    onCleanup(() => {
+        window.removeEventListener("leaderboard-refresh", onRefresh);
+    });
 
     return (
         <>
@@ -60,5 +64,3 @@ export default function Leaderboard(props: LeaderboardProps) {
         </>
     );
 }
-
-export { type LeaderboardProps };
