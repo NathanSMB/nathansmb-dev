@@ -23,7 +23,6 @@ describe("defaultLinks", () => {
                     {
                         href: "/games/cosmic-barrage",
                         label: "Cosmic Barrage",
-                        auth: true,
                     },
                 ],
             },

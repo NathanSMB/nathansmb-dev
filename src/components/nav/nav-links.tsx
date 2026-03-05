@@ -41,7 +41,6 @@ export const defaultLinks: NavLink[] = [
             {
                 href: "/games/cosmic-barrage",
                 label: "Cosmic Barrage",
-                auth: true,
             },
         ],
     },
