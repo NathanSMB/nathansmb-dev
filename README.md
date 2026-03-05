@@ -2,24 +2,25 @@
 
 A SolidStart application.
 
+## Documentation
+
+- [Auth & Access Control](docs/auth.md) — Authentication, roles, and route guards
+- [Database](docs/database.md) — Drizzle ORM, Neon PostgreSQL, schema conventions
+- [API Routes](docs/api.md) — Endpoints, batch streaming protocol
+- [UI Components](docs/ui-components.md) — Reusable component reference
+
 ## Setup
 
-After install dependencies and mark the auto-generated auth schema as unchanged:
+Install dependencies:
 
 ```sh
 bun install
 ```
 
-`src/database/schemas/auth.ts` is auto-generated and should not be committed. It will be autogenerate on `prebuild` and `predev`. Otherwise you can run the following to regenerate it:
+`src/database/schemas/auth.ts` is auto-generated and gitignored. It regenerates automatically on `predev` and `prebuild`, or manually with:
 
 ```sh
 bun run generate-auth-schema
-```
-
-Run the following command to make it easier to avoid commiting the auth schema.
-
-```sh
-git update-index --assume-unchanged src/database/schemas/auth.ts
 ```
 
 To push schema changes to the database:
