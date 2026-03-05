@@ -1,11 +1,16 @@
+import * as THREE from "three";
 import { InputSystem } from "~/components/cosmic-barrage/systems/InputSystem";
 
 describe("InputSystem", () => {
     let input: InputSystem;
+    let canvas: HTMLCanvasElement;
+    let camera: THREE.PerspectiveCamera;
 
     beforeEach(() => {
         input = new InputSystem();
-        input.attach();
+        canvas = document.createElement("canvas");
+        camera = new THREE.PerspectiveCamera(60, 1, 0.1, 200);
+        input.attach(canvas, camera);
     });
 
     afterEach(() => {

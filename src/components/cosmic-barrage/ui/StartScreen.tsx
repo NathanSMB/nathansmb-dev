@@ -6,12 +6,14 @@ export default function StartScreen() {
             <style>{css}</style>
             <div class="cb-start">
                 <div class="cb-start-title">COSMIC BARRAGE</div>
-                <div class="cb-start-subtitle">PRESS SPACE TO START</div>
+                <div class="cb-start-subtitle">PRESS SPACE OR TAP TO START</div>
                 <div class="cb-start-controls">
                     <kbd>A</kbd> / <kbd>D</kbd> or <kbd>&larr;</kbd> /{" "}
-                    <kbd>&rarr;</kbd> to move
+                    <kbd>&rarr;</kbd> to move &mdash; <kbd>SPACE</kbd> to shoot
                     <br />
-                    <kbd>SPACE</kbd> to shoot
+                    Mouse hover to move &mdash; Click to shoot
+                    <br />
+                    Touch to move &mdash; Second finger to shoot
                 </div>
             </div>
         </>

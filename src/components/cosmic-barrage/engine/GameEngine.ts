@@ -73,7 +73,7 @@ export class GameEngine {
         this.particleSystem = new ParticleSystem(this.sceneCtx.scene);
         this.sfx = new SoundEffects(this.audioManager);
         this.music = new SynthMusic(this.audioManager);
-        this.input.attach();
+        this.input.attach(canvas, this.sceneCtx.camera);
 
         this.state = this.createInitialState();
 
@@ -192,15 +192,23 @@ export class GameEngine {
 
     private updatePlayer(dt: number) {
         const p = this.state.player;
-        p.velocity.x = 0;
-        if (this.input.left) p.velocity.x = -PLAYER.speed;
-        if (this.input.right) p.velocity.x = PLAYER.speed;
+        const pointerX = this.input.pointerWorldX;
+        if (pointerX !== null) {
+            p.mesh.position.x = Math.max(
+                -PLAYFIELD.halfWidth + 0.5,
+                Math.min(PLAYFIELD.halfWidth - 0.5, pointerX),
+            );
+        } else {
+            p.velocity.x = 0;
+            if (this.input.left) p.velocity.x = -PLAYER.speed;
+            if (this.input.right) p.velocity.x = PLAYER.speed;
 
-        p.mesh.position.x += p.velocity.x * dt;
-        p.mesh.position.x = Math.max(
-            -PLAYFIELD.halfWidth + 0.5,
-            Math.min(PLAYFIELD.halfWidth - 0.5, p.mesh.position.x),
-        );
+            p.mesh.position.x += p.velocity.x * dt;
+            p.mesh.position.x = Math.max(
+                -PLAYFIELD.halfWidth + 0.5,
+                Math.min(PLAYFIELD.halfWidth - 0.5, p.mesh.position.x),
+            );
+        }
 
         const fireRate = hasPowerUp(this.state.activePowerUps, "rapid-fire")
             ? PLAYER.rapidFireRate
