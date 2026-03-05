@@ -65,14 +65,18 @@ export function updatePowerUpVisuals(powerUps: PowerUpState[], time: number) {
 export function cleanupPowerUps(
     powerUps: PowerUpState[],
     scene: THREE.Scene,
-): PowerUpState[] {
-    return powerUps.filter((pu) => {
+): void {
+    let write = 0;
+    for (let read = 0; read < powerUps.length; read++) {
+        const pu = powerUps[read];
         if (!pu.active || pu.mesh.position.z > 14) {
             scene.remove(pu.mesh);
-            return false;
+        } else {
+            if (write !== read) powerUps[write] = pu;
+            write++;
         }
-        return true;
-    });
+    }
+    powerUps.length = write;
 }
 
 export function activatePowerUp(

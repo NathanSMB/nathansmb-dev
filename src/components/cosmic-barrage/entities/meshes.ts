@@ -1,24 +1,37 @@
 import * as THREE from "three";
+import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import type { EnemyType, PowerUpType } from "../engine/types";
 
-export function createEnemyModel(
-    type: EnemyType,
-    mat: THREE.MeshStandardMaterial,
-): THREE.Object3D {
+const enemyGeoCache = new Map<EnemyType, THREE.BufferGeometry>();
+const powerUpGeoCache = new Map<PowerUpType, THREE.BufferGeometry>();
+
+function bakeGroupToGeometry(group: THREE.Group): THREE.BufferGeometry {
+    const geometries: THREE.BufferGeometry[] = [];
+    group.updateMatrixWorld(true);
+    group.traverse((child) => {
+        if ((child as THREE.Mesh).isMesh) {
+            const mesh = child as THREE.Mesh;
+            const geo = mesh.geometry.clone();
+            geo.applyMatrix4(mesh.matrixWorld);
+            geometries.push(geo);
+        }
+    });
+    const merged = mergeGeometries(geometries, false);
+    for (const geo of geometries) geo.dispose();
+    return merged!;
+}
+
+function buildEnemyGroup(type: EnemyType): THREE.Group {
+    const mat = new THREE.MeshBasicMaterial(); // dummy, not used in merged geo
     switch (type) {
         case "basic": {
-            // Diamond drone: two cones point-to-point + 4 equator fins
             const group = new THREE.Group();
-
-            // Upper cone
             const upper = new THREE.Mesh(
                 new THREE.ConeGeometry(0.25, 0.35, 6),
                 mat,
             );
             upper.position.y = 0.175;
             group.add(upper);
-
-            // Lower cone (inverted)
             const lower = new THREE.Mesh(
                 new THREE.ConeGeometry(0.25, 0.35, 6),
                 mat,
@@ -26,8 +39,6 @@ export function createEnemyModel(
             lower.position.y = -0.175;
             lower.rotation.x = Math.PI;
             group.add(lower);
-
-            // 4 small equator fins
             const finGeo = new THREE.BoxGeometry(0.08, 0.1, 0.04);
             for (let i = 0; i < 4; i++) {
                 const angle = (i * Math.PI) / 2;
@@ -40,11 +51,9 @@ export function createEnemyModel(
                 fin.rotation.y = -angle;
                 group.add(fin);
             }
-
             return group;
         }
         case "fast": {
-            // Sleek dart: elongated cone + 2 delta wing boxes
             const group = new THREE.Group();
             const body = new THREE.Mesh(
                 new THREE.ConeGeometry(0.15, 1.0, 4),
@@ -63,27 +72,7 @@ export function createEnemyModel(
             group.add(wingR);
             return group;
         }
-        case "shielded": {
-            // Armored sphere in wireframe cage
-            const group = new THREE.Group();
-            const core = new THREE.Mesh(
-                new THREE.SphereGeometry(0.3, 10, 10),
-                mat,
-            );
-            group.add(core);
-            const cageMat = mat.clone();
-            cageMat.wireframe = true;
-            cageMat.transparent = true;
-            cageMat.opacity = 0.5;
-            const cage = new THREE.Mesh(
-                new THREE.IcosahedronGeometry(0.5, 0),
-                cageMat,
-            );
-            group.add(cage);
-            return group;
-        }
         case "bomber": {
-            // Heavy gunship: box body + cylinder barrel + 2 fin boxes
             const group = new THREE.Group();
             const body = new THREE.Mesh(
                 new THREE.BoxGeometry(0.6, 0.3, 0.5),
@@ -118,20 +107,17 @@ export function createEnemyModel(
         }
         case "elite": {
             const group = new THREE.Group();
-            // Crown ring base
             const ring = new THREE.Mesh(
                 new THREE.TorusGeometry(0.6, 0.08, 8, 24),
                 mat,
             );
             ring.rotation.x = Math.PI / 2;
             group.add(ring);
-            // Central core sphere
             const core = new THREE.Mesh(
                 new THREE.SphereGeometry(0.25, 10, 10),
                 mat,
             );
             group.add(core);
-            // 6 crown spikes
             const spikeGeo = new THREE.ConeGeometry(0.1, 0.5, 4);
             for (let i = 0; i < 6; i++) {
                 const angle = (i * Math.PI * 2) / 6;
@@ -145,7 +131,6 @@ export function createEnemyModel(
                 spike.rotation.x = Math.sin(angle) * 0.3;
                 group.add(spike);
             }
-            // 3 gunner turret barrels between spikes
             const barrelGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.3, 6);
             for (let i = 0; i < 3; i++) {
                 const angle = (i * Math.PI * 2) / 3 + Math.PI / 6;
@@ -162,7 +147,6 @@ export function createEnemyModel(
             return group;
         }
         case "swarm": {
-            // Tiny drone: small sphere + 2 angled wing boxes
             const group = new THREE.Group();
             const core = new THREE.Mesh(
                 new THREE.SphereGeometry(0.12, 8, 8),
@@ -180,16 +164,47 @@ export function createEnemyModel(
             group.add(wR);
             return group;
         }
+        default:
+            return new THREE.Group();
     }
 }
 
-export function createPowerUpModel(
-    type: PowerUpType,
+function getEnemyGeometry(type: EnemyType): THREE.BufferGeometry {
+    let geo = enemyGeoCache.get(type);
+    if (geo) return geo;
+    geo = bakeGroupToGeometry(buildEnemyGroup(type));
+    enemyGeoCache.set(type, geo);
+    return geo;
+}
+
+export function createEnemyModel(
+    type: EnemyType,
     mat: THREE.MeshStandardMaterial,
 ): THREE.Object3D {
+    // Shielded needs 2 materials (solid core + wireframe cage), keep as Group
+    if (type === "shielded") {
+        const group = new THREE.Group();
+        const core = new THREE.Mesh(new THREE.SphereGeometry(0.3, 10, 10), mat);
+        group.add(core);
+        const cageMat = mat.clone();
+        cageMat.wireframe = true;
+        cageMat.transparent = true;
+        cageMat.opacity = 0.5;
+        const cage = new THREE.Mesh(
+            new THREE.IcosahedronGeometry(0.5, 0),
+            cageMat,
+        );
+        group.add(cage);
+        return group;
+    }
+
+    return new THREE.Mesh(getEnemyGeometry(type), mat);
+}
+
+function buildPowerUpGroup(type: PowerUpType): THREE.Group {
+    const mat = new THREE.MeshBasicMaterial();
     switch (type) {
         case "rapid-fire": {
-            // Lightning bolt: zigzag box segments
             const group = new THREE.Group();
             const seg = new THREE.BoxGeometry(0.08, 0.15, 0.06);
             const s1 = new THREE.Mesh(seg, mat);
@@ -212,7 +227,6 @@ export function createPowerUpModel(
             return group;
         }
         case "spread-shot": {
-            // 3 fanning arrows: cone tips + cylinder shafts
             const group = new THREE.Group();
             const angles = [-0.5, 0, 0.5];
             for (const angle of angles) {
@@ -236,7 +250,6 @@ export function createPowerUpModel(
             return group;
         }
         case "shield-recharge": {
-            // Kite shield shape
             const group = new THREE.Group();
             const shape = new THREE.Shape();
             shape.moveTo(0, 0.2);
@@ -262,7 +275,6 @@ export function createPowerUpModel(
             return group;
         }
         case "score-multiplier": {
-            // x2 symbol: 2 crossed bars for "x" + approximation of "2"
             const group = new THREE.Group();
             const barGeo = new THREE.BoxGeometry(0.06, 0.28, 0.06);
             const bar1 = new THREE.Mesh(barGeo, mat);
@@ -273,7 +285,6 @@ export function createPowerUpModel(
             bar2.position.x = -0.1;
             bar2.rotation.z = -0.7;
             group.add(bar2);
-            // "2" approximated with a half-torus + horizontal bar
             const arc = new THREE.Mesh(
                 new THREE.TorusGeometry(0.08, 0.025, 6, 8, Math.PI),
                 mat,
@@ -289,7 +300,6 @@ export function createPowerUpModel(
             return group;
         }
         case "piercing": {
-            // Spear through ring: cone spearhead + cylinder shaft + torus ring
             const group = new THREE.Group();
             const spearhead = new THREE.Mesh(
                 new THREE.ConeGeometry(0.06, 0.15, 4),
@@ -310,5 +320,22 @@ export function createPowerUpModel(
             group.add(ring);
             return group;
         }
+        default:
+            return new THREE.Group();
     }
+}
+
+function getPowerUpGeometry(type: PowerUpType): THREE.BufferGeometry {
+    let geo = powerUpGeoCache.get(type);
+    if (geo) return geo;
+    geo = bakeGroupToGeometry(buildPowerUpGroup(type));
+    powerUpGeoCache.set(type, geo);
+    return geo;
+}
+
+export function createPowerUpModel(
+    type: PowerUpType,
+    mat: THREE.MeshStandardMaterial,
+): THREE.Mesh {
+    return new THREE.Mesh(getPowerUpGeometry(type), mat);
 }

@@ -33,7 +33,7 @@ import {
     createPlayerProjectile,
     createSpreadProjectiles,
     createEnemyProjectile,
-    cleanupProjectiles,
+    cleanupProjectilesInPlace,
 } from "../systems/ProjectileSystem";
 import {
     createPowerUp,
@@ -49,6 +49,17 @@ import { spawnEnemies } from "../entities/EnemyFactory";
 import { AudioManager } from "../audio/AudioManager";
 import { SoundEffects } from "../audio/SoundEffects";
 import { SynthMusic } from "../audio/SynthMusic";
+
+function removeInactive(arr: { active: boolean }[]) {
+    let write = 0;
+    for (let read = 0; read < arr.length; read++) {
+        if (arr[read].active) {
+            if (write !== read) arr[write] = arr[read];
+            write++;
+        }
+    }
+    arr.length = write;
+}
 
 export class GameEngine {
     private sceneCtx!: SceneContext;
@@ -149,7 +160,8 @@ export class GameEngine {
             elapsedTime: 0,
             player,
             enemies: [],
-            projectiles: [],
+            playerProjectiles: [],
+            enemyProjectiles: [],
             powerUps: [],
             activePowerUps: [],
             particles: [],
@@ -253,9 +265,9 @@ export class GameEngine {
                     this.sceneCtx.scene,
                     piercing,
                 );
-                this.state.projectiles.push(...projs);
+                this.state.playerProjectiles.push(...projs);
             } else {
-                this.state.projectiles.push(
+                this.state.playerProjectiles.push(
                     createPlayerProjectile(
                         p.mesh.position.x,
                         p.mesh.position.z - 0.8,
@@ -298,7 +310,7 @@ export class GameEngine {
                         (this.state.player.mesh.position.x -
                             enemy.mesh.position.x) *
                         0.1;
-                    this.state.projectiles.push(
+                    this.state.enemyProjectiles.push(
                         createEnemyProjectile(
                             enemy.mesh.position.x,
                             enemy.mesh.position.z + 0.5,
@@ -324,13 +336,18 @@ export class GameEngine {
             }
         }
 
-        this.state.enemies = enemies.filter((e) => e.active);
+        removeInactive(enemies);
     }
 
     private updateProjectiles(dt: number) {
-        updateMovement(this.state.projectiles, dt);
-        this.state.projectiles = cleanupProjectiles(
-            this.state.projectiles,
+        updateMovement(this.state.playerProjectiles, dt);
+        updateMovement(this.state.enemyProjectiles, dt);
+        cleanupProjectilesInPlace(
+            this.state.playerProjectiles,
+            this.sceneCtx.scene,
+        );
+        cleanupProjectilesInPlace(
+            this.state.enemyProjectiles,
             this.sceneCtx.scene,
         );
     }
@@ -338,25 +355,15 @@ export class GameEngine {
     private updatePowerUps(dt: number) {
         updateMovement(this.state.powerUps, dt);
         updatePowerUpVisuals(this.state.powerUps, this.state.elapsedTime);
-        this.state.powerUps = cleanupPowerUps(
-            this.state.powerUps,
-            this.sceneCtx.scene,
-        );
+        cleanupPowerUps(this.state.powerUps, this.sceneCtx.scene);
     }
 
     private checkCollisions() {
         const s = this.state;
         const scene = this.sceneCtx.scene;
 
-        const playerProjectiles = s.projectiles.filter(
-            (p) => p.isPlayerProjectile,
-        );
-        const enemyProjectiles = s.projectiles.filter(
-            (p) => !p.isPlayerProjectile,
-        );
-
         const projEnemyHits = detectCollisionsWithRadii(
-            playerProjectiles,
+            s.playerProjectiles,
             () => COLLISION.projectileRadius,
             s.enemies,
             (e) => (e as EnemyState).collisionRadius,
@@ -366,7 +373,7 @@ export class GameEngine {
         const hitProjectiles = new Set<ProjectileState>();
 
         for (const { a, b } of projEnemyHits) {
-            const proj = playerProjectiles[a];
+            const proj = s.playerProjectiles[a];
             const enemy = s.enemies[b];
             if (!proj.active || !enemy.active) continue;
 
@@ -378,18 +385,26 @@ export class GameEngine {
 
             if (enemy.hp <= 0) {
                 enemy.active = false;
+                scene.remove(enemy.mesh);
                 hitEnemies.add(b);
                 s.score += enemy.scoreValue * s.scoreMultiplier;
                 this.sfx.explosion();
 
-                const color = new THREE.Color(
-                    (enemy.mesh as THREE.Mesh).material
-                        ? ((
-                              (enemy.mesh as THREE.Mesh)
-                                  .material as THREE.MeshStandardMaterial
-                          ).emissive ?? new THREE.Color(0xff00ff))
-                        : 0xff00ff,
-                );
+                let emissive: THREE.Color | undefined;
+                if ((enemy.mesh as THREE.Mesh).isMesh) {
+                    emissive = (
+                        (enemy.mesh as THREE.Mesh)
+                            .material as THREE.MeshStandardMaterial
+                    ).emissive;
+                } else if (enemy.mesh.children.length > 0) {
+                    emissive = (
+                        (enemy.mesh.children[0] as THREE.Mesh)
+                            .material as THREE.MeshStandardMaterial
+                    ).emissive;
+                }
+                const color = emissive
+                    ? emissive.clone()
+                    : new THREE.Color(0xff00ff);
                 this.particleSystem.emit(
                     enemy.mesh.position.x,
                     enemy.mesh.position.y,
@@ -406,8 +421,6 @@ export class GameEngine {
                 );
                 s.powerUpPrdCount = newPrdCount;
                 if (pu) s.powerUps.push(pu);
-
-                scene.remove(enemy.mesh);
             } else {
                 this.sfx.hit();
             }
@@ -418,14 +431,14 @@ export class GameEngine {
         }
 
         const enemyProjPlayerHits = detectCollisions(
-            enemyProjectiles,
+            s.enemyProjectiles,
             COLLISION.projectileRadius,
             [s.player],
             COLLISION.playerRadius,
         );
 
         for (const { a } of enemyProjPlayerHits) {
-            const proj = enemyProjectiles[a];
+            const proj = s.enemyProjectiles[a];
             if (!proj.active) continue;
             proj.active = false;
             scene.remove(proj.mesh);
@@ -475,7 +488,7 @@ export class GameEngine {
             }
         }
 
-        s.enemies = s.enemies.filter((e) => e.active);
+        removeInactive(s.enemies);
 
         const puHits = detectCollisions(
             s.powerUps,
@@ -501,7 +514,7 @@ export class GameEngine {
             this.sfx.powerup();
         }
 
-        s.powerUps = s.powerUps.filter((p) => p.active);
+        removeInactive(s.powerUps);
     }
 
     private spawnNewEnemies() {
@@ -549,10 +562,12 @@ export class GameEngine {
     private clearEntities() {
         const scene = this.sceneCtx.scene;
         for (const e of this.state.enemies) scene.remove(e.mesh);
-        for (const p of this.state.projectiles) scene.remove(p.mesh);
+        for (const p of this.state.playerProjectiles) scene.remove(p.mesh);
+        for (const p of this.state.enemyProjectiles) scene.remove(p.mesh);
         for (const pu of this.state.powerUps) scene.remove(pu.mesh);
         this.state.enemies = [];
-        this.state.projectiles = [];
+        this.state.playerProjectiles = [];
+        this.state.enemyProjectiles = [];
         this.state.powerUps = [];
     }
 

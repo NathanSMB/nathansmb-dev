@@ -47,16 +47,17 @@ export class ParticleSystem {
     }
 
     update(dt: number) {
-        for (let i = this.particles.length - 1; i >= 0; i--) {
-            const p = this.particles[i];
+        let write = 0;
+        for (let read = 0; read < this.particles.length; read++) {
+            const p = this.particles[read];
             p.life -= dt;
-            if (p.life <= 0) {
-                this.particles.splice(i, 1);
-                continue;
-            }
+            if (p.life <= 0) continue;
             p.position.addScaledVector(p.velocity, dt);
             p.velocity.y -= 5 * dt;
+            if (write !== read) this.particles[write] = p;
+            write++;
         }
+        this.particles.length = write;
 
         this.instancedMesh.count = this.particles.length;
 

@@ -28,7 +28,7 @@ export function createGameScene(canvas: HTMLCanvasElement): SceneContext {
     camera.position.set(0, 24, 22);
     camera.lookAt(0, 0, -2);
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -38,7 +38,10 @@ export function createGameScene(canvas: HTMLCanvasElement): SceneContext {
     composer.addPass(new RenderPass(scene, camera));
 
     const bloomPass = new UnrealBloomPass(
-        new THREE.Vector2(canvas.clientWidth, canvas.clientHeight),
+        new THREE.Vector2(
+            Math.floor(canvas.clientWidth / 2),
+            Math.floor(canvas.clientHeight / 2),
+        ),
         BLOOM.strength,
         BLOOM.radius,
         BLOOM.threshold,
@@ -55,7 +58,7 @@ export function createGameScene(canvas: HTMLCanvasElement): SceneContext {
         camera.updateProjectionMatrix();
         renderer.setSize(w, h, false);
         composer.setSize(w, h);
-        bloomPass.resolution.set(w, h);
+        bloomPass.resolution.set(Math.floor(w / 2), Math.floor(h / 2));
     };
 
     const dispose = () => {

@@ -74,7 +74,8 @@ export interface GameState {
     elapsedTime: number;
     player: PlayerState;
     enemies: EnemyState[];
-    projectiles: ProjectileState[];
+    playerProjectiles: ProjectileState[];
+    enemyProjectiles: ProjectileState[];
     powerUps: PowerUpState[];
     activePowerUps: ActivePowerUp[];
     particles: ParticleData[];

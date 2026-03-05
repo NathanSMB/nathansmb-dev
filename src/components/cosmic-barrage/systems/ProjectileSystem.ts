@@ -86,18 +86,22 @@ export function createEnemyProjectile(
     };
 }
 
-export function cleanupProjectiles(
+export function cleanupProjectilesInPlace(
     projectiles: ProjectileState[],
     scene: THREE.Scene,
-): ProjectileState[] {
-    return projectiles.filter((p) => {
+): void {
+    let write = 0;
+    for (let read = 0; read < projectiles.length; read++) {
+        const p = projectiles[read];
         if (
             !p.active ||
             Math.abs(p.mesh.position.z) > PLAYFIELD.halfDepth + 2
         ) {
             scene.remove(p.mesh);
-            return false;
+        } else {
+            if (write !== read) projectiles[write] = p;
+            write++;
         }
-        return true;
-    });
+    }
+    projectiles.length = write;
 }
