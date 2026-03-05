@@ -1,5 +1,6 @@
 import { onMount, onCleanup, createSignal, Show } from "solid-js";
 import { TbOutlineMaximize, TbOutlineMinimize } from "solid-icons/tb";
+import { authClient } from "~/auth/auth-client";
 import type { GameStateSnapshot } from "./engine/types";
 import { GameEngine } from "./engine/GameEngine";
 import { PLAYER } from "./engine/constants";
@@ -34,10 +35,30 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
     const [finalWave, setFinalWave] = createSignal(0);
     const [muted, setMuted] = createSignal(false);
     const [fullscreen, setFullscreen] = createSignal(false);
+    const [sessionId, setSessionId] = createSignal<string | null>(null);
+    const [sessionLoading, setSessionLoading] = createSignal(false);
+    const session = authClient.useSession();
 
     function onFullscreenChange() {
         setFullscreen(!!document.fullscreenElement);
         engine?.resize();
+    }
+
+    async function createGameSession(): Promise<boolean> {
+        if (!session()?.data) return true;
+        setSessionLoading(true);
+        try {
+            const res = await fetch("/api/games/session", { method: "POST" });
+            if (res.ok) {
+                const { sessionId } = await res.json();
+                setSessionId(sessionId);
+            }
+            return true;
+        } catch {
+            return true;
+        } finally {
+            setSessionLoading(false);
+        }
     }
 
     onMount(() => {
@@ -48,6 +69,7 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
                 setFinalScore(score);
                 setFinalWave(wave);
             },
+            onStartRequested: createGameSession,
         });
         engine.mount(canvasRef);
     });
@@ -57,7 +79,8 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
         engine?.unmount();
     });
 
-    function handlePlayAgain() {
+    async function handlePlayAgain() {
+        await createGameSession();
         engine.startGame();
     }
 
@@ -85,7 +108,7 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
                 <canvas ref={canvasRef!} class="cb-game-canvas" />
 
                 <Show when={gameState().phase === "start"}>
-                    <StartScreen />
+                    <StartScreen loading={sessionLoading()} />
                 </Show>
 
                 <Show when={gameState().phase === "playing"}>
@@ -96,6 +119,7 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
                     <GameOverOverlay
                         score={finalScore()}
                         wave={finalWave()}
+                        gameSessionId={sessionId()}
                         onPlayAgain={handlePlayAgain}
                         onScoreSubmitted={handleScoreSubmitted}
                     />

@@ -27,6 +27,15 @@ export class InputSystem {
     constructor() {
         this.onKeyDown = (e: KeyboardEvent) => {
             this.keys.add(e.code);
+            // Clear mouse pointer so keyboard movement takes over
+            if (
+                e.code === "ArrowLeft" ||
+                e.code === "ArrowRight" ||
+                e.code === "KeyA" ||
+                e.code === "KeyD"
+            ) {
+                this.pointerX = null;
+            }
             if (
                 e.code === "Space" ||
                 e.code === "ArrowLeft" ||

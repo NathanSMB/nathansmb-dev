@@ -5,6 +5,7 @@ import css from "./GameOverOverlay.css?inline";
 interface GameOverOverlayProps {
     score: number;
     wave: number;
+    gameSessionId: string | null;
     onPlayAgain: () => void;
     onScoreSubmitted: () => void;
 }
@@ -25,6 +26,7 @@ export default function GameOverOverlay(props: GameOverOverlayProps) {
                     game: "cosmic-barrage",
                     score: props.score,
                     wave: props.wave,
+                    gameSessionId: props.gameSessionId,
                 }),
             });
             if (res.ok) {

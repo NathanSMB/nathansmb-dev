@@ -85,6 +85,7 @@ export interface GameState {
 export interface GameCallbacks {
     onStateChange: (state: GameStateSnapshot) => void;
     onGameOver: (finalScore: number, wave: number) => void;
+    onStartRequested?: () => Promise<boolean>;
 }
 
 export interface GameStateSnapshot {

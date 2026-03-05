@@ -63,6 +63,7 @@ export class GameEngine {
     private lastTime = 0;
     private callbacks: GameCallbacks;
     private resizeObserver: ResizeObserver | null = null;
+    private startPending = false;
 
     constructor(callbacks: GameCallbacks) {
         this.callbacks = callbacks;
@@ -98,6 +99,16 @@ export class GameEngine {
         this.particleSystem.dispose(this.sceneCtx.scene);
         this.resizeObserver?.disconnect();
         this.sceneCtx.dispose();
+    }
+
+    private async requestStart() {
+        if (this.callbacks.onStartRequested) {
+            this.startPending = true;
+            const allowed = await this.callbacks.onStartRequested();
+            this.startPending = false;
+            if (!allowed) return;
+        }
+        this.startGame();
     }
 
     startGame() {
@@ -151,8 +162,8 @@ export class GameEngine {
         this.lastTime = now;
 
         if (this.state.phase === "start") {
-            if (this.input.start) {
-                this.startGame();
+            if (this.input.start && !this.startPending) {
+                this.requestStart();
             }
         } else if (this.state.phase === "playing") {
             this.updatePlaying(dt);

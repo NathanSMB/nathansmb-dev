@@ -1,7 +1,7 @@
 import type { APIEvent } from "@solidjs/start/server";
 import { auth } from "~/auth/core";
 import { connection } from "~/database/connection";
-import { gameScore, user } from "~/database/schema";
+import { gameScore, gameSession, user } from "~/database/schema";
 import { desc, eq, and, gt } from "drizzle-orm";
 
 export async function GET(event: APIEvent) {
@@ -39,12 +39,13 @@ export async function POST(event: APIEvent) {
     }
 
     const body = await event.request.json();
-    const { game, score, wave } = body;
+    const { game, score, wave, gameSessionId } = body;
 
     if (
         typeof game !== "string" ||
         typeof score !== "number" ||
-        typeof wave !== "number"
+        typeof wave !== "number" ||
+        typeof gameSessionId !== "string"
     ) {
         return new Response("Invalid request body", { status: 400 });
     }
@@ -58,22 +59,42 @@ export async function POST(event: APIEvent) {
         return new Response("Invalid score or wave value", { status: 400 });
     }
 
-    const fiveSecondsAgo = new Date(Date.now() - 5000);
-    const recent = await connection
-        .select({ id: gameScore.id })
-        .from(gameScore)
-        .where(
-            and(
-                eq(gameScore.userId, session.user.id),
-                eq(gameScore.game, game),
-                gt(gameScore.createdAt, fiveSecondsAgo),
-            ),
-        )
+    // Validate game session
+    const [gs] = await connection
+        .select()
+        .from(gameSession)
+        .where(eq(gameSession.id, gameSessionId))
         .limit(1);
 
-    if (recent.length > 0) {
-        return new Response("Score submitted too recently", { status: 429 });
+    if (!gs) {
+        return new Response("Invalid game session", { status: 400 });
     }
+    if (gs.userId !== session.user.id) {
+        return new Response("Session does not belong to user", { status: 403 });
+    }
+    if (gs.submitted) {
+        return new Response("Session already submitted", { status: 409 });
+    }
+
+    // Plausibility checks
+    const now = new Date();
+    const durationSeconds = (now.getTime() - gs.startedAt.getTime()) / 1000;
+
+    if (durationSeconds < 5) {
+        return new Response("Game too short", { status: 400 });
+    }
+    if (wave > Math.floor(durationSeconds / 30) + 2) {
+        return new Response("Implausible wave count", { status: 400 });
+    }
+    if (score > durationSeconds * 3000) {
+        return new Response("Implausible score", { status: 400 });
+    }
+
+    // Mark session as submitted
+    await connection
+        .update(gameSession)
+        .set({ submitted: true, endedAt: now })
+        .where(eq(gameSession.id, gameSessionId));
 
     const id = crypto.randomUUID();
     const [created] = await connection
