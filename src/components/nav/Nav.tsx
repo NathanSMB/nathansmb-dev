@@ -4,7 +4,14 @@ import { authClient } from "~/auth/auth-client";
 import Avatar from "~/components/ui/Avatar";
 import Spinner from "~/components/ui/Spinner";
 import { TbOutlineLogin } from "solid-icons/tb";
-import { defaultLinks, getSectionLinks } from "./nav-links";
+import {
+    defaultLinks,
+    getSectionLinks,
+    isNavGroup,
+    filterLinks,
+    type NavLinkGroup,
+    type NavLinkItem,
+} from "./nav-links";
 import css from "./Nav.css?inline";
 
 export default function Nav() {
@@ -12,14 +19,32 @@ export default function Nav() {
     const location = useLocation();
     const [menuOpen, setMenuOpen] = createSignal(false);
     const [linksOpen, setLinksOpen] = createSignal(false);
+    const [closedGroups, setClosedGroups] = createSignal<Set<string>>(
+        new Set(),
+    );
     let navRef: HTMLElement | undefined;
+
     const links = () => {
         const base = getSectionLinks(location.pathname) ?? defaultLinks;
         const loggedIn = !!session().data;
-        return base.filter((l) => !l.auth || loggedIn);
+        return filterLinks(base, loggedIn);
     };
 
     const isActive = (path: string) => location.pathname === path;
+
+    const toggleGroup = (label: string) => {
+        setClosedGroups((prev) => {
+            const next = new Set(prev);
+            if (next.has(label)) {
+                next.delete(label);
+            } else {
+                next.add(label);
+            }
+            return next;
+        });
+    };
+
+    const isGroupOpen = (label: string) => !closedGroups().has(label);
 
     const closeMenu = () => setMenuOpen(false);
     const closeLinks = () => setLinksOpen(false);
@@ -78,13 +103,74 @@ export default function Nav() {
                     >
                         <For each={links()}>
                             {(link) => (
-                                <a
-                                    href={link.href}
-                                    class={isActive(link.href) ? "active" : ""}
-                                    onClick={closeLinks}
+                                <Show
+                                    when={isNavGroup(link) ? link : undefined}
+                                    fallback={
+                                        <a
+                                            href={(link as NavLinkItem).href}
+                                            class={
+                                                isActive(
+                                                    (link as NavLinkItem).href,
+                                                )
+                                                    ? "active"
+                                                    : ""
+                                            }
+                                            onClick={closeLinks}
+                                        >
+                                            {link.label}
+                                        </a>
+                                    }
                                 >
-                                    {link.label}
-                                </a>
+                                    {(group) => (
+                                        <div class="nav-group">
+                                            <button
+                                                class={`nav-group-toggle${isGroupOpen(group().label) ? " open" : ""}`}
+                                                onClick={() =>
+                                                    toggleGroup(group().label)
+                                                }
+                                                aria-expanded={isGroupOpen(
+                                                    group().label,
+                                                )}
+                                            >
+                                                {group().label}
+                                                <span class="nav-group-chevron">
+                                                    &#x25BE;
+                                                </span>
+                                            </button>
+                                            <Show
+                                                when={isGroupOpen(
+                                                    group().label,
+                                                )}
+                                            >
+                                                <div class="nav-group-children">
+                                                    <For
+                                                        each={group().children}
+                                                    >
+                                                        {(child) => (
+                                                            <a
+                                                                href={
+                                                                    child.href
+                                                                }
+                                                                class={
+                                                                    isActive(
+                                                                        child.href,
+                                                                    )
+                                                                        ? "active"
+                                                                        : ""
+                                                                }
+                                                                onClick={
+                                                                    closeLinks
+                                                                }
+                                                            >
+                                                                {child.label}
+                                                            </a>
+                                                        )}
+                                                    </For>
+                                                </div>
+                                            </Show>
+                                        </div>
+                                    )}
+                                </Show>
                             )}
                         </For>
                     </div>
