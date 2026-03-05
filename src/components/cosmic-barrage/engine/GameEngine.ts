@@ -64,6 +64,9 @@ export class GameEngine {
     private callbacks: GameCallbacks;
     private resizeObserver: ResizeObserver | null = null;
     private startPending = false;
+    private fpsFrameCount = 0;
+    private fpsLastTime = 0;
+    private fpsValue = 0;
 
     constructor(callbacks: GameCallbacks) {
         this.callbacks = callbacks;
@@ -160,6 +163,16 @@ export class GameEngine {
 
         const dt = Math.min((now - this.lastTime) / 1000, 0.05);
         this.lastTime = now;
+
+        this.fpsFrameCount++;
+        const fpsElapsed = now - this.fpsLastTime;
+        if (fpsElapsed >= 500) {
+            this.fpsValue = Math.round(
+                (this.fpsFrameCount / fpsElapsed) * 1000,
+            );
+            this.fpsFrameCount = 0;
+            this.fpsLastTime = now;
+        }
 
         if (this.state.phase === "start") {
             if (this.input.start && !this.startPending) {
@@ -554,6 +567,7 @@ export class GameEngine {
             shield: s.player.shield,
             maxShield: s.player.maxShield,
             activePowerUps: [...s.activePowerUps],
+            fps: this.fpsValue,
         };
         this.callbacks.onStateChange(snapshot);
     }

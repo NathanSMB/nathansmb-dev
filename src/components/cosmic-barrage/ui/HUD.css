@@ -95,3 +95,12 @@
 .cb-hud-powerup--piercing {
     color: #ff00ff;
 }
+
+.cb-hud-fps {
+    position: fixed;
+    bottom: 12px;
+    left: 16px;
+    font-size: 0.7rem;
+    color: #00ffff;
+    text-shadow: 0 0 8px #00ffff80;
+}

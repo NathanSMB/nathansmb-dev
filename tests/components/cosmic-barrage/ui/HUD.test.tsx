@@ -12,6 +12,7 @@ function makeState(overrides?: Partial<GameStateSnapshot>): GameStateSnapshot {
         shield: 60,
         maxShield: 100,
         activePowerUps: [],
+        fps: 60,
         ...overrides,
     };
 }

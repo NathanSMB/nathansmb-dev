@@ -27,6 +27,7 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
         shield: PLAYER.shield,
         maxShield: PLAYER.shield,
         activePowerUps: [],
+        fps: 0,
     };
 
     const [gameState, setGameState] =

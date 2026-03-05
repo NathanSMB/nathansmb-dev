@@ -97,4 +97,5 @@ export interface GameStateSnapshot {
     shield: number;
     maxShield: number;
     activePowerUps: ActivePowerUp[];
+    fps: number;
 }

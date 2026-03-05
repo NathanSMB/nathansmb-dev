@@ -1,4 +1,4 @@
-import { For, Show } from "solid-js";
+import { For, Show, createSignal, onMount, onCleanup } from "solid-js";
 import type { GameStateSnapshot } from "../engine/types";
 import css from "./HUD.css?inline";
 
@@ -14,6 +14,18 @@ const POWERUP_LABELS: Record<string, string> = {
 };
 
 export default function HUD(props: HUDProps) {
+    const [showFps, setShowFps] = createSignal(false);
+
+    const onKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "F3") {
+            e.preventDefault();
+            setShowFps((v) => !v);
+        }
+    };
+
+    onMount(() => window.addEventListener("keydown", onKeyDown));
+    onCleanup(() => window.removeEventListener("keydown", onKeyDown));
+
     return (
         <>
             <style>{css}</style>
@@ -61,6 +73,9 @@ export default function HUD(props: HUDProps) {
                         </div>
                     </Show>
                 </div>
+                <Show when={showFps() && props.state.fps > 0}>
+                    <div class="cb-hud-fps">{props.state.fps} FPS</div>
+                </Show>
             </div>
         </>
     );
