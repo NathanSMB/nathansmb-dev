@@ -50,7 +50,6 @@ export interface ProjectileState extends Entity {
 
 export interface PowerUpState extends Entity {
     type: PowerUpType;
-    spawnTime: number;
 }
 
 export interface ActivePowerUp {

@@ -17,7 +17,6 @@ export function createPowerUp(
     x: number,
     z: number,
     scene: THREE.Scene,
-    time: number,
 ): PowerUpState | null {
     if (Math.random() > POWERUP.dropChance) return null;
 
@@ -33,7 +32,6 @@ export function createPowerUp(
         velocity: new THREE.Vector3(0, 0, POWERUP.floatSpeed),
         active: true,
         type,
-        spawnTime: time,
     };
 }
 
@@ -48,14 +46,9 @@ export function updatePowerUpVisuals(powerUps: PowerUpState[], time: number) {
 export function cleanupPowerUps(
     powerUps: PowerUpState[],
     scene: THREE.Scene,
-    time: number,
 ): PowerUpState[] {
     return powerUps.filter((pu) => {
-        if (
-            !pu.active ||
-            time - pu.spawnTime > POWERUP.lifetime ||
-            pu.mesh.position.z > 14
-        ) {
+        if (!pu.active || pu.mesh.position.z > 14) {
             scene.remove(pu.mesh);
             return false;
         }

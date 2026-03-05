@@ -298,7 +298,6 @@ export class GameEngine {
         this.state.powerUps = cleanupPowerUps(
             this.state.powerUps,
             this.sceneCtx.scene,
-            this.state.elapsedTime,
         );
     }
 
@@ -360,7 +359,6 @@ export class GameEngine {
                     enemy.mesh.position.x,
                     enemy.mesh.position.z,
                     scene,
-                    s.elapsedTime,
                 );
                 if (pu) s.powerUps.push(pu);
 

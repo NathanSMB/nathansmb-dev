@@ -42,7 +42,6 @@ export const POWERUP = {
         "piercing",
     ] as const,
     floatSpeed: 2,
-    lifetime: 10,
 } as const;
 
 export const DIFFICULTY = {
