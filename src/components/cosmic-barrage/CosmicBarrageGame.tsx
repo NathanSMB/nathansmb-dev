@@ -7,6 +7,7 @@ import { PLAYER } from "./engine/constants";
 import HUD from "./ui/HUD";
 import StartScreen from "./ui/StartScreen";
 import GameOverOverlay from "./ui/GameOverOverlay";
+import HelpScreen from "./ui/HelpScreen";
 import css from "./CosmicBarrageGame.css?inline";
 
 const doc = () =>
@@ -71,6 +72,7 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
     const useNativeFS = fsEnabled();
     const [sessionId, setSessionId] = createSignal<string | null>(null);
     const [sessionLoading, setSessionLoading] = createSignal(false);
+    const [helpOpen, setHelpOpen] = createSignal(false);
     const session = authClient.useSession();
 
     function onFullscreenChange() {
@@ -107,7 +109,10 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
                 setFinalScore(score);
                 setFinalWave(wave);
             },
-            onStartRequested: createGameSession,
+            onStartRequested: () => {
+                if (helpOpen()) return Promise.resolve(false);
+                return createGameSession();
+            },
         });
         engine.mount(canvasRef);
     });
@@ -188,7 +193,19 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
                     />
                 </Show>
 
+                <Show when={helpOpen()}>
+                    <HelpScreen onClose={() => setHelpOpen(false)} />
+                </Show>
+
                 <div class="cb-btn-row">
+                    <Show when={gameState().phase === "start"}>
+                        <button
+                            class="cb-ctrl-btn"
+                            onClick={() => setHelpOpen(true)}
+                        >
+                            HELP
+                        </button>
+                    </Show>
                     <button class="cb-ctrl-btn" onClick={handleToggleMute}>
                         {muted() ? "UNMUTE" : "MUTE"}
                     </button>
