@@ -154,10 +154,18 @@ export class InputSystem {
         canvas.addEventListener("mouseup", this.onMouseUp);
         canvas.addEventListener("contextmenu", this.onContextMenu);
 
-        canvas.addEventListener("touchstart", this.onTouchStart);
-        canvas.addEventListener("touchmove", this.onTouchMove);
-        canvas.addEventListener("touchend", this.onTouchEnd);
-        canvas.addEventListener("touchcancel", this.onTouchEnd);
+        canvas.addEventListener("touchstart", this.onTouchStart, {
+            passive: false,
+        });
+        canvas.addEventListener("touchmove", this.onTouchMove, {
+            passive: false,
+        });
+        canvas.addEventListener("touchend", this.onTouchEnd, {
+            passive: false,
+        });
+        canvas.addEventListener("touchcancel", this.onTouchEnd, {
+            passive: false,
+        });
     }
 
     detach() {

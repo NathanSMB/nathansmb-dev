@@ -18,7 +18,10 @@ function bakeGroupToGeometry(group: THREE.Group): THREE.BufferGeometry {
     });
     const merged = mergeGeometries(geometries, false);
     for (const geo of geometries) geo.dispose();
-    return merged!;
+    if (!merged) {
+        return new THREE.SphereGeometry(0.2, 8, 8);
+    }
+    return merged;
 }
 
 function buildEnemyGroup(type: EnemyType): THREE.Group {
@@ -249,31 +252,9 @@ function buildPowerUpGroup(type: PowerUpType): THREE.Group {
             group.scale.setScalar(1.5);
             return group;
         }
-        case "shield-recharge": {
-            const group = new THREE.Group();
-            const shape = new THREE.Shape();
-            shape.moveTo(0, 0.2);
-            shape.quadraticCurveTo(-0.08, 0.16, -0.15, 0.08);
-            shape.quadraticCurveTo(-0.12, -0.04, 0, -0.2);
-            shape.quadraticCurveTo(0.12, -0.04, 0.15, 0.08);
-            shape.quadraticCurveTo(0.08, 0.16, 0, 0.2);
-            const shieldGeo = new THREE.ExtrudeGeometry(shape, {
-                depth: 0.04,
-                bevelEnabled: true,
-                bevelThickness: 0.01,
-                bevelSize: 0.01,
-                bevelSegments: 2,
-            });
-            shieldGeo.center();
-            const shield = new THREE.Mesh(shieldGeo, mat);
-            group.add(shield);
-            const spine = new THREE.Mesh(
-                new THREE.BoxGeometry(0.02, 0.35, 0.06),
-                mat,
-            );
-            group.add(spine);
-            return group;
-        }
+        case "shield-recharge":
+            // Built directly in createPowerUpModel (ExtrudeGeometry can't merge)
+            return new THREE.Group();
         case "score-multiplier": {
             const group = new THREE.Group();
             const barGeo = new THREE.BoxGeometry(0.06, 0.28, 0.06);
@@ -336,6 +317,28 @@ function getPowerUpGeometry(type: PowerUpType): THREE.BufferGeometry {
 export function createPowerUpModel(
     type: PowerUpType,
     mat: THREE.MeshStandardMaterial,
-): THREE.Mesh {
+): THREE.Object3D {
+    // ExtrudeGeometry doesn't merge with standard primitives; keep as Group
+    if (type === "shield-recharge") {
+        const group = new THREE.Group();
+        const shape = new THREE.Shape();
+        shape.moveTo(0, 0.2);
+        shape.quadraticCurveTo(-0.08, 0.16, -0.15, 0.08);
+        shape.quadraticCurveTo(-0.12, -0.04, 0, -0.2);
+        shape.quadraticCurveTo(0.12, -0.04, 0.15, 0.08);
+        shape.quadraticCurveTo(0.08, 0.16, 0, 0.2);
+        const shieldGeo = new THREE.ExtrudeGeometry(shape, {
+            depth: 0.04,
+            bevelEnabled: true,
+            bevelThickness: 0.01,
+            bevelSize: 0.01,
+            bevelSegments: 2,
+        });
+        shieldGeo.center();
+        group.add(new THREE.Mesh(shieldGeo, mat));
+        group.add(new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.35, 0.06), mat));
+        return group;
+    }
+
     return new THREE.Mesh(getPowerUpGeometry(type), mat);
 }

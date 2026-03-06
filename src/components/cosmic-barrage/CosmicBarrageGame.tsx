@@ -9,6 +9,37 @@ import StartScreen from "./ui/StartScreen";
 import GameOverOverlay from "./ui/GameOverOverlay";
 import css from "./CosmicBarrageGame.css?inline";
 
+const doc = () =>
+    document as Document & {
+        webkitFullscreenElement?: Element | null;
+        webkitFullscreenEnabled?: boolean;
+        webkitExitFullscreen?: () => Promise<void>;
+    };
+
+function getFullscreenElement(): Element | null {
+    const d = doc();
+    return d.fullscreenElement ?? d.webkitFullscreenElement ?? null;
+}
+
+function fsEnabled(): boolean {
+    const d = doc();
+    return !!(d.fullscreenEnabled ?? d.webkitFullscreenEnabled);
+}
+
+function requestFS(el: HTMLElement) {
+    if (el.requestFullscreen) return el.requestFullscreen();
+    const wk = el as HTMLElement & {
+        webkitRequestFullscreen?: () => Promise<void>;
+    };
+    if (wk.webkitRequestFullscreen) return wk.webkitRequestFullscreen();
+}
+
+function exitFS() {
+    const d = doc();
+    if (d.exitFullscreen) return d.exitFullscreen();
+    if (d.webkitExitFullscreen) return d.webkitExitFullscreen();
+}
+
 interface CosmicBarrageGameProps {
     showLeaderboard?: boolean;
 }
@@ -41,7 +72,7 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
     const session = authClient.useSession();
 
     function onFullscreenChange() {
-        setFullscreen(!!document.fullscreenElement);
+        setFullscreen(!!getFullscreenElement());
         engine?.resize();
     }
 
@@ -64,6 +95,7 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
 
     onMount(() => {
         document.addEventListener("fullscreenchange", onFullscreenChange);
+        document.addEventListener("webkitfullscreenchange", onFullscreenChange);
         engine = new GameEngine({
             onStateChange: (state) => setGameState(state),
             onGameOver: (score, wave) => {
@@ -77,6 +109,10 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
 
     onCleanup(() => {
         document.removeEventListener("fullscreenchange", onFullscreenChange);
+        document.removeEventListener(
+            "webkitfullscreenchange",
+            onFullscreenChange,
+        );
         engine?.unmount();
     });
 
@@ -95,10 +131,10 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
     }
 
     function handleToggleFullscreen() {
-        if (document.fullscreenElement) {
-            document.exitFullscreen();
+        if (getFullscreenElement()) {
+            exitFS();
         } else {
-            wrapperRef.requestFullscreen();
+            requestFS(wrapperRef);
         }
     }
 
@@ -130,16 +166,18 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
                     <button class="cb-ctrl-btn" onClick={handleToggleMute}>
                         {muted() ? "UNMUTE" : "MUTE"}
                     </button>
-                    <button
-                        class="cb-ctrl-btn"
-                        onClick={handleToggleFullscreen}
-                    >
-                        {fullscreen() ? (
-                            <TbOutlineMinimize />
-                        ) : (
-                            <TbOutlineMaximize />
-                        )}
-                    </button>
+                    <Show when={fsEnabled()}>
+                        <button
+                            class="cb-ctrl-btn"
+                            onClick={handleToggleFullscreen}
+                        >
+                            {fullscreen() ? (
+                                <TbOutlineMinimize />
+                            ) : (
+                                <TbOutlineMaximize />
+                            )}
+                        </button>
+                    </Show>
                 </div>
             </div>
         </>
