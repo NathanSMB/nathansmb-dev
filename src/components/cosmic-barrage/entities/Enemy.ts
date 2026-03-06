@@ -83,8 +83,10 @@ export function updateEnemyBehavior(
 
     if (enemy.type === "fast") {
         if (
-            enemy.mesh.position.x > PLAYFIELD.halfWidth - 1 ||
-            enemy.mesh.position.x < -PLAYFIELD.halfWidth + 1
+            (enemy.mesh.position.x > PLAYFIELD.halfWidth - 1 &&
+                enemy.velocity.x > 0) ||
+            (enemy.mesh.position.x < -PLAYFIELD.halfWidth + 1 &&
+                enemy.velocity.x < 0)
         ) {
             enemy.velocity.x *= -1;
         }
