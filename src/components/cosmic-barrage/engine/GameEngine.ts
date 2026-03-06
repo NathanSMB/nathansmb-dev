@@ -93,16 +93,26 @@ export class GameEngine {
         this.music = new SynthMusic(this.audioManager);
         this.input.attach(canvas, this.sceneCtx.camera);
 
-        // Unlock AudioContext on first user interaction (required for iOS Safari)
+        // Unlock AudioContext on first user interaction (required for iOS Safari).
+        // Uses touchend (not touchstart) because InputSystem preventDefault()s
+        // touchstart, which can prevent iOS from treating it as user activation.
+        // Plays a silent buffer to force the context into "running" state.
         this.unlockCanvas = canvas;
         this.unlockAudioHandler = () => {
-            this.audioManager.init();
-            this.audioManager.resume();
-            canvas.removeEventListener("touchstart", this.unlockAudioHandler!);
-            canvas.removeEventListener("mousedown", this.unlockAudioHandler!);
-            this.unlockAudioHandler = null;
+            const unlocked = this.audioManager.unlock();
+            if (unlocked) {
+                canvas.removeEventListener(
+                    "touchend",
+                    this.unlockAudioHandler!,
+                );
+                canvas.removeEventListener(
+                    "mousedown",
+                    this.unlockAudioHandler!,
+                );
+                this.unlockAudioHandler = null;
+            }
         };
-        canvas.addEventListener("touchstart", this.unlockAudioHandler);
+        canvas.addEventListener("touchend", this.unlockAudioHandler);
         canvas.addEventListener("mousedown", this.unlockAudioHandler);
 
         this.state = this.createInitialState();
@@ -129,7 +139,7 @@ export class GameEngine {
         this.resizeObserver?.disconnect();
         if (this.unlockAudioHandler && this.unlockCanvas) {
             this.unlockCanvas.removeEventListener(
-                "touchstart",
+                "touchend",
                 this.unlockAudioHandler,
             );
             this.unlockCanvas.removeEventListener(

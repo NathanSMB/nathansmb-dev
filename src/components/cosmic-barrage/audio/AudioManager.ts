@@ -17,6 +17,20 @@ export class AudioManager {
         }
     }
 
+    /** Init + resume + play silent buffer to unlock on iOS. Returns true if running. */
+    unlock(): boolean {
+        this.init();
+        this.resume();
+        if (this.ctx) {
+            const buf = this.ctx.createBuffer(1, 1, this.ctx.sampleRate);
+            const src = this.ctx.createBufferSource();
+            src.buffer = buf;
+            src.connect(this.ctx.destination);
+            src.start(0);
+        }
+        return this.ctx?.state === "running";
+    }
+
     get muted() {
         return this._muted;
     }
