@@ -161,6 +161,7 @@ export class GameEngine {
     }
 
     startGame() {
+        this.input.clearAll();
         this.audioManager.init();
         this.audioManager.resume();
         this.clearEntities();
