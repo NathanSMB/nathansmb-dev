@@ -2,20 +2,11 @@
     "hooks": {
         "PostToolUse": [
             {
-                "matcher": "Edit|Write|NotebookEdit",
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "bunx prettier --write \"$CLAUDE_FILE_PATHS\""
-                    }
-                ]
-            },
-            {
                 "matcher": "Edit|Write",
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "bunx eslint --no-warn-ignored \"$CLAUDE_FILE_PATHS\" 2>&1 || true"
+                        "command": "bunx prettier --write \"$CLAUDE_FILE_PATHS\""
                     }
                 ]
             }
@@ -25,7 +16,8 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "bun run test || exit 2"
+                        "command": "bun run test 2>&1 || echo '{\"decision\": \"block\", \"reason\": \"Tests failed\"}'",
+                        "statusMessage": "Running tests..."
                     }
                 ]
             },
@@ -33,7 +25,8 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "bun run typecheck || exit 2"
+                        "command": "bun run typecheck 2>&1 || echo '{\"decision\": \"block\", \"reason\": \"Typecheck failed\"}'",
+                        "statusMessage": "Running typecheck..."
                     }
                 ]
             },
@@ -41,7 +34,17 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "bun run build || exit 2"
+                        "command": "bun run build 2>&1 || echo '{\"decision\": \"block\", \"reason\": \"Build failed\"}'",
+                        "statusMessage": "Running build..."
+                    }
+                ]
+            },
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "bun run lint 2>&1 || echo '{\"decision\": \"block\", \"reason\": \"Lint failed\"}'",
+                        "statusMessage": "Running linter..."
                     }
                 ]
             },
@@ -49,13 +52,11 @@
                 "hooks": [
                     {
                         "type": "agent",
-                        "prompt": "You are a documentation maintenance agent. Your job is to check whether project docs, skills, and README need updating after source code changes.\n\nStep 1 — Detect changes:\nRun `git diff HEAD --name-only` to find changed files. If that returns nothing, try `git diff HEAD~1 --name-only`. Ignore changes to files in docs/, .claude/skills/, and README.md themselves — only look at source changes.\n\nStep 2 — Map changes to docs using this table:\n- src/routes/api/**, src/utils/stream*, src/utils/batch* → docs/api.md\n- src/utils/auth*, src/database/schemas/auth* → docs/auth.md\n- src/database/**, drizzle.config* → docs/database.md\n- src/components/ui/** → docs/ui-components.md AND .claude/skills/creating-components.md\n- src/routes/** (page/layout files, not api/) → .claude/skills/creating-routes.md\n- src/database/schemas/** → .claude/skills/creating-database-schemas.md\n- src/app.css → .claude/skills/design-tokens.md\n- src/components/nav/** → .claude/skills/navigation.md\n- tests/**, vitest.config* → .claude/skills/testing.md\n- package.json → README.md (check scripts section)\n- Any new or removed docs/*.md file → README.md (update documentation index)\n\nIf no changed source files match any mapping, stop immediately — no updates needed.\n\nStep 3 — Read & compare:\nFor each matched doc, read it and the relevant changed source files. Look for meaningful discrepancies: new/changed/removed exports, props, routes, schemas, utilities, or stale key-files tables. Internal refactors with no interface or behavior change do NOT need doc updates.\n\nStep 3b — Identify need for new docs:\n- If changed files introduce a new top-level system or domain (e.g. a new directory under src/components/, src/utils/, src/routes/api/, or src/database/schemas/) that doesn't map to any existing doc or skill, evaluate whether it warrants new documentation.\n- Create a new docs/*.md file when: a new API domain, database subsystem, or major feature area is added with multiple files or public interfaces.\n- Create a new .claude/skills/*.md file when: a new repeatable development pattern emerges (e.g. creating a new type of entity that developers will do again).\n- Do NOT create docs for: single utility functions, minor helpers, internal implementation details, or one-off scripts.\n- New docs must follow existing conventions:\n  - docs/ files: H1 title, overview paragraph, concept sections with code examples, Key Files table at the end.\n  - .claude/skills/ files: H1 action-oriented title (e.g. 'Creating X'), prerequisites, step-by-step sections with code, conventions section.\n- After creating any new docs/*.md file, update README.md's documentation index to include a link with description (format: '- [Title](docs/file.md) — description').\n\nStep 4 — Update surgically:\nMake minimal edits that match the existing doc style. Do not rewrite sections unnecessarily. Only add, update, or remove the specific entries that changed. This includes both editing existing docs and creating new ones per Step 3b.\n\nStep 5 — If nothing meaningful changed (internal-only refactor, no new/changed/removed public interfaces), make no edits.",
-                        "timeout": 240
+                        "prompt": "You are a documentation reviewer. Check whether project docs, skills, and README need updating after source code changes.\n\nStep 1 — Detect changes:\nUse Grep and Read to inspect recently changed source files. Ignore changes to files in docs/, .claude/skills/, and README.md themselves — only look at source changes.\n\nStep 2 — Map changes to docs using this table:\n- src/routes/api/**, src/utils/stream*, src/utils/batch* → docs/api.md\n- src/utils/auth*, src/database/schemas/auth* → docs/auth.md\n- src/database/**, drizzle.config* → docs/database.md\n- src/components/ui/** → docs/ui-components.md AND .claude/skills/creating-components.md\n- src/routes/** (page/layout files, not api/) → .claude/skills/creating-routes.md\n- src/database/schemas/** → .claude/skills/creating-database-schemas.md\n- src/app.css → .claude/skills/design-tokens.md\n- src/components/nav/** → .claude/skills/navigation.md\n- tests/**, vitest.config* → .claude/skills/testing.md\n- package.json → README.md (check scripts section)\n- Any new or removed docs/*.md file → README.md (update documentation index)\n\nIf no changed source files match any mapping, answer YES — no updates needed.\n\nStep 3 — Read & compare:\nFor each matched doc, read it and the relevant changed source files. Look for meaningful discrepancies: new/changed/removed exports, props, routes, schemas, utilities, or stale key-files tables. Internal refactors with no interface or behavior change do NOT need doc updates. Also check if new top-level systems or domains were introduced that have no corresponding doc.\n\nAnswer YES if all docs are current. Answer NO with a clear description of which docs need updating and what specifically changed, so the main session can make the edits.",
+                        "timeout": 120
                     }
                 ]
-            }
-        ],
-        "TaskCompleted": [
+            },
             {
                 "hooks": [
                     {
