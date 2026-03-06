@@ -9,6 +9,7 @@ export class InputSystem {
     pointerShoot = false;
     touchMoveX: number | null = null;
     touchShoot = false;
+    touchStart = false;
 
     private _vec3 = new THREE.Vector3();
     private canvas: HTMLCanvasElement | null = null;
@@ -68,6 +69,7 @@ export class InputSystem {
 
         this.onTouchStart = (e: TouchEvent) => {
             e.preventDefault();
+            this.touchStart = true;
             for (let i = 0; i < e.changedTouches.length; i++) {
                 const touch = e.changedTouches[i];
                 if (this.moveTouchId === null) {
@@ -111,6 +113,7 @@ export class InputSystem {
                         this.touchShoot = e.touches.length > 1;
                     } else {
                         this.touchShoot = false;
+                        this.touchStart = false;
                     }
                 } else {
                     // Non-movement finger lifted
@@ -190,6 +193,7 @@ export class InputSystem {
         this.pointerShoot = false;
         this.touchMoveX = null;
         this.touchShoot = false;
+        this.touchStart = false;
         this.moveTouchId = null;
         this.canvas = null;
         this.camera = null;
@@ -212,7 +216,7 @@ export class InputSystem {
     }
 
     get start(): boolean {
-        return this.isDown("Space") || this.pointerShoot || this.touchShoot;
+        return this.isDown("Space") || this.pointerShoot || this.touchStart;
     }
 
     get pointerWorldX(): number | null {
@@ -225,6 +229,7 @@ export class InputSystem {
         this.pointerShoot = false;
         this.touchMoveX = null;
         this.touchShoot = false;
+        this.touchStart = false;
         this.moveTouchId = null;
     }
 }

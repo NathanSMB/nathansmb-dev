@@ -67,6 +67,8 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
     const [finalWave, setFinalWave] = createSignal(0);
     const [muted, setMuted] = createSignal(false);
     const [fullscreen, setFullscreen] = createSignal(false);
+    const [cssFullscreen, setCssFullscreen] = createSignal(false);
+    const useNativeFS = fsEnabled();
     const [sessionId, setSessionId] = createSignal<string | null>(null);
     const [sessionLoading, setSessionLoading] = createSignal(false);
     const session = authClient.useSession();
@@ -96,6 +98,9 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
     onMount(() => {
         document.addEventListener("fullscreenchange", onFullscreenChange);
         document.addEventListener("webkitfullscreenchange", onFullscreenChange);
+        if (!useNativeFS) {
+            window.addEventListener("keydown", onCssFullscreenKey);
+        }
         engine = new GameEngine({
             onStateChange: (state) => setGameState(state),
             onGameOver: (score, wave) => {
@@ -113,6 +118,9 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
             "webkitfullscreenchange",
             onFullscreenChange,
         );
+        if (!useNativeFS) {
+            window.removeEventListener("keydown", onCssFullscreenKey);
+        }
         engine?.unmount();
     });
 
@@ -131,17 +139,35 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
     }
 
     function handleToggleFullscreen() {
-        if (getFullscreenElement()) {
-            exitFS();
+        if (useNativeFS) {
+            if (getFullscreenElement()) {
+                exitFS();
+            } else {
+                requestFS(wrapperRef);
+            }
         } else {
-            requestFS(wrapperRef);
+            const next = !cssFullscreen();
+            setCssFullscreen(next);
+            setFullscreen(next);
+            engine?.resize();
+        }
+    }
+
+    function onCssFullscreenKey(e: KeyboardEvent) {
+        if (e.key === "Escape" && cssFullscreen()) {
+            setCssFullscreen(false);
+            setFullscreen(false);
+            engine?.resize();
         }
     }
 
     return (
         <>
             <style>{css}</style>
-            <div class="cb-game-wrapper" ref={wrapperRef!}>
+            <div
+                class={`cb-game-wrapper${cssFullscreen() ? " cb-css-fullscreen" : ""}`}
+                ref={wrapperRef!}
+            >
                 <canvas ref={canvasRef!} class="cb-game-canvas" />
 
                 <Show when={gameState().phase === "start"}>
@@ -166,18 +192,16 @@ export default function CosmicBarrageGame(props: CosmicBarrageGameProps) {
                     <button class="cb-ctrl-btn" onClick={handleToggleMute}>
                         {muted() ? "UNMUTE" : "MUTE"}
                     </button>
-                    <Show when={fsEnabled()}>
-                        <button
-                            class="cb-ctrl-btn"
-                            onClick={handleToggleFullscreen}
-                        >
-                            {fullscreen() ? (
-                                <TbOutlineMinimize />
-                            ) : (
-                                <TbOutlineMaximize />
-                            )}
-                        </button>
-                    </Show>
+                    <button
+                        class="cb-ctrl-btn"
+                        onClick={handleToggleFullscreen}
+                    >
+                        {fullscreen() ? (
+                            <TbOutlineMinimize />
+                        ) : (
+                            <TbOutlineMaximize />
+                        )}
+                    </button>
                 </div>
             </div>
         </>

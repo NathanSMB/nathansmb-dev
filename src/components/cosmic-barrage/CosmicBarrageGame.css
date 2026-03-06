@@ -14,9 +14,15 @@
     touch-action: none;
 }
 
-.cb-game-wrapper:fullscreen {
+.cb-game-wrapper:fullscreen,
+.cb-game-wrapper.cb-css-fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
     border-radius: 0;
     background: #000;
+    width: 100vw;
+    height: 100vh;
 }
 
 .cb-btn-row {
