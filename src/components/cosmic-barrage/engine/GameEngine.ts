@@ -83,12 +83,27 @@ export class GameEngine {
         this.callbacks = callbacks;
     }
 
+    private unlockAudioHandler: (() => void) | null = null;
+    private unlockCanvas: HTMLCanvasElement | null = null;
+
     mount(canvas: HTMLCanvasElement) {
         this.sceneCtx = createGameScene(canvas);
         this.particleSystem = new ParticleSystem(this.sceneCtx.scene);
         this.sfx = new SoundEffects(this.audioManager);
         this.music = new SynthMusic(this.audioManager);
         this.input.attach(canvas, this.sceneCtx.camera);
+
+        // Unlock AudioContext on first user interaction (required for iOS Safari)
+        this.unlockCanvas = canvas;
+        this.unlockAudioHandler = () => {
+            this.audioManager.init();
+            this.audioManager.resume();
+            canvas.removeEventListener("touchstart", this.unlockAudioHandler!);
+            canvas.removeEventListener("mousedown", this.unlockAudioHandler!);
+            this.unlockAudioHandler = null;
+        };
+        canvas.addEventListener("touchstart", this.unlockAudioHandler);
+        canvas.addEventListener("mousedown", this.unlockAudioHandler);
 
         this.state = this.createInitialState();
 
@@ -112,6 +127,16 @@ export class GameEngine {
         this.audioManager.dispose();
         this.particleSystem.dispose(this.sceneCtx.scene);
         this.resizeObserver?.disconnect();
+        if (this.unlockAudioHandler && this.unlockCanvas) {
+            this.unlockCanvas.removeEventListener(
+                "touchstart",
+                this.unlockAudioHandler,
+            );
+            this.unlockCanvas.removeEventListener(
+                "mousedown",
+                this.unlockAudioHandler,
+            );
+        }
         this.sceneCtx.dispose();
     }
 
