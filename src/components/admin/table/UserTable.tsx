@@ -2,6 +2,7 @@ import { Show, For } from "solid-js";
 import type { AdminUser, EditingField } from "../types";
 import Checkbox from "~/components/ui/Checkbox";
 import UserRow from "./UserRow";
+import sharedCss from "./admin-table.css?inline";
 import css from "./UserTable.css?inline";
 
 type SortableField = "name" | "email" | "role" | "banned";
@@ -56,7 +57,7 @@ export default function UserTable(props: UserTableProps) {
 
     return (
         <>
-            <style>{css}</style>
+            <style>{sharedCss + css}</style>
             <table class="admin-table">
                 <thead>
                     <tr>

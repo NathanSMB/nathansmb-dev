@@ -69,6 +69,14 @@ import { TbOutlineLogin } from "solid-icons/tb";
 
 - [Solid Icons - Tabler](https://solid-icons.vercel.app/search/package/tb)
 
+### Reusable UI Components and Shared Styles
+
+Before building new UI, check for existing reusable components in `src/components/ui/` and shared styles in `src/styles/` or `src/components/admin/table/`. Use them instead of writing raw HTML elements or duplicating styles.
+
+**UI components** (`src/components/ui/`): Avatar, Banner, Button, Checkbox, Form, FormLabel, Pill, ProgressBar, Select, Slider, Spinner, TextInput.
+
+**Shared styles**: `src/styles/page-narrow.css` (page layout), `src/components/admin/table/admin-table.css` (admin tables).
+
 ### Components
 
 For components use the `?inline` parameter for css imports.

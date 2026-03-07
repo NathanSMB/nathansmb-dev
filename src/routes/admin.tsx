@@ -5,7 +5,22 @@ import Spinner from "~/components/ui/Spinner";
 
 export const navLinks: NavLink[] = [
     { href: "/admin", label: "Users" },
-    { href: "/admin/tools/create-test-users", label: "Create Test Users" },
+    {
+        label: "Games",
+        children: [
+            { href: "/admin/scores", label: "Scores" },
+            { href: "/admin/game-sessions", label: "Sessions" },
+        ],
+    },
+    {
+        label: "Tools",
+        children: [
+            {
+                href: "/admin/tools/create-test-users",
+                label: "Create Test Users",
+            },
+        ],
+    },
 ];
 
 export default function AdminLayout(props: { children: JSX.Element }) {
