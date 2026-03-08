@@ -1,0 +1,47 @@
+.blog-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    max-width: 900px;
+}
+
+.blog-form-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.blog-form-row-inline {
+    display: flex;
+    gap: var(--gap-group);
+    flex-wrap: wrap;
+}
+
+.blog-form-row-inline > .blog-form-row {
+    flex: 1;
+    min-width: 200px;
+}
+
+.blog-form textarea {
+    width: 100%;
+    min-height: 80px;
+    border: var(--border-thin) solid var(--color-text-faint);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm);
+    font-family: inherit;
+    font-size: var(--text-base);
+    resize: vertical;
+    background: var(--color-page-bg);
+    color: var(--color-text);
+}
+
+.blog-form textarea:focus {
+    border-color: var(--color-primary-accent);
+    outline: none;
+}
+
+.blog-form-actions {
+    display: flex;
+    gap: var(--gap-group);
+    align-items: center;
+}

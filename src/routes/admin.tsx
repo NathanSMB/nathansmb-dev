@@ -12,6 +12,7 @@ export const navLinks: NavLink[] = [
             { href: "/admin/game-sessions", label: "Sessions" },
         ],
     },
+    { href: "/admin/blog", label: "Blog" },
     {
         label: "Tools",
         children: [

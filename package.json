@@ -20,12 +20,17 @@
         "@solidjs/meta": "^0.29.4",
         "@solidjs/router": "^0.15.0",
         "@solidjs/start": "^1.1.0",
+        "@tiptap/core": "^3.20.1",
+        "@tiptap/pm": "^3.20.1",
+        "@tiptap/starter-kit": "^3.20.1",
         "better-auth": "^1.4.20",
         "dotenv": "^17.3.1",
         "drizzle-orm": "^0.45.1",
+        "marked": "^17.0.4",
         "solid-icons": "^1.2.0",
         "solid-js": "^1.9.5",
         "three": "^0.183.2",
+        "tiptap-markdown": "^0.9.0",
         "vinxi": "^0.5.7"
     },
     "engines": {
@@ -34,6 +39,7 @@
     "devDependencies": {
         "@better-auth/cli": "^1.4.20",
         "@solidjs/testing-library": "^0.8.10",
+        "@types/marked": "^6.0.0",
         "@types/three": "^0.183.1",
         "drizzle-kit": "^0.31.9",
         "eslint": "^10.0.2",
