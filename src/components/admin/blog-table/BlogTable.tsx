@@ -1,7 +1,8 @@
-import { Show, For } from "solid-js";
+import { For, type JSX } from "solid-js";
+import { createColumnHelper } from "@tanstack/solid-table";
 import Button from "~/components/ui/Button";
 import Pill from "~/components/ui/Pill";
-import css from "~/components/admin/table/admin-table.css?inline";
+import Table from "~/components/ui/Table";
 
 export interface BlogPostRow {
     id: string;
@@ -30,116 +31,80 @@ interface BlogTableProps {
     onDelete: (id: string, title: string) => void;
 }
 
+function formatDate(dateStr: string | null) {
+    if (!dateStr) return "\u2014";
+    return new Date(dateStr).toLocaleDateString();
+}
+
 export default function BlogTable(props: BlogTableProps) {
-    function sortIndicator(field: SortableField) {
-        if (props.sortBy !== field) return "";
-        return props.sortDirection === "asc" ? " ▲" : " ▼";
-    }
+    const columnHelper = createColumnHelper<BlogPostRow>();
 
-    function formatDate(dateStr: string | null) {
-        if (!dateStr) return "—";
-        return new Date(dateStr).toLocaleDateString();
-    }
-
-    return (
-        <>
-            <style>{css}</style>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("title")}
-                        >
-                            Title{sortIndicator("title")}
-                        </th>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("status")}
-                        >
-                            Status{sortIndicator("status")}
-                        </th>
-                        <th>Tags</th>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("authorName")}
-                        >
-                            Author{sortIndicator("authorName")}
-                        </th>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("publishedAt")}
-                        >
-                            Published{sortIndicator("publishedAt")}
-                        </th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <Show
-                        when={props.posts.length > 0}
-                        fallback={
-                            <tr>
-                                <td colspan="6" class="admin-empty">
-                                    No posts found
-                                </td>
-                            </tr>
+    const columns = [
+        columnHelper.accessor("title", {
+            header: "Title",
+        }),
+        columnHelper.accessor("status", {
+            header: "Status",
+            cell: (info): JSX.Element => (
+                <Pill
+                    color={
+                        info.getValue() === "published" ? "success" : "neutral"
+                    }
+                >
+                    {info.getValue()}
+                </Pill>
+            ),
+        }),
+        columnHelper.display({
+            id: "tags",
+            header: "Tags",
+            enableSorting: false,
+            cell: (info): JSX.Element => (
+                <For each={info.row.original.tags ?? []}>
+                    {(tag) => <Pill color="primary">{tag}</Pill>}
+                </For>
+            ),
+        }),
+        columnHelper.accessor("authorName", {
+            header: "Author",
+        }),
+        columnHelper.accessor("publishedAt", {
+            header: "Published",
+            cell: (info) => formatDate(info.getValue()),
+        }),
+        columnHelper.display({
+            id: "actions",
+            header: "Actions",
+            enableSorting: false,
+            cell: (info): JSX.Element => (
+                <div style="display: flex; gap: 0.5rem;">
+                    <Button onClick={() => props.onEdit(info.row.original.id)}>
+                        Edit
+                    </Button>
+                    <Button
+                        color="danger"
+                        onClick={() =>
+                            props.onDelete(
+                                info.row.original.id,
+                                info.row.original.title,
+                            )
                         }
                     >
-                        <For each={props.posts}>
-                            {(row) => (
-                                <tr>
-                                    <td>{row.title}</td>
-                                    <td>
-                                        <Pill
-                                            color={
-                                                row.status === "published"
-                                                    ? "success"
-                                                    : "neutral"
-                                            }
-                                        >
-                                            {row.status}
-                                        </Pill>
-                                    </td>
-                                    <td>
-                                        <For each={row.tags ?? []}>
-                                            {(tag) => (
-                                                <Pill color="primary">
-                                                    {tag}
-                                                </Pill>
-                                            )}
-                                        </For>
-                                    </td>
-                                    <td>{row.authorName}</td>
-                                    <td>{formatDate(row.publishedAt)}</td>
-                                    <td>
-                                        <div style="display: flex; gap: 0.5rem;">
-                                            <Button
-                                                onClick={() =>
-                                                    props.onEdit(row.id)
-                                                }
-                                            >
-                                                Edit
-                                            </Button>
-                                            <Button
-                                                color="danger"
-                                                onClick={() =>
-                                                    props.onDelete(
-                                                        row.id,
-                                                        row.title,
-                                                    )
-                                                }
-                                            >
-                                                Delete
-                                            </Button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            )}
-                        </For>
-                    </Show>
-                </tbody>
-            </table>
-        </>
+                        Delete
+                    </Button>
+                </div>
+            ),
+        }),
+    ];
+
+    return (
+        <Table
+            data={props.posts}
+            columns={columns}
+            sortBy={props.sortBy}
+            sortDirection={props.sortDirection}
+            onSort={(field) => props.onSort(field as SortableField)}
+            emptyMessage="No posts found"
+        />
     );
 }
