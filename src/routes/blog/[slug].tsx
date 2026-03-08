@@ -1,16 +1,17 @@
 import { Show, For } from "solid-js";
 import { Title, Meta } from "@solidjs/meta";
-import { query, createAsync, useParams } from "@solidjs/router";
+import { query, createAsync, useParams, A } from "@solidjs/router";
+import { TbOutlineArrowLeft } from "solid-icons/tb";
+import { connection } from "~/database/connection";
+import { blogPost, user } from "~/database/schema";
+import { eq, and } from "drizzle-orm";
 import { marked } from "marked";
 import Pill from "~/components/ui/Pill";
-import "~/styles/page-narrow.css";
-import "./blog.css";
+import Avatar from "~/components/ui/Avatar";
+import "./blog-post.css";
 
 const getBlogPost = query(async (slug: string) => {
     "use server";
-    const { connection } = await import("~/database/connection");
-    const { blogPost, user } = await import("~/database/schema");
-    const { eq, and } = await import("drizzle-orm");
 
     const [post] = await connection
         .select({
@@ -22,6 +23,7 @@ const getBlogPost = query(async (slug: string) => {
             tags: blogPost.tags,
             publishedAt: blogPost.publishedAt,
             authorName: user.name,
+            authorImage: user.image,
         })
         .from(blogPost)
         .innerJoin(user, eq(blogPost.authorId, user.id))
@@ -30,10 +32,13 @@ const getBlogPost = query(async (slug: string) => {
 
     if (!post) return null;
 
-    const { marked: markedFn } = await import("marked");
-    const html = await markedFn(post.content ?? "");
+    const html = await marked(post.content ?? "");
+    const readingTime = Math.max(
+        1,
+        Math.round((post.content ?? "").split(/\s+/).length / 230),
+    );
 
-    return { ...post, html };
+    return { ...post, html, readingTime };
 }, "blog-post");
 
 export default function BlogPost() {
@@ -50,7 +55,7 @@ export default function BlogPost() {
     }
 
     return (
-        <main class="page-narrow">
+        <main class="blog-post-page">
             <Show
                 when={post()}
                 fallback={
@@ -66,26 +71,25 @@ export default function BlogPost() {
                         <Title>{p().title}</Title>
                         <Meta name="description" content={p().excerpt ?? ""} />
 
+                        <A href="/blog" class="blog-post-nav">
+                            <TbOutlineArrowLeft />
+                            Back to blog
+                        </A>
+
                         <article>
-                            <header class="blog-post-header">
-                                <Show when={p().coverImage}>
+                            <Show when={p().coverImage}>
+                                <div class="blog-post-cover-wrap">
                                     <img
                                         class="blog-post-cover"
                                         src={p().coverImage!}
                                         alt={p().title}
                                     />
-                                </Show>
-                                <h1 class="blog-post-title">{p().title}</h1>
-                                <div class="blog-card-meta">
-                                    <span>{p().authorName}</span>
-                                    <span>
-                                        {formatDate(
-                                            p().publishedAt as string | null,
-                                        )}
-                                    </span>
                                 </div>
+                            </Show>
+
+                            <header class="blog-post-header">
                                 <Show when={p().tags && p().tags!.length > 0}>
-                                    <div class="blog-card-tags">
+                                    <div class="blog-post-tags">
                                         <For each={p().tags!}>
                                             {(tag) => (
                                                 <Pill color="primary">
@@ -95,7 +99,26 @@ export default function BlogPost() {
                                         </For>
                                     </div>
                                 </Show>
+
+                                <h1 class="blog-post-title">{p().title}</h1>
+
+                                <div class="blog-post-meta">
+                                    <Avatar
+                                        image={p().authorImage}
+                                        name={p().authorName ?? ""}
+                                    />
+                                    <span>{p().authorName}</span>
+                                    <span>&middot;</span>
+                                    <span>
+                                        {formatDate(
+                                            p().publishedAt as string | null,
+                                        )}
+                                    </span>
+                                    <span>&middot;</span>
+                                    <span>{p().readingTime} min read</span>
+                                </div>
                             </header>
+
                             <div
                                 class="blog-post-content"
                                 innerHTML={p().html}
