@@ -1,5 +1,5 @@
 .blog-post-page {
-    max-width: 42rem;
+    max-width: clamp(42rem, 55vw, 60rem);
     margin: 0 auto;
     padding: var(--space-xl) var(--space-lg);
     text-align: left;
