@@ -114,6 +114,7 @@
 
 .blog-editor-content .tiptap {
     min-height: 300px;
+    box-sizing: border-box;
     padding: var(--space-md);
     outline: none;
 }
@@ -198,24 +199,39 @@
 
 /* ── Markdown textarea ── */
 
-.blog-editor-markdown {
+.blog-editor-markdown-wrap {
+    border: var(--border-thin) solid var(--color-text-faint);
+    border-top: none;
+    min-height: 300px;
+}
+
+.blog-editor .blog-editor-markdown {
+    display: block;
     width: 100%;
     box-sizing: border-box;
     min-height: 300px;
-    border: var(--border-thin) solid var(--color-text-faint);
-    border-top: none;
+    border: none;
     border-radius: 0;
-    padding: var(--space-md);
+    outline: none;
+    margin: 0;
+    padding: calc(var(--space-md) + 0.5em) var(--space-md);
     font-family: monospace;
     font-size: var(--text-base);
     line-height: 1.7;
-    resize: vertical;
-    background: var(--color-page-bg);
+    resize: none;
+    background: transparent;
     color: var(--color-text-muted);
+    overflow: hidden;
 }
 
-.blog-editor-markdown:focus {
+.blog-editor .blog-editor-markdown::placeholder {
+    color: var(--color-text-faint);
+}
+
+.blog-editor .blog-editor-markdown:focus {
     outline: none;
+    border: none;
+    box-shadow: none;
     color: var(--color-text);
 }
 

@@ -141,16 +141,6 @@ export default function BlogEditor(props: BlogEditorProps) {
                 title: "Horizontal Rule",
                 action: (e) => e.chain().focus().setHorizontalRule().run(),
             },
-            {
-                icon: () => <TbOutlineArrowBackUp />,
-                title: "Undo (Ctrl+Z)",
-                action: (e) => e.chain().focus().undo().run(),
-            },
-            {
-                icon: () => <TbOutlineArrowForwardUp />,
-                title: "Redo (Ctrl+Shift+Z)",
-                action: (e) => e.chain().focus().redo().run(),
-            },
         ],
     ];
 
@@ -209,7 +199,34 @@ export default function BlogEditor(props: BlogEditorProps) {
             <style>{css}</style>
             <div class="blog-editor">
                 <div class="blog-editor-toolbar">
+                    <div class="toolbar-group">
+                        <button
+                            type="button"
+                            class="toolbar-btn"
+                            title="Undo (Ctrl+Z)"
+                            onClick={() => {
+                                const inst = editor();
+                                if (inst) inst.chain().focus().undo().run();
+                            }}
+                            disabled={!editor()}
+                        >
+                            <TbOutlineArrowBackUp />
+                        </button>
+                        <button
+                            type="button"
+                            class="toolbar-btn"
+                            title="Redo (Ctrl+Shift+Z)"
+                            onClick={() => {
+                                const inst = editor();
+                                if (inst) inst.chain().focus().redo().run();
+                            }}
+                            disabled={!editor()}
+                        >
+                            <TbOutlineArrowForwardUp />
+                        </button>
+                    </div>
                     <Show when={mode() === "rich"}>
+                        <div class="toolbar-sep" />
                         <For each={toolbarGroups}>
                             {(group, gi) => (
                                 <>
@@ -219,7 +236,6 @@ export default function BlogEditor(props: BlogEditorProps) {
                                     <div class="toolbar-group">
                                         <For each={group}>
                                             {(btn) => {
-                                                const e = editor();
                                                 const active = () => {
                                                     tick();
                                                     const inst = editor();
@@ -240,7 +256,7 @@ export default function BlogEditor(props: BlogEditorProps) {
                                                                     inst,
                                                                 );
                                                         }}
-                                                        disabled={!e}
+                                                        disabled={!editor()}
                                                     >
                                                         {btn.icon()}
                                                     </button>
@@ -278,11 +294,25 @@ export default function BlogEditor(props: BlogEditorProps) {
                 />
 
                 <Show when={mode() === "markdown"}>
-                    <textarea
-                        class="blog-editor-markdown"
-                        value={props.value}
-                        onInput={(e) => props.onChange(e.currentTarget.value)}
-                    />
+                    <div class="blog-editor-markdown-wrap">
+                        <textarea
+                            class="blog-editor-markdown"
+                            placeholder="Start writing..."
+                            value={props.value}
+                            ref={(el) => {
+                                requestAnimationFrame(() => {
+                                    el.style.height = "auto";
+                                    el.style.height = `${el.scrollHeight}px`;
+                                });
+                            }}
+                            onInput={(e) => {
+                                const ta = e.currentTarget;
+                                ta.style.height = "auto";
+                                ta.style.height = `${ta.scrollHeight}px`;
+                                props.onChange(ta.value);
+                            }}
+                        />
+                    </div>
                 </Show>
 
                 <div class="blog-editor-footer">
