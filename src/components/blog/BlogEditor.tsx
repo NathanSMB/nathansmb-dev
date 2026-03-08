@@ -1,7 +1,31 @@
-import { createSignal, onMount, onCleanup, Show } from "solid-js";
+import {
+    createSignal,
+    createMemo,
+    onMount,
+    onCleanup,
+    Show,
+    For,
+} from "solid-js";
 import { Editor } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
 import { Markdown } from "tiptap-markdown";
+import Placeholder from "@tiptap/extension-placeholder";
+import {
+    TbOutlineBold,
+    TbOutlineItalic,
+    TbOutlineStrikethrough,
+    TbOutlineH1,
+    TbOutlineH2,
+    TbOutlineH3,
+    TbOutlineList,
+    TbOutlineListNumbers,
+    TbOutlineCode,
+    TbOutlineFileCode,
+    TbOutlineBlockquote,
+    TbOutlineLineDashed,
+    TbOutlineArrowBackUp,
+    TbOutlineArrowForwardUp,
+} from "solid-icons/tb";
 import css from "./BlogEditor.css?inline";
 
 interface MarkdownStorage {
@@ -13,9 +37,19 @@ interface BlogEditorProps {
     onChange: (markdown: string) => void;
 }
 
+interface ToolbarButton {
+    icon: () => import("solid-js").JSX.Element;
+    title: string;
+    action: (e: Editor) => void;
+    isActive?: (e: Editor) => boolean;
+}
+
+type ToolbarGroup = ToolbarButton[];
+
 export default function BlogEditor(props: BlogEditorProps) {
     const [mode, setMode] = createSignal<"rich" | "markdown">("rich");
     const [editor, setEditor] = createSignal<Editor | null>(null);
+    const [tick, setTick] = createSignal(0);
     let editorRef!: HTMLDivElement;
 
     function getMarkdown(e: Editor): string {
@@ -23,16 +57,118 @@ export default function BlogEditor(props: BlogEditorProps) {
         return storage.markdown.getMarkdown();
     }
 
+    const toolbarGroups: ToolbarGroup[] = [
+        [
+            {
+                icon: () => <TbOutlineBold />,
+                title: "Bold (Ctrl+B)",
+                action: (e) => e.chain().focus().toggleBold().run(),
+                isActive: (e) => e.isActive("bold"),
+            },
+            {
+                icon: () => <TbOutlineItalic />,
+                title: "Italic (Ctrl+I)",
+                action: (e) => e.chain().focus().toggleItalic().run(),
+                isActive: (e) => e.isActive("italic"),
+            },
+            {
+                icon: () => <TbOutlineStrikethrough />,
+                title: "Strikethrough (Ctrl+Shift+X)",
+                action: (e) => e.chain().focus().toggleStrike().run(),
+                isActive: (e) => e.isActive("strike"),
+            },
+        ],
+        [
+            {
+                icon: () => <TbOutlineH1 />,
+                title: "Heading 1 (Ctrl+Alt+1)",
+                action: (e) =>
+                    e.chain().focus().toggleHeading({ level: 1 }).run(),
+                isActive: (e) => e.isActive("heading", { level: 1 }),
+            },
+            {
+                icon: () => <TbOutlineH2 />,
+                title: "Heading 2 (Ctrl+Alt+2)",
+                action: (e) =>
+                    e.chain().focus().toggleHeading({ level: 2 }).run(),
+                isActive: (e) => e.isActive("heading", { level: 2 }),
+            },
+            {
+                icon: () => <TbOutlineH3 />,
+                title: "Heading 3 (Ctrl+Alt+3)",
+                action: (e) =>
+                    e.chain().focus().toggleHeading({ level: 3 }).run(),
+                isActive: (e) => e.isActive("heading", { level: 3 }),
+            },
+        ],
+        [
+            {
+                icon: () => <TbOutlineList />,
+                title: "Bullet List (Ctrl+Shift+8)",
+                action: (e) => e.chain().focus().toggleBulletList().run(),
+                isActive: (e) => e.isActive("bulletList"),
+            },
+            {
+                icon: () => <TbOutlineListNumbers />,
+                title: "Ordered List (Ctrl+Shift+7)",
+                action: (e) => e.chain().focus().toggleOrderedList().run(),
+                isActive: (e) => e.isActive("orderedList"),
+            },
+        ],
+        [
+            {
+                icon: () => <TbOutlineCode />,
+                title: "Inline Code (Ctrl+E)",
+                action: (e) => e.chain().focus().toggleCode().run(),
+                isActive: (e) => e.isActive("code"),
+            },
+            {
+                icon: () => <TbOutlineFileCode />,
+                title: "Code Block (Ctrl+Alt+C)",
+                action: (e) => e.chain().focus().toggleCodeBlock().run(),
+                isActive: (e) => e.isActive("codeBlock"),
+            },
+            {
+                icon: () => <TbOutlineBlockquote />,
+                title: "Blockquote (Ctrl+Shift+B)",
+                action: (e) => e.chain().focus().toggleBlockquote().run(),
+                isActive: (e) => e.isActive("blockquote"),
+            },
+        ],
+        [
+            {
+                icon: () => <TbOutlineLineDashed />,
+                title: "Horizontal Rule",
+                action: (e) => e.chain().focus().setHorizontalRule().run(),
+            },
+            {
+                icon: () => <TbOutlineArrowBackUp />,
+                title: "Undo (Ctrl+Z)",
+                action: (e) => e.chain().focus().undo().run(),
+            },
+            {
+                icon: () => <TbOutlineArrowForwardUp />,
+                title: "Redo (Ctrl+Shift+Z)",
+                action: (e) => e.chain().focus().redo().run(),
+            },
+        ],
+    ];
+
     onMount(() => {
         const e = new Editor({
             element: editorRef,
             extensions: [
                 StarterKit,
                 Markdown.configure({ html: false, transformPastedText: true }),
+                Placeholder.configure({ placeholder: "Start writing..." }),
             ],
             content: props.value,
             onUpdate: ({ editor: inst }) => {
                 props.onChange(getMarkdown(inst));
+                setTick((t) => t + 1);
+            },
+            onSelectionUpdate: () => {
+                setTick((t) => t + 1);
             },
         });
         setEditor(e);
@@ -55,163 +191,85 @@ export default function BlogEditor(props: BlogEditorProps) {
         setMode(newMode);
     }
 
+    const wordCount = createMemo(() => {
+        tick();
+        const text =
+            mode() === "rich"
+                ? (() => {
+                      const e = editor();
+                      return e ? getMarkdown(e) : "";
+                  })()
+                : props.value;
+        const words = text.trim().split(/\s+/).filter(Boolean);
+        return words.length;
+    });
+
     return (
         <>
             <style>{css}</style>
             <div class="blog-editor">
-                <div class="blog-editor-tabs">
-                    <button
-                        type="button"
-                        class={`blog-editor-tab${mode() === "rich" ? " active" : ""}`}
-                        onClick={() => switchMode("rich")}
-                    >
-                        Rich Editor
-                    </button>
-                    <button
-                        type="button"
-                        class={`blog-editor-tab${mode() === "markdown" ? " active" : ""}`}
-                        onClick={() => switchMode("markdown")}
-                    >
-                        Markdown
-                    </button>
-                </div>
-
-                <Show when={mode() === "rich"}>
-                    <div class="blog-editor-toolbar">
+                <div class="blog-editor-toolbar">
+                    <Show when={mode() === "rich"}>
+                        <For each={toolbarGroups}>
+                            {(group, gi) => (
+                                <>
+                                    <Show when={gi() > 0}>
+                                        <div class="toolbar-sep" />
+                                    </Show>
+                                    <div class="toolbar-group">
+                                        <For each={group}>
+                                            {(btn) => {
+                                                const e = editor();
+                                                const active = () => {
+                                                    tick();
+                                                    const inst = editor();
+                                                    return inst && btn.isActive
+                                                        ? btn.isActive(inst)
+                                                        : false;
+                                                };
+                                                return (
+                                                    <button
+                                                        type="button"
+                                                        class={`toolbar-btn${active() ? " active" : ""}`}
+                                                        title={btn.title}
+                                                        onClick={() => {
+                                                            const inst =
+                                                                editor();
+                                                            if (inst)
+                                                                btn.action(
+                                                                    inst,
+                                                                );
+                                                        }}
+                                                        disabled={!e}
+                                                    >
+                                                        {btn.icon()}
+                                                    </button>
+                                                );
+                                            }}
+                                        </For>
+                                    </div>
+                                </>
+                            )}
+                        </For>
+                    </Show>
+                    <div class="toolbar-spacer" />
+                    <div class="toolbar-mode-toggle">
                         <button
                             type="button"
-                            class={editor()?.isActive("bold") ? "active" : ""}
-                            onClick={() =>
-                                editor()?.chain().focus().toggleBold().run()
-                            }
-                            title="Bold"
+                            class={mode() === "rich" ? "active" : ""}
+                            onClick={() => switchMode("rich")}
                         >
-                            B
+                            Rich
                         </button>
                         <button
                             type="button"
-                            class={editor()?.isActive("italic") ? "active" : ""}
-                            onClick={() =>
-                                editor()?.chain().focus().toggleItalic().run()
-                            }
-                            title="Italic"
+                            class={mode() === "markdown" ? "active" : ""}
+                            onClick={() => switchMode("markdown")}
                         >
-                            <em>I</em>
-                        </button>
-                        <button
-                            type="button"
-                            class={
-                                editor()?.isActive("heading", { level: 2 })
-                                    ? "active"
-                                    : ""
-                            }
-                            onClick={() =>
-                                editor()
-                                    ?.chain()
-                                    .focus()
-                                    .toggleHeading({ level: 2 })
-                                    .run()
-                            }
-                            title="Heading 2"
-                        >
-                            H2
-                        </button>
-                        <button
-                            type="button"
-                            class={
-                                editor()?.isActive("heading", { level: 3 })
-                                    ? "active"
-                                    : ""
-                            }
-                            onClick={() =>
-                                editor()
-                                    ?.chain()
-                                    .focus()
-                                    .toggleHeading({ level: 3 })
-                                    .run()
-                            }
-                            title="Heading 3"
-                        >
-                            H3
-                        </button>
-                        <button
-                            type="button"
-                            class={
-                                editor()?.isActive("bulletList") ? "active" : ""
-                            }
-                            onClick={() =>
-                                editor()
-                                    ?.chain()
-                                    .focus()
-                                    .toggleBulletList()
-                                    .run()
-                            }
-                            title="Bullet List"
-                        >
-                            &#8226;
-                        </button>
-                        <button
-                            type="button"
-                            class={
-                                editor()?.isActive("orderedList")
-                                    ? "active"
-                                    : ""
-                            }
-                            onClick={() =>
-                                editor()
-                                    ?.chain()
-                                    .focus()
-                                    .toggleOrderedList()
-                                    .run()
-                            }
-                            title="Ordered List"
-                        >
-                            1.
-                        </button>
-                        <button
-                            type="button"
-                            class={editor()?.isActive("code") ? "active" : ""}
-                            onClick={() =>
-                                editor()?.chain().focus().toggleCode().run()
-                            }
-                            title="Inline Code"
-                        >
-                            {"</>"}
-                        </button>
-                        <button
-                            type="button"
-                            class={
-                                editor()?.isActive("codeBlock") ? "active" : ""
-                            }
-                            onClick={() =>
-                                editor()
-                                    ?.chain()
-                                    .focus()
-                                    .toggleCodeBlock()
-                                    .run()
-                            }
-                            title="Code Block"
-                        >
-                            {"{ }"}
-                        </button>
-                        <button
-                            type="button"
-                            class={
-                                editor()?.isActive("blockquote") ? "active" : ""
-                            }
-                            onClick={() =>
-                                editor()
-                                    ?.chain()
-                                    .focus()
-                                    .toggleBlockquote()
-                                    .run()
-                            }
-                            title="Blockquote"
-                        >
-                            &#8220;
+                            Markdown
                         </button>
                     </div>
-                </Show>
+                </div>
 
                 <div
                     ref={editorRef}
@@ -226,6 +284,10 @@ export default function BlogEditor(props: BlogEditorProps) {
                         onInput={(e) => props.onChange(e.currentTarget.value)}
                     />
                 </Show>
+
+                <div class="blog-editor-footer">
+                    <span>{wordCount()} words</span>
+                </div>
             </div>
         </>
     );
