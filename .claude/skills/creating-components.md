@@ -48,7 +48,7 @@ import css from "./Button.css?inline";
 <style>{shapeCss + css}</style>;
 ```
 
-Shape classes: `shape-btn`, `shape-pill`, `shape-form`.
+Shape classes: `shape-default`, `shape-pill`, `shape-sm`, `shape-md`, `shape-lg`.
 
 ## Reference: Button.tsx
 
@@ -58,14 +58,20 @@ import shapeCss from "~/styles/control-shapes.css?inline";
 import css from "./Button.css?inline";
 
 const variantClass = {
-    btn: "shape-btn",
+    default: "shape-default",
     pill: "shape-pill",
-    form: "shape-form",
+} as const;
+
+const sizeClass = {
+    sm: "shape-sm",
+    md: "shape-md",
+    lg: "shape-lg",
 } as const;
 
 interface ButtonProps {
     color?: "primary" | "danger" | "success" | "neutral";
-    variant?: "pill" | "form";
+    variant?: "default" | "pill";
+    size?: "sm" | "md" | "lg";
     onClick?: () => void;
     disabled?: boolean;
     type?: "button" | "submit";

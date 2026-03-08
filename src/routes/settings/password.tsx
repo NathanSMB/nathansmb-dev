@@ -88,7 +88,12 @@ export default function PasswordSettings() {
                             required
                         />
                     </FormLabel>
-                    <Button variant="form" type="submit" disabled={loading()}>
+                    <Button
+                        size="lg"
+                        class="form-submit"
+                        type="submit"
+                        disabled={loading()}
+                    >
                         {loading() ? "Changing password..." : "Change password"}
                     </Button>
                 </Form>

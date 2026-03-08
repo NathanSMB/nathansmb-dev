@@ -23,11 +23,11 @@ import { render, fireEvent } from "@solidjs/testing-library";
 import Button from "~/components/ui/Button";
 
 describe("Button", () => {
-    it("renders with default primary color and btn variant", () => {
+    it("renders with default primary color and default variant", () => {
         const { getByRole } = render(() => <Button>Click</Button>);
         const btn = getByRole("button");
         expect(btn.className).toContain("btn-primary");
-        expect(btn.className).toContain("shape-btn");
+        expect(btn.className).toContain("shape-default");
     });
 
     it("applies danger color class", () => {

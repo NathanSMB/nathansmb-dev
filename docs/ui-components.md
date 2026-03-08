@@ -239,9 +239,9 @@ interface TextInputProps {
 
 `src/styles/control-shapes.css` provides shared shape classes used by **Button** and **Pill**:
 
-- `.shape-btn` — Standard button sizing and padding
+- `.shape-default` — Standard button shape
 - `.shape-pill` — Compact inline pill with small text
-- `.shape-form` — Full-width form control sizing
+- `.shape-sm` / `.shape-md` / `.shape-lg` — Size classes for controls
 
 ## Key Files
 

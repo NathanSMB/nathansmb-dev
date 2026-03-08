@@ -291,3 +291,7 @@
 .blog-editor.fullscreen .blog-editor-footer {
     border-radius: 0;
 }
+
+.word-count {
+    margin-right: 0.5rem;
+}

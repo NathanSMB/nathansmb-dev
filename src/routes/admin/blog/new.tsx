@@ -156,6 +156,7 @@ export default function AdminBlogNew() {
                             value={status()}
                             options={STATUS_OPTIONS}
                             onChange={setStatus}
+                            size="lg"
                         />
                     </div>
                 </div>
@@ -167,17 +168,14 @@ export default function AdminBlogNew() {
 
                 <div class="blog-form-actions">
                     <Button
-                        variant="form"
-                        onClick={handleSave}
-                        disabled={saving()}
-                    >
-                        {saving() ? "Saving..." : "Create Post"}
-                    </Button>
-                    <Button
                         color="neutral"
+                        size="lg"
                         onClick={() => navigate("/admin/blog")}
                     >
                         Cancel
+                    </Button>
+                    <Button size="lg" onClick={handleSave} disabled={saving()}>
+                        {saving() ? "Saving..." : "Create Post"}
                     </Button>
                 </div>
             </div>

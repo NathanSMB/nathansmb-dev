@@ -479,7 +479,7 @@ export default function BlogEditor(props: BlogEditorProps) {
                         </Show>
                     </button>
                     <span class="footer-spacer" />
-                    <span>{wordCount()} words</span>
+                    <span class="word-count">{wordCount()} words</span>
                 </div>
             </div>
 

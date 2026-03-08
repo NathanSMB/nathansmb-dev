@@ -66,7 +66,12 @@ export default function Login() {
                         required
                     />
                 </FormLabel>
-                <Button variant="form" type="submit" disabled={loading()}>
+                <Button
+                    size="lg"
+                    class="form-submit"
+                    type="submit"
+                    disabled={loading()}
+                >
                     {loading() ? "Logging in..." : "Log in"}
                 </Button>
             </Form>

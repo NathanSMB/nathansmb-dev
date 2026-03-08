@@ -168,6 +168,7 @@ export default function AdminBlogEdit() {
                                 value={status()}
                                 options={STATUS_OPTIONS}
                                 onChange={setStatus}
+                                size="lg"
                             />
                         </div>
                     </div>
@@ -179,7 +180,7 @@ export default function AdminBlogEdit() {
 
                     <div class="blog-form-actions">
                         <Button
-                            variant="form"
+                            size="lg"
                             onClick={handleSave}
                             disabled={saving()}
                         >

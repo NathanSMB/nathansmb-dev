@@ -1,4 +1,4 @@
-.shape-btn {
+.shape-default {
     font-size: var(--text-base);
     padding: var(--pad-control);
     border-radius: var(--radius-control);
@@ -12,10 +12,20 @@
     border-radius: var(--radius-pill);
 }
 
-.shape-form {
-    font-size: var(--text-md);
-    padding: var(--pad-field);
-    width: 100%;
+.shape-sm {
+    font-size: var(--text-sm);
+    padding: var(--pad-input-compact);
+    border-radius: var(--radius-md);
+}
+
+.shape-md {
+    font-size: var(--text-base);
+    padding: var(--pad-control);
     border-radius: var(--radius-control);
-    margin-top: var(--space-sm);
+}
+
+.shape-lg {
+    font-size: var(--text-md);
+    padding: var(--pad-input);
+    border-radius: var(--radius-control);
 }

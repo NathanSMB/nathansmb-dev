@@ -12,3 +12,7 @@
     align-items: center;
     gap: var(--gap-inline);
 }
+
+.form-submit {
+    align-self: flex-end;
+}

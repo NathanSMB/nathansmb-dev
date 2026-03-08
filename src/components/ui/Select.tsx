@@ -11,11 +11,13 @@ interface SelectProps {
     options: SelectOption[];
     onChange: (value: string) => void;
     disabled?: boolean;
+    size?: "sm" | "md" | "lg";
     class?: string;
 }
 
 export default function Select(props: SelectProps) {
     const [open, setOpen] = createSignal(false);
+    const size = () => props.size ?? "md";
     let wrapperRef!: HTMLDivElement;
 
     const selectedLabel = () =>
@@ -47,7 +49,7 @@ export default function Select(props: SelectProps) {
             >
                 <button
                     type="button"
-                    class={`select-trigger${open() ? " open" : ""}`}
+                    class={`select-trigger select-${size()}${open() ? " open" : ""}`}
                     disabled={props.disabled}
                     onClick={() => setOpen(!open())}
                 >

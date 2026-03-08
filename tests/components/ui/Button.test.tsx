@@ -2,11 +2,12 @@ import { render, fireEvent } from "@solidjs/testing-library";
 import Button from "~/components/ui/Button";
 
 describe("Button", () => {
-    it("renders with default primary color and btn variant", () => {
+    it("renders with default primary color and default variant", () => {
         const { getByRole } = render(() => <Button>Click</Button>);
         const btn = getByRole("button");
         expect(btn.className).toContain("btn-primary");
-        expect(btn.className).toContain("shape-btn");
+        expect(btn.className).toContain("shape-default");
+        expect(btn.className).toContain("shape-md");
     });
 
     it("applies danger color class", () => {
@@ -19,11 +20,20 @@ describe("Button", () => {
         expect(getByRole("button").className).toContain("shape-pill");
     });
 
-    it("applies form variant class", () => {
-        const { getByRole } = render(() => (
-            <Button variant="form">Submit</Button>
-        ));
-        expect(getByRole("button").className).toContain("shape-form");
+    it("does not add size class for pill variant", () => {
+        const { getByRole } = render(() => <Button variant="pill">Tag</Button>);
+        const cls = getByRole("button").className;
+        expect(cls).not.toContain("shape-sm");
+        expect(cls).not.toContain("shape-md");
+        expect(cls).not.toContain("shape-lg");
+    });
+
+    it("applies size classes", () => {
+        const { getByRole: sm } = render(() => <Button size="sm">S</Button>);
+        expect(sm("button").className).toContain("shape-sm");
+
+        const { getByRole: lg } = render(() => <Button size="lg">L</Button>);
+        expect(lg("button").className).toContain("shape-lg");
     });
 
     it("calls onClick handler", async () => {

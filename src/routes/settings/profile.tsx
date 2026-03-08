@@ -138,7 +138,12 @@ export default function ProfileSettings() {
                             />
                         </div>
                     </FormLabel>
-                    <Button variant="form" type="submit" disabled={loading()}>
+                    <Button
+                        size="lg"
+                        class="form-submit"
+                        type="submit"
+                        disabled={loading()}
+                    >
                         {loading() ? "Saving..." : "Save changes"}
                     </Button>
                 </Form>
