@@ -110,6 +110,7 @@
     min-height: 300px;
     font-size: var(--text-base);
     line-height: 1.7;
+    background-color: var(--color-page-bg);
 }
 
 .blog-editor-content .tiptap {
@@ -219,7 +220,7 @@
     font-size: var(--text-base);
     line-height: 1.7;
     resize: none;
-    background: transparent;
+    background: var(--color-page-bg);
     color: var(--color-text-muted);
     overflow: hidden;
 }
@@ -239,12 +240,42 @@
 
 .blog-editor-footer {
     display: flex;
-    justify-content: flex-end;
-    padding: var(--space-sm);
+    align-items: center;
+    padding: var(--space-xs) var(--space-sm);
     border: var(--border-thin) solid var(--color-text-faint);
     border-top: none;
     border-radius: 0 0 var(--radius-md) var(--radius-md);
     background: var(--color-surface);
     font-size: var(--text-xs);
     color: var(--color-text-muted);
+}
+
+.footer-spacer {
+    flex: 1;
+}
+
+/* ── Fullscreen ── */
+
+.blog-editor.fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+}
+
+.blog-editor.fullscreen .blog-editor-toolbar {
+    border-radius: 0;
+}
+
+.blog-editor.fullscreen .blog-editor-content,
+.blog-editor.fullscreen .blog-editor-markdown-wrap {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.blog-editor.fullscreen .blog-editor-content .tiptap {
+    min-height: 100%;
+}
+
+.blog-editor.fullscreen .blog-editor-footer {
+    border-radius: 0;
 }

@@ -25,6 +25,8 @@ import {
     TbOutlineLineDashed,
     TbOutlineArrowBackUp,
     TbOutlineArrowForwardUp,
+    TbOutlineArrowsMaximize,
+    TbOutlineArrowsMinimize,
 } from "solid-icons/tb";
 import css from "./BlogEditor.css?inline";
 
@@ -48,6 +50,7 @@ type ToolbarGroup = ToolbarButton[];
 
 export default function BlogEditor(props: BlogEditorProps) {
     const [mode, setMode] = createSignal<"rich" | "markdown">("rich");
+    const [fullscreen, setFullscreen] = createSignal(false);
     const [editor, setEditor] = createSignal<Editor | null>(null);
     const [tick, setTick] = createSignal(0);
     const [history, setHistory] = createSignal<string[]>([props.value]);
@@ -218,7 +221,14 @@ export default function BlogEditor(props: BlogEditorProps) {
         ],
     ];
 
+    function handleEscape(e: KeyboardEvent) {
+        if (e.key === "Escape" && fullscreen()) {
+            setFullscreen(false);
+        }
+    }
+
     onMount(() => {
+        document.addEventListener("keydown", handleEscape);
         const e = new Editor({
             element: editorRef,
             extensions: [
@@ -239,6 +249,7 @@ export default function BlogEditor(props: BlogEditorProps) {
     });
 
     onCleanup(() => {
+        document.removeEventListener("keydown", handleEscape);
         clearTimeout(debounceTimer);
         editor()?.destroy();
     });
@@ -275,7 +286,7 @@ export default function BlogEditor(props: BlogEditorProps) {
         <>
             <style>{css}</style>
             <div
-                class="blog-editor"
+                class={`blog-editor${fullscreen() ? " fullscreen" : ""}`}
                 onKeyDown={(e) => {
                     const mod = e.ctrlKey || e.metaKey;
                     if (mod && e.key === "z" && !e.shiftKey) {
@@ -404,6 +415,24 @@ export default function BlogEditor(props: BlogEditorProps) {
                 </Show>
 
                 <div class="blog-editor-footer">
+                    <button
+                        type="button"
+                        class="toolbar-btn"
+                        title={
+                            fullscreen()
+                                ? "Exit fullscreen (Esc)"
+                                : "Fullscreen"
+                        }
+                        onClick={() => setFullscreen((f) => !f)}
+                    >
+                        <Show
+                            when={fullscreen()}
+                            fallback={<TbOutlineArrowsMaximize />}
+                        >
+                            <TbOutlineArrowsMinimize />
+                        </Show>
+                    </button>
+                    <span class="footer-spacer" />
                     <span>{wordCount()} words</span>
                 </div>
             </div>
