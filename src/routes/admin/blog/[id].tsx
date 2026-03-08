@@ -180,17 +180,18 @@ export default function AdminBlogEdit() {
 
                     <div class="blog-form-actions">
                         <Button
+                            color="neutral"
+                            size="lg"
+                            onClick={() => navigate("/admin/blog")}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
                             size="lg"
                             onClick={handleSave}
                             disabled={saving()}
                         >
                             {saving() ? "Saving..." : "Save Changes"}
-                        </Button>
-                        <Button
-                            color="neutral"
-                            onClick={() => navigate("/admin/blog")}
-                        >
-                            Back to list
                         </Button>
                     </div>
                 </div>

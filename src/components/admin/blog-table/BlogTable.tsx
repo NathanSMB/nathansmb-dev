@@ -112,23 +112,27 @@ export default function BlogTable(props: BlogTableProps) {
                                     </td>
                                     <td>{row.authorName}</td>
                                     <td>{formatDate(row.publishedAt)}</td>
-                                    <td style="display: flex; gap: 0.5rem;">
-                                        <Button
-                                            onClick={() => props.onEdit(row.id)}
-                                        >
-                                            Edit
-                                        </Button>
-                                        <Button
-                                            color="danger"
-                                            onClick={() =>
-                                                props.onDelete(
-                                                    row.id,
-                                                    row.title,
-                                                )
-                                            }
-                                        >
-                                            Delete
-                                        </Button>
+                                    <td>
+                                        <div style="display: flex; gap: 0.5rem;">
+                                            <Button
+                                                onClick={() =>
+                                                    props.onEdit(row.id)
+                                                }
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                color="danger"
+                                                onClick={() =>
+                                                    props.onDelete(
+                                                        row.id,
+                                                        row.title,
+                                                    )
+                                                }
+                                            >
+                                                Delete
+                                            </Button>
+                                        </div>
                                     </td>
                                 </tr>
                             )}
