@@ -203,14 +203,10 @@ main {
 @media (aspect-ratio > 1) {
     .app-layout {
         flex-direction: row;
-        height: 100dvh;
-        overflow: hidden;
     }
 
     .app-layout > main {
         flex: 1;
-        overflow-y: auto;
-        min-height: 0;
     }
 }
 
