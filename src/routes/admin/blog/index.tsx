@@ -3,7 +3,7 @@ import { Title } from "@solidjs/meta";
 import { useNavigate } from "@solidjs/router";
 import { BlogTable, type BlogPostRow } from "~/components/admin/blog-table";
 import { Pagination } from "~/components/admin/table";
-import ConfirmModal from "~/components/admin/ConfirmModal";
+import ConfirmModal from "~/components/ui/ConfirmModal";
 import Button from "~/components/ui/Button";
 import Form from "~/components/ui/Form";
 import TextInput from "~/components/ui/TextInput";

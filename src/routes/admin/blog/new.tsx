@@ -88,6 +88,7 @@ export default function AdminBlogNew() {
                     <TextInput
                         id="title"
                         variant="form"
+                        color="surface"
                         value={title()}
                         onInput={handleTitleInput}
                         placeholder="Post title"
@@ -100,6 +101,7 @@ export default function AdminBlogNew() {
                     <TextInput
                         id="slug"
                         variant="form"
+                        color="surface"
                         value={slug()}
                         onInput={(v) => {
                             setSlugTouched(true);
@@ -127,6 +129,7 @@ export default function AdminBlogNew() {
                         <TextInput
                             id="coverImage"
                             variant="form"
+                            color="surface"
                             value={coverImage()}
                             onInput={setCoverImage}
                             placeholder="https://..."
@@ -138,6 +141,7 @@ export default function AdminBlogNew() {
                         <TextInput
                             id="tags"
                             variant="form"
+                            color="surface"
                             value={tags()}
                             onInput={setTags}
                             placeholder="tag1, tag2, tag3"

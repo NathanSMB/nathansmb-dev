@@ -34,3 +34,17 @@
     width: 100%;
     box-sizing: border-box;
 }
+
+/* ── Colors ── */
+.input-surface {
+    background: var(--color-surface);
+    color: var(--color-text);
+}
+.input-page {
+    background: var(--color-page-bg);
+    color: var(--color-text);
+}
+.input-transparent {
+    background: transparent;
+    color: inherit;
+}

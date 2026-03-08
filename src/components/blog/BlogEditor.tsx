@@ -10,6 +10,7 @@ import { Editor } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
 import { Markdown } from "tiptap-markdown";
 import Placeholder from "@tiptap/extension-placeholder";
+import Image from "@tiptap/extension-image";
 import {
     TbOutlineBold,
     TbOutlineItalic,
@@ -23,11 +24,16 @@ import {
     TbOutlineFileCode,
     TbOutlineBlockquote,
     TbOutlineLineDashed,
+    TbOutlineLink,
+    TbOutlineLinkOff,
+    TbOutlinePhoto,
     TbOutlineArrowBackUp,
     TbOutlineArrowForwardUp,
     TbOutlineArrowsMaximize,
     TbOutlineArrowsMinimize,
 } from "solid-icons/tb";
+import FormModal from "~/components/ui/FormModal";
+import TextInput from "~/components/ui/TextInput";
 import css from "./BlogEditor.css?inline";
 
 interface MarkdownStorage {
@@ -55,6 +61,10 @@ export default function BlogEditor(props: BlogEditorProps) {
     const [tick, setTick] = createSignal(0);
     const [history, setHistory] = createSignal<string[]>([props.value]);
     const [historyIdx, setHistoryIdx] = createSignal(0);
+    const [linkModalOpen, setLinkModalOpen] = createSignal(false);
+    const [linkUrl, setLinkUrl] = createSignal("");
+    const [imageModalOpen, setImageModalOpen] = createSignal(false);
+    const [imageUrl, setImageUrl] = createSignal("");
     let debounceTimer: ReturnType<typeof setTimeout> | undefined;
     let isRestoring = false;
     let editorRef!: HTMLDivElement;
@@ -219,10 +229,42 @@ export default function BlogEditor(props: BlogEditorProps) {
                 action: (e) => e.chain().focus().setHorizontalRule().run(),
             },
         ],
+        [
+            {
+                icon: () => {
+                    tick();
+                    const inst = editor();
+                    return inst?.isActive("link") ? (
+                        <TbOutlineLinkOff />
+                    ) : (
+                        <TbOutlineLink />
+                    );
+                },
+                title: "Link",
+                action: (e) => {
+                    if (e.isActive("link")) {
+                        e.chain().focus().unsetLink().run();
+                        return;
+                    }
+                    setLinkUrl("");
+                    setLinkModalOpen(true);
+                },
+                isActive: (e) => e.isActive("link"),
+            },
+            {
+                icon: () => <TbOutlinePhoto />,
+                title: "Image",
+                action: () => {
+                    setImageUrl("");
+                    setImageModalOpen(true);
+                },
+            },
+        ],
     ];
 
     function handleEscape(e: KeyboardEvent) {
         if (e.key === "Escape" && fullscreen()) {
+            if (linkModalOpen() || imageModalOpen()) return;
             setFullscreen(false);
         }
     }
@@ -232,7 +274,11 @@ export default function BlogEditor(props: BlogEditorProps) {
         const e = new Editor({
             element: editorRef,
             extensions: [
-                StarterKit.configure({ undoRedo: false }),
+                StarterKit.configure({
+                    undoRedo: false,
+                    link: { openOnClick: false },
+                }),
+                Image.configure({ inline: false }),
                 Markdown.configure({ html: false, transformPastedText: true }),
                 Placeholder.configure({ placeholder: "Start writing..." }),
             ],
@@ -436,6 +482,56 @@ export default function BlogEditor(props: BlogEditorProps) {
                     <span>{wordCount()} words</span>
                 </div>
             </div>
+
+            <FormModal
+                open={linkModalOpen()}
+                title="Insert Link"
+                confirmLabel="Insert"
+                onSubmit={() => {
+                    const e = editor();
+                    if (e && linkUrl()) {
+                        e.chain().focus().setLink({ href: linkUrl() }).run();
+                    }
+                    setLinkModalOpen(false);
+                }}
+                onCancel={() => setLinkModalOpen(false)}
+            >
+                <TextInput
+                    value={linkUrl()}
+                    onInput={setLinkUrl}
+                    type="url"
+                    variant="form"
+                    color="page"
+                    placeholder="https://example.com"
+                    required
+                    ref={(el) => requestAnimationFrame(() => el.focus())}
+                />
+            </FormModal>
+
+            <FormModal
+                open={imageModalOpen()}
+                title="Insert Image"
+                confirmLabel="Insert"
+                onSubmit={() => {
+                    const e = editor();
+                    if (e && imageUrl()) {
+                        e.chain().focus().setImage({ src: imageUrl() }).run();
+                    }
+                    setImageModalOpen(false);
+                }}
+                onCancel={() => setImageModalOpen(false)}
+            >
+                <TextInput
+                    value={imageUrl()}
+                    onInput={setImageUrl}
+                    type="url"
+                    variant="form"
+                    color="page"
+                    placeholder="https://example.com/image.jpg"
+                    required
+                    ref={(el) => requestAnimationFrame(() => el.focus())}
+                />
+            </FormModal>
         </>
     );
 }

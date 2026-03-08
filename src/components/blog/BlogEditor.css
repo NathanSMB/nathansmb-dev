@@ -198,6 +198,18 @@
     margin: 1.25em 0;
 }
 
+.blog-editor-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    margin: 0.75em 0;
+}
+
+.blog-editor-content a {
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+
 /* ── Markdown textarea ── */
 
 .blog-editor-markdown-wrap {
@@ -259,7 +271,7 @@
 .blog-editor.fullscreen {
     position: fixed;
     inset: 0;
-    z-index: 9999;
+    z-index: calc(var(--z-modal) - 1);
 }
 
 .blog-editor.fullscreen .blog-editor-toolbar {

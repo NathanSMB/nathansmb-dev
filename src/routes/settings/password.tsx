@@ -60,6 +60,7 @@ export default function PasswordSettings() {
                         <TextInput
                             type="password"
                             variant="form"
+                            color="surface"
                             value={currentPassword()}
                             onInput={setCurrentPassword}
                             required
@@ -70,6 +71,7 @@ export default function PasswordSettings() {
                         <TextInput
                             type="password"
                             variant="form"
+                            color="surface"
                             value={newPassword()}
                             onInput={setNewPassword}
                             required
@@ -80,6 +82,7 @@ export default function PasswordSettings() {
                         <TextInput
                             type="password"
                             variant="form"
+                            color="surface"
                             value={confirmPassword()}
                             onInput={setConfirmPassword}
                             required

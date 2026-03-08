@@ -46,6 +46,7 @@ export default function Register() {
                     Name
                     <TextInput
                         variant="form"
+                        color="surface"
                         value={name()}
                         onInput={setName}
                         required
@@ -56,6 +57,7 @@ export default function Register() {
                     <TextInput
                         type="email"
                         variant="form"
+                        color="surface"
                         value={email()}
                         onInput={setEmail}
                         required
@@ -66,6 +68,7 @@ export default function Register() {
                     <TextInput
                         type="password"
                         variant="form"
+                        color="surface"
                         value={password()}
                         onInput={setPassword}
                         required

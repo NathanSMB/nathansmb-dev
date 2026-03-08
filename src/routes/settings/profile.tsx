@@ -107,6 +107,7 @@ export default function ProfileSettings() {
                         Name
                         <TextInput
                             variant="form"
+                            color="surface"
                             value={name()}
                             onInput={setName}
                             required
@@ -117,6 +118,7 @@ export default function ProfileSettings() {
                         <TextInput
                             type="email"
                             variant="form"
+                            color="surface"
                             value={email()}
                             onInput={setEmail}
                             required
@@ -129,6 +131,7 @@ export default function ProfileSettings() {
                             <TextInput
                                 type="url"
                                 variant="form"
+                                color="surface"
                                 value={image()}
                                 onInput={setImage}
                                 placeholder="https://example.com/photo.jpg"

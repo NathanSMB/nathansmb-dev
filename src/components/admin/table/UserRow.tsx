@@ -105,7 +105,8 @@ export default function UserRow(props: UserRowProps) {
                         }
                     >
                         <TextInput
-                            variant="inline"
+                            variant="toolbar"
+                            color="surface"
                             value={props.editValue}
                             onInput={props.onSetEditValue}
                             onBlur={props.onSaveField}
@@ -133,7 +134,8 @@ export default function UserRow(props: UserRowProps) {
                         }
                     >
                         <TextInput
-                            variant="inline"
+                            variant="toolbar"
+                            color="surface"
                             type="email"
                             value={props.editValue}
                             onInput={props.onSetEditValue}

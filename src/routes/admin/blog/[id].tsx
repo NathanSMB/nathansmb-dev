@@ -101,6 +101,7 @@ export default function AdminBlogEdit() {
                         <TextInput
                             id="title"
                             variant="form"
+                            color="surface"
                             value={title()}
                             onInput={setTitle}
                             placeholder="Post title"
@@ -113,6 +114,7 @@ export default function AdminBlogEdit() {
                         <TextInput
                             id="slug"
                             variant="form"
+                            color="surface"
                             value={slug()}
                             onInput={setSlug}
                             placeholder="post-slug"
@@ -139,6 +141,7 @@ export default function AdminBlogEdit() {
                             <TextInput
                                 id="coverImage"
                                 variant="form"
+                                color="surface"
                                 value={coverImage()}
                                 onInput={setCoverImage}
                                 placeholder="https://..."
@@ -150,6 +153,7 @@ export default function AdminBlogEdit() {
                             <TextInput
                                 id="tags"
                                 variant="form"
+                                color="surface"
                                 value={tags()}
                                 onInput={setTags}
                                 placeholder="tag1, tag2, tag3"
