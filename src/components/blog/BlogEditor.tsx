@@ -50,12 +50,86 @@ export default function BlogEditor(props: BlogEditorProps) {
     const [mode, setMode] = createSignal<"rich" | "markdown">("rich");
     const [editor, setEditor] = createSignal<Editor | null>(null);
     const [tick, setTick] = createSignal(0);
+    const [history, setHistory] = createSignal<string[]>([props.value]);
+    const [historyIdx, setHistoryIdx] = createSignal(0);
+    let debounceTimer: ReturnType<typeof setTimeout> | undefined;
+    let isRestoring = false;
     let editorRef!: HTMLDivElement;
 
     function getMarkdown(e: Editor): string {
         const storage = e.storage as unknown as Record<string, MarkdownStorage>;
         return storage.markdown.getMarkdown();
     }
+
+    function handleChange(newValue: string) {
+        props.onChange(newValue);
+        if (isRestoring) return;
+
+        const idx = historyIdx();
+        const hist = history().slice(0, idx + 1);
+
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            if (newValue !== hist[hist.length - 1]) {
+                setHistory([...hist, newValue]);
+                setHistoryIdx(hist.length);
+            }
+        }, 500);
+    }
+
+    function restore(value: string) {
+        isRestoring = true;
+        props.onChange(value);
+        const e = editor();
+        if (mode() === "rich" && e) {
+            e.commands.setContent(value);
+        }
+        isRestoring = false;
+    }
+
+    function flushDebounce() {
+        if (debounceTimer !== undefined) {
+            clearTimeout(debounceTimer);
+            debounceTimer = undefined;
+            const current = props.value;
+            const idx = historyIdx();
+            const hist = history().slice(0, idx + 1);
+            if (current !== hist[hist.length - 1]) {
+                setHistory([...hist, current]);
+                setHistoryIdx(hist.length);
+            }
+        }
+    }
+
+    function undo() {
+        flushDebounce();
+        const idx = historyIdx();
+        if (idx > 0) {
+            const newIdx = idx - 1;
+            setHistoryIdx(newIdx);
+            restore(history()[newIdx]);
+        }
+    }
+
+    function redo() {
+        const idx = historyIdx();
+        const hist = history();
+        if (idx < hist.length - 1) {
+            const newIdx = idx + 1;
+            setHistoryIdx(newIdx);
+            restore(hist[newIdx]);
+        }
+    }
+
+    const canUndo = () => {
+        tick();
+        return historyIdx() > 0 || debounceTimer !== undefined;
+    };
+
+    const canRedo = () => {
+        tick();
+        return historyIdx() < history().length - 1;
+    };
 
     const toolbarGroups: ToolbarGroup[] = [
         [
@@ -148,13 +222,13 @@ export default function BlogEditor(props: BlogEditorProps) {
         const e = new Editor({
             element: editorRef,
             extensions: [
-                StarterKit,
+                StarterKit.configure({ undoRedo: false }),
                 Markdown.configure({ html: false, transformPastedText: true }),
                 Placeholder.configure({ placeholder: "Start writing..." }),
             ],
             content: props.value,
             onUpdate: ({ editor: inst }) => {
-                props.onChange(getMarkdown(inst));
+                handleChange(getMarkdown(inst));
                 setTick((t) => t + 1);
             },
             onSelectionUpdate: () => {
@@ -165,6 +239,7 @@ export default function BlogEditor(props: BlogEditorProps) {
     });
 
     onCleanup(() => {
+        clearTimeout(debounceTimer);
         editor()?.destroy();
     });
 
@@ -172,11 +247,13 @@ export default function BlogEditor(props: BlogEditorProps) {
         if (newMode === mode()) return;
         const e = editor();
 
+        isRestoring = true;
         if (newMode === "markdown" && e) {
             props.onChange(getMarkdown(e));
         } else if (newMode === "rich" && e) {
             e.commands.setContent(props.value);
         }
+        isRestoring = false;
 
         setMode(newMode);
     }
@@ -197,18 +274,32 @@ export default function BlogEditor(props: BlogEditorProps) {
     return (
         <>
             <style>{css}</style>
-            <div class="blog-editor">
+            <div
+                class="blog-editor"
+                onKeyDown={(e) => {
+                    const mod = e.ctrlKey || e.metaKey;
+                    if (mod && e.key === "z" && !e.shiftKey) {
+                        e.preventDefault();
+                        undo();
+                    } else if (
+                        mod &&
+                        (e.key === "Z" ||
+                            (e.key === "z" && e.shiftKey) ||
+                            (e.key === "y" && !e.shiftKey))
+                    ) {
+                        e.preventDefault();
+                        redo();
+                    }
+                }}
+            >
                 <div class="blog-editor-toolbar">
                     <div class="toolbar-group">
                         <button
                             type="button"
                             class="toolbar-btn"
                             title="Undo (Ctrl+Z)"
-                            onClick={() => {
-                                const inst = editor();
-                                if (inst) inst.chain().focus().undo().run();
-                            }}
-                            disabled={!editor()}
+                            onClick={() => undo()}
+                            disabled={!canUndo()}
                         >
                             <TbOutlineArrowBackUp />
                         </button>
@@ -216,11 +307,8 @@ export default function BlogEditor(props: BlogEditorProps) {
                             type="button"
                             class="toolbar-btn"
                             title="Redo (Ctrl+Shift+Z)"
-                            onClick={() => {
-                                const inst = editor();
-                                if (inst) inst.chain().focus().redo().run();
-                            }}
-                            disabled={!editor()}
+                            onClick={() => redo()}
+                            disabled={!canRedo()}
                         >
                             <TbOutlineArrowForwardUp />
                         </button>
@@ -309,7 +397,7 @@ export default function BlogEditor(props: BlogEditorProps) {
                                 const ta = e.currentTarget;
                                 ta.style.height = "auto";
                                 ta.style.height = `${ta.scrollHeight}px`;
-                                props.onChange(ta.value);
+                                handleChange(ta.value);
                             }}
                         />
                     </div>

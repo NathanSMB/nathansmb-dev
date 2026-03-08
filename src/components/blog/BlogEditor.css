@@ -240,7 +240,7 @@
 .blog-editor-footer {
     display: flex;
     justify-content: flex-end;
-    padding: var(--space-xs) var(--space-sm);
+    padding: var(--space-sm);
     border: var(--border-thin) solid var(--color-text-faint);
     border-top: none;
     border-radius: 0 0 var(--radius-md) var(--radius-md);
