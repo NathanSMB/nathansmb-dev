@@ -48,3 +48,7 @@
     background: transparent;
     color: inherit;
 }
+
+.textarea {
+    resize: vertical;
+}

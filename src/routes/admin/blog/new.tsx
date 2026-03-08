@@ -4,6 +4,7 @@ import { useNavigate } from "@solidjs/router";
 import BlogEditor from "~/components/blog/BlogEditor";
 import Button from "~/components/ui/Button";
 import TextInput from "~/components/ui/TextInput";
+import TextArea from "~/components/ui/TextArea";
 import Select from "~/components/ui/Select";
 import FormLabel from "~/components/ui/FormLabel";
 import Banner from "~/components/ui/Banner";
@@ -114,10 +115,12 @@ export default function AdminBlogNew() {
 
                 <div class="blog-form-row">
                     <FormLabel for="excerpt">Excerpt</FormLabel>
-                    <textarea
+                    <TextArea
                         id="excerpt"
+                        size="lg"
+                        color="surface"
                         value={excerpt()}
-                        onInput={(e) => setExcerpt(e.currentTarget.value)}
+                        onInput={setExcerpt}
                         placeholder="Brief summary..."
                         rows={3}
                     />
