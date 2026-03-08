@@ -37,20 +37,30 @@ const columnHelper = createColumnHelper<SessionRow>();
 const columns = [
     columnHelper.accessor("userName", {
         header: "Player",
+        size: 180,
+        minSize: 120,
     }),
     columnHelper.accessor("game", {
         header: "Game",
+        size: 140,
+        minSize: 100,
     }),
     columnHelper.accessor("startedAt", {
         header: "Started",
+        size: 180,
+        minSize: 140,
         cell: (info) => formatDate(info.getValue()),
     }),
     columnHelper.accessor("endedAt", {
         header: "Ended",
+        size: 180,
+        minSize: 140,
         cell: (info) => formatDate(info.getValue()),
     }),
     columnHelper.accessor("submitted", {
         header: "Submitted",
+        size: 100,
+        minSize: 80,
         cell: (info): JSX.Element => (
             <Pill color={info.getValue() ? "success" : "neutral"}>
                 {info.getValue() ? "Yes" : "No"}

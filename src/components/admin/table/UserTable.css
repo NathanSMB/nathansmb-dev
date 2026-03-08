@@ -1,11 +1,1 @@
-.admin-table th:first-child,
-.admin-table td:first-child {
-    width: 2.5rem;
-    text-align: center;
-}
-
-.admin-table th:nth-child(2),
-.admin-table td:nth-child(2) {
-    width: 2.5rem;
-    text-align: center;
-}
+/* Column sizing is handled by TanStack + colgroup */

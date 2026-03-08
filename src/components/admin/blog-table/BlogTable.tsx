@@ -42,9 +42,13 @@ export default function BlogTable(props: BlogTableProps) {
     const columns = [
         columnHelper.accessor("title", {
             header: "Title",
+            size: 280,
+            minSize: 180,
         }),
         columnHelper.accessor("status", {
             header: "Status",
+            size: 100,
+            minSize: 80,
             cell: (info): JSX.Element => (
                 <Pill
                     color={
@@ -59,25 +63,41 @@ export default function BlogTable(props: BlogTableProps) {
             id: "tags",
             header: "Tags",
             enableSorting: false,
+            size: 200,
+            minSize: 140,
             cell: (info): JSX.Element => (
-                <For each={info.row.original.tags ?? []}>
-                    {(tag) => <Pill color="primary">{tag}</Pill>}
-                </For>
+                <div
+                    style={{
+                        display: "flex",
+                        "flex-wrap": "wrap",
+                        gap: "0.3rem",
+                    }}
+                >
+                    <For each={info.row.original.tags ?? []}>
+                        {(tag) => <Pill color="primary">{tag}</Pill>}
+                    </For>
+                </div>
             ),
         }),
         columnHelper.accessor("authorName", {
             header: "Author",
+            size: 140,
+            minSize: 100,
         }),
         columnHelper.accessor("publishedAt", {
             header: "Published",
+            size: 120,
+            minSize: 100,
             cell: (info) => formatDate(info.getValue()),
         }),
         columnHelper.display({
             id: "actions",
             header: "Actions",
             enableSorting: false,
+            size: 160,
+            minSize: 140,
             cell: (info): JSX.Element => (
-                <div style="display: flex; gap: 0.5rem;">
+                <div style={{ display: "flex", gap: "0.5rem" }}>
                     <Button onClick={() => props.onEdit(info.row.original.id)}>
                         Edit
                     </Button>

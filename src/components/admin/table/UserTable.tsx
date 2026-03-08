@@ -63,28 +63,42 @@ export default function UserTable(props: UserTableProps) {
                 />
             ),
             enableSorting: false,
+            size: 44,
+            minSize: 44,
         }),
         columnHelper.display({
             id: "avatar",
             header: "",
             enableSorting: false,
+            size: 44,
+            minSize: 44,
         }),
         columnHelper.accessor("name", {
             header: "Name",
+            size: 160,
+            minSize: 120,
         }),
         columnHelper.accessor("email", {
             header: "Email",
+            size: 220,
+            minSize: 150,
         }),
         columnHelper.accessor("role", {
             header: "Role",
+            size: 100,
+            minSize: 90,
         }),
         columnHelper.accessor("banned", {
             header: "Status",
+            size: 90,
+            minSize: 80,
         }),
         columnHelper.display({
             id: "actions",
             header: "Actions",
             enableSorting: false,
+            size: 280,
+            minSize: 200,
         }),
     ];
 

@@ -33,22 +33,32 @@ export default function ScoreTable(props: ScoreTableProps) {
     const columns = [
         columnHelper.accessor("userName", {
             header: "Player",
+            size: 200,
+            minSize: 140,
         }),
         columnHelper.accessor("score", {
             header: "Score",
+            size: 120,
+            minSize: 80,
             cell: (info) => info.getValue().toLocaleString(),
         }),
         columnHelper.accessor("wave", {
             header: "Wave",
+            size: 80,
+            minSize: 60,
         }),
         columnHelper.accessor("createdAt", {
             header: "Date",
+            size: 200,
+            minSize: 140,
             cell: (info) => formatDate(info.getValue()),
         }),
         columnHelper.display({
             id: "actions",
             header: "Actions",
             enableSorting: false,
+            size: 100,
+            minSize: 80,
             cell: (info): JSX.Element => (
                 <Button
                     color="danger"
