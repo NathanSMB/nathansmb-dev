@@ -10,7 +10,7 @@ interface TextInputProps {
     min?: number;
     max?: number;
     required?: boolean;
-    variant?: "toolbar" | "inline" | "form";
+    size?: "sm" | "md" | "lg";
     color?: "surface" | "page" | "transparent";
     id?: string;
     ref?: (el: HTMLInputElement) => void;
@@ -18,14 +18,14 @@ interface TextInputProps {
 }
 
 export default function TextInput(props: TextInputProps) {
-    const variant = () => props.variant ?? "inline";
+    const size = () => props.size ?? "sm";
     const color = () => props.color ?? "surface";
 
     return (
         <>
             <style>{css}</style>
             <input
-                class={`input input-${variant()} input-${color()}${props.class ? ` ${props.class}` : ""}`}
+                class={`input input-${size()} input-${color()}${props.class ? ` ${props.class}` : ""}`}
                 type={props.type ?? "text"}
                 value={props.value}
                 onInput={(e) => props.onInput(e.currentTarget.value)}

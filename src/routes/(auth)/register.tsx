@@ -45,7 +45,7 @@ export default function Register() {
                 <FormLabel>
                     Name
                     <TextInput
-                        variant="form"
+                        size="lg"
                         color="surface"
                         value={name()}
                         onInput={setName}
@@ -56,7 +56,7 @@ export default function Register() {
                     Email
                     <TextInput
                         type="email"
-                        variant="form"
+                        size="lg"
                         color="surface"
                         value={email()}
                         onInput={setEmail}
@@ -67,7 +67,7 @@ export default function Register() {
                     Password
                     <TextInput
                         type="password"
-                        variant="form"
+                        size="lg"
                         color="surface"
                         value={password()}
                         onInput={setPassword}

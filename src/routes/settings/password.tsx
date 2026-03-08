@@ -59,7 +59,7 @@ export default function PasswordSettings() {
                         Current password
                         <TextInput
                             type="password"
-                            variant="form"
+                            size="lg"
                             color="surface"
                             value={currentPassword()}
                             onInput={setCurrentPassword}
@@ -70,7 +70,7 @@ export default function PasswordSettings() {
                         New password
                         <TextInput
                             type="password"
-                            variant="form"
+                            size="lg"
                             color="surface"
                             value={newPassword()}
                             onInput={setNewPassword}
@@ -81,7 +81,7 @@ export default function PasswordSettings() {
                         Confirm new password
                         <TextInput
                             type="password"
-                            variant="form"
+                            size="lg"
                             color="surface"
                             value={confirmPassword()}
                             onInput={setConfirmPassword}

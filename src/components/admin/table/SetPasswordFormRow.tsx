@@ -22,7 +22,7 @@ export default function SetPasswordFormRow(props: SetPasswordFormRowProps) {
                         <TextInput
                             id="new-password"
                             type="password"
-                            variant="form"
+                            size="lg"
                             placeholder="Enter new password"
                             value={props.newPassword}
                             onInput={(value) => props.onSetNewPassword(value)}

@@ -48,7 +48,7 @@ export default function Login() {
                     Email
                     <TextInput
                         type="email"
-                        variant="form"
+                        size="lg"
                         color="surface"
                         value={email()}
                         onInput={setEmail}
@@ -59,7 +59,7 @@ export default function Login() {
                     Password
                     <TextInput
                         type="password"
-                        variant="form"
+                        size="lg"
                         color="surface"
                         value={password()}
                         onInput={setPassword}

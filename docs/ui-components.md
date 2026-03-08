@@ -52,7 +52,7 @@ interface ButtonProps {
 ```
 
 ```tsx
-<Button color="primary" variant="form" type="submit">Save</Button>
+<Button color="primary" size="lg" type="submit">Save</Button>
 <Button color="danger" variant="pill" onClick={handleDelete}>Remove</Button>
 ```
 
@@ -218,7 +218,7 @@ interface TextInputProps {
     min?: number;
     max?: number;
     required?: boolean;
-    variant?: "toolbar" | "inline" | "form";
+    size?: "sm" | "md" | "lg";
     id?: string;
     ref?: (el: HTMLInputElement) => void;
     class?: string;
@@ -230,7 +230,7 @@ interface TextInputProps {
     value={email()}
     onInput={setEmail}
     type="email"
-    variant="form"
+    size="lg"
     placeholder="you@example.com"
 />
 ```
@@ -258,5 +258,5 @@ interface TextInputProps {
 | `src/components/ui/Select.tsx`      | Custom dropdown select               |
 | `src/components/ui/Slider.tsx`      | Range slider with number input       |
 | `src/components/ui/Spinner.tsx`     | Loading spinner with size variants   |
-| `src/components/ui/TextInput.tsx`   | Text input with variants             |
+| `src/components/ui/TextInput.tsx`   | Text input with size options         |
 | `src/styles/control-shapes.css`     | Shared shape classes for Button/Pill |

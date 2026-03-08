@@ -52,7 +52,7 @@ export default function BatchBar(props: BatchBarProps) {
                         Set role
                     </Button>
                     <TextInput
-                        variant="form"
+                        size="lg"
                         placeholder="Ban reason (optional)"
                         value={props.batchBanReason}
                         onInput={props.onSetBatchBanReason}

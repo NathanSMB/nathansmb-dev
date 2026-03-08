@@ -87,7 +87,7 @@ export default function AdminBlogNew() {
                     <FormLabel for="title">Title</FormLabel>
                     <TextInput
                         id="title"
-                        variant="form"
+                        size="lg"
                         color="surface"
                         value={title()}
                         onInput={handleTitleInput}
@@ -100,7 +100,7 @@ export default function AdminBlogNew() {
                     <FormLabel for="slug">Slug</FormLabel>
                     <TextInput
                         id="slug"
-                        variant="form"
+                        size="lg"
                         color="surface"
                         value={slug()}
                         onInput={(v) => {
@@ -128,7 +128,7 @@ export default function AdminBlogNew() {
                         <FormLabel for="coverImage">Cover Image URL</FormLabel>
                         <TextInput
                             id="coverImage"
-                            variant="form"
+                            size="lg"
                             color="surface"
                             value={coverImage()}
                             onInput={setCoverImage}
@@ -140,7 +140,7 @@ export default function AdminBlogNew() {
                         <FormLabel for="tags">Tags</FormLabel>
                         <TextInput
                             id="tags"
-                            variant="form"
+                            size="lg"
                             color="surface"
                             value={tags()}
                             onInput={setTags}

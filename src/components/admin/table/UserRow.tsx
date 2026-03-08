@@ -105,7 +105,7 @@ export default function UserRow(props: UserRowProps) {
                         }
                     >
                         <TextInput
-                            variant="toolbar"
+                            size="md"
                             color="surface"
                             value={props.editValue}
                             onInput={props.onSetEditValue}
@@ -134,7 +134,7 @@ export default function UserRow(props: UserRowProps) {
                         }
                     >
                         <TextInput
-                            variant="toolbar"
+                            size="md"
                             color="surface"
                             type="email"
                             value={props.editValue}

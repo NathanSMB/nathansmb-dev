@@ -552,7 +552,7 @@ export default function Admin() {
                     onSubmit={handleSearch}
                 >
                     <TextInput
-                        variant="toolbar"
+                        size="md"
                         placeholder={`Search by ${searchField()}...`}
                         value={search()}
                         onInput={setSearch}

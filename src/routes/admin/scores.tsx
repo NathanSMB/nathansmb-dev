@@ -119,7 +119,7 @@ export default function AdminScores() {
                     onSubmit={handleSearch}
                 >
                     <TextInput
-                        variant="toolbar"
+                        size="md"
                         placeholder="Search by player name..."
                         value={search()}
                         onInput={setSearch}

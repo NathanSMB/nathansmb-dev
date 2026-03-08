@@ -129,7 +129,7 @@ export default function AdminBlog() {
                     onSubmit={handleSearch}
                 >
                     <TextInput
-                        variant="toolbar"
+                        size="md"
                         placeholder="Search by title..."
                         value={search()}
                         onInput={setSearch}

@@ -500,7 +500,7 @@ export default function BlogEditor(props: BlogEditorProps) {
                     value={linkUrl()}
                     onInput={setLinkUrl}
                     type="url"
-                    variant="form"
+                    size="lg"
                     color="page"
                     placeholder="https://example.com"
                     required
@@ -525,7 +525,7 @@ export default function BlogEditor(props: BlogEditorProps) {
                     value={imageUrl()}
                     onInput={setImageUrl}
                     type="url"
-                    variant="form"
+                    size="lg"
                     color="page"
                     placeholder="https://example.com/image.jpg"
                     required

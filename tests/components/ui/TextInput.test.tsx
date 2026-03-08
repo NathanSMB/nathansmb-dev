@@ -2,28 +2,28 @@ import { render, fireEvent } from "@solidjs/testing-library";
 import TextInput from "~/components/ui/TextInput";
 
 describe("TextInput", () => {
-    it("applies inline variant class by default", () => {
+    it("applies sm size class by default", () => {
         const { container } = render(() => (
             <TextInput value="" onInput={() => {}} />
         ));
         const input = container.querySelector("input") as HTMLElement;
-        expect(input.className).toContain("input-inline");
+        expect(input.className).toContain("input-sm");
     });
 
-    it("applies toolbar variant class", () => {
+    it("applies md size class", () => {
         const { container } = render(() => (
-            <TextInput value="" onInput={() => {}} variant="toolbar" />
+            <TextInput value="" onInput={() => {}} size="md" />
         ));
         const input = container.querySelector("input") as HTMLElement;
-        expect(input.className).toContain("input-toolbar");
+        expect(input.className).toContain("input-md");
     });
 
-    it("applies form variant class", () => {
+    it("applies lg size class", () => {
         const { container } = render(() => (
-            <TextInput value="" onInput={() => {}} variant="form" />
+            <TextInput value="" onInput={() => {}} size="lg" />
         ));
         const input = container.querySelector("input") as HTMLElement;
-        expect(input.className).toContain("input-form");
+        expect(input.className).toContain("input-lg");
     });
 
     it("calls onInput with the value", () => {

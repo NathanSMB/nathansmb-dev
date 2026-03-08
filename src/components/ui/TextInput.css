@@ -8,17 +8,8 @@
     border-color: var(--color-primary);
 }
 
-/* Toolbar variant — search bar */
-.input-toolbar {
-    font-size: var(--text-base);
-    padding: var(--pad-control);
-    border-radius: var(--radius-control);
-    flex: 1;
-    min-width: 10rem;
-}
-
-/* Inline variant — edit inputs, ban reason */
-.input-inline {
+/* Small — edit inputs, ban reason */
+.input-sm {
     font-size: var(--text-sm);
     padding: var(--pad-input-compact);
     border-radius: var(--radius-md);
@@ -26,8 +17,17 @@
     box-sizing: border-box;
 }
 
-/* Form variant — auth/settings forms */
-.input-form {
+/* Medium — search bar */
+.input-md {
+    font-size: var(--text-base);
+    padding: var(--pad-control);
+    border-radius: var(--radius-control);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Large — auth/settings forms */
+.input-lg {
     font-size: var(--text-md);
     padding: var(--pad-input);
     border-radius: var(--radius-control);
