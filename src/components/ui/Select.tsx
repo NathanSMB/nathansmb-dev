@@ -1,4 +1,4 @@
-import { For, createSignal, onCleanup } from "solid-js";
+import { For, createSignal, onCleanup, onMount } from "solid-js";
 import css from "./Select.css?inline";
 
 interface SelectOption {
@@ -30,10 +30,12 @@ export default function Select(props: SelectProps) {
         }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    onCleanup(() =>
-        document.removeEventListener("mousedown", handleClickOutside),
-    );
+    onMount(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        onCleanup(() =>
+            document.removeEventListener("mousedown", handleClickOutside),
+        );
+    });
 
     function handleKeyDown(e: KeyboardEvent) {
         if (e.key === "Escape") setOpen(false);

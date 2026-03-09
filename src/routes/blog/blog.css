@@ -109,31 +109,8 @@
     padding-top: var(--space-2xl);
 }
 
-.blog-pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: var(--space-lg);
-    margin-top: var(--space-2xl);
-    padding-top: var(--space-xl);
-    border-top: var(--border-thin) solid var(--panel-border);
-}
-
-.blog-pagination-btn {
-    color: var(--color-text-muted);
-    text-decoration: none;
-    font-size: var(--text-sm);
-    font-weight: 500;
-    transition: color 0.15s;
-}
-
-.blog-pagination-btn:hover {
-    color: var(--color-link);
-}
-
-.blog-pagination-info {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
+.blog-search-form {
+    margin-bottom: var(--space-xl);
 }
 
 .blog-empty {
