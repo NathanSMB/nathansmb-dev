@@ -52,7 +52,9 @@ export const route = {
 
 export default function BlogPost() {
     const params = useParams();
-    const post = createAsync(() => getBlogPost(params.slug ?? ""));
+    const post = createAsync(() => getBlogPost(params.slug ?? ""), {
+        deferStream: true,
+    });
 
     function formatDate(dateStr: string | null) {
         if (!dateStr) return "";
