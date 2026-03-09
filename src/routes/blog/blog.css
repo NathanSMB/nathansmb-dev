@@ -30,6 +30,7 @@
     transition:
         transform 0.2s ease,
         box-shadow 0.2s ease;
+    will-change: transform;
 }
 
 .blog-card-link:hover .blog-card {
@@ -55,7 +56,6 @@
     gap: var(--space-sm);
     padding: var(--space-lg);
     background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(8px);
 }
 
 .blog-card-title {
@@ -140,4 +140,20 @@
     text-align: center;
     color: var(--color-text-muted);
     padding: var(--space-2xl);
+}
+
+@media not (aspect-ratio > 1) {
+    .blog-card {
+        aspect-ratio: auto;
+    }
+
+    .blog-card-cover {
+        position: relative;
+        aspect-ratio: 16 / 10;
+        display: block;
+    }
+
+    .blog-card-overlay {
+        position: relative;
+    }
 }
