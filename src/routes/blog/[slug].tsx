@@ -12,6 +12,7 @@ import { connection } from "~/database/connection";
 import { blogPost, user } from "~/database/schema";
 import { eq, and } from "drizzle-orm";
 import { marked } from "marked";
+import { readingTime } from "~/utils/reading-time";
 import Spinner from "~/components/ui/Spinner";
 import Pill from "~/components/ui/Pill";
 import Avatar from "~/components/ui/Avatar";
@@ -40,12 +41,9 @@ const getBlogPost = query(async (slug: string) => {
     if (!post) return null;
 
     const html = await marked(post.content ?? "");
-    const readingTime = Math.max(
-        1,
-        Math.round((post.content ?? "").split(/\s+/).length / 230),
-    );
+    const minutes = readingTime(post.content ?? "");
 
-    return { ...post, html, readingTime };
+    return { ...post, html, readingTime: minutes };
 }, "blog-post");
 
 export const route = {
@@ -123,7 +121,7 @@ export default function BlogPost() {
                                                 {p().readingTime} min read
                                             </span>
                                         </div>
-                                                                                <Show
+                                        <Show
                                             when={
                                                 p().tags && p().tags!.length > 0
                                             }
