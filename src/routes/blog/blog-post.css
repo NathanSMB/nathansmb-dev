@@ -33,7 +33,6 @@
 }
 
 .blog-post-header {
-    padding-bottom: var(--space-lg);
     margin-bottom: var(--space-xl);
     border-bottom: var(--border-thin) solid var(--panel-border);
 }
