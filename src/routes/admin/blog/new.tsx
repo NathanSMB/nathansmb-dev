@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 import { Title } from "@solidjs/meta";
-import { useNavigate } from "@solidjs/router";
+import { useNavigate, revalidate } from "@solidjs/router";
 import BlogEditor from "~/components/blog/BlogEditor";
 import Button from "~/components/ui/Button";
 import TextInput from "~/components/ui/TextInput";
@@ -68,6 +68,7 @@ export default function AdminBlogNew() {
                 }),
             });
             if (!res.ok) throw new Error("Failed to create post");
+            revalidate("published-posts");
             navigate("/admin/blog");
         } catch (e: any) {
             setError(e.message ?? "Failed to create post");

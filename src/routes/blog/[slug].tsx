@@ -13,6 +13,7 @@ import { blogPost, user } from "~/database/schema";
 import { eq, and } from "drizzle-orm";
 import { marked } from "marked";
 import { readingTime } from "~/utils/reading-time";
+import { getCachedPost, setCachedPost } from "~/blog/cache";
 import Spinner from "~/components/ui/Spinner";
 import Pill from "~/components/ui/Pill";
 import Avatar from "~/components/ui/Avatar";
@@ -20,6 +21,9 @@ import "./blog-post.css";
 
 const getBlogPost = query(async (slug: string) => {
     "use server";
+
+    const cached = getCachedPost(slug);
+    if (cached !== undefined) return cached;
 
     const [post] = await connection
         .select({
@@ -43,7 +47,9 @@ const getBlogPost = query(async (slug: string) => {
     const html = await marked(post.content ?? "");
     const minutes = readingTime(post.content ?? "");
 
-    return { ...post, html, readingTime: minutes };
+    const result = { ...post, html, readingTime: minutes };
+    setCachedPost(slug, result);
+    return result;
 }, "blog-post");
 
 export const route = {

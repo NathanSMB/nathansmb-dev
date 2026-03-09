@@ -1,6 +1,6 @@
 import { createSignal, onMount, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
-import { useNavigate, useParams } from "@solidjs/router";
+import { useNavigate, useParams, revalidate } from "@solidjs/router";
 import BlogEditor from "~/components/blog/BlogEditor";
 import Button from "~/components/ui/Button";
 import TextInput from "~/components/ui/TextInput";
@@ -79,6 +79,8 @@ export default function AdminBlogEdit() {
                 }),
             });
             if (!res.ok) throw new Error("Failed to update post");
+            revalidate("blog-post");
+            revalidate("published-posts");
             setSuccess("Post updated");
         } catch (e: any) {
             setError(e.message ?? "Failed to update post");

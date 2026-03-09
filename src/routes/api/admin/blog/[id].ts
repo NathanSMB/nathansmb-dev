@@ -3,6 +3,7 @@ import { auth } from "~/auth/core";
 import { connection } from "~/database/connection";
 import { blogPost } from "~/database/schema";
 import { eq } from "drizzle-orm";
+import { invalidatePost, invalidateAllPosts } from "~/blog/cache";
 
 export async function GET(event: APIEvent) {
     const session = await auth.api.getSession({
@@ -69,6 +70,9 @@ export async function PUT(event: APIEvent) {
         })
         .where(eq(blogPost.id, id));
 
+    invalidatePost(slug);
+    invalidateAllPosts();
+
     return Response.json({ success: true });
 }
 
@@ -82,6 +86,8 @@ export async function DELETE(event: APIEvent) {
 
     const id = event.params.id;
     await connection.delete(blogPost).where(eq(blogPost.id, id));
+
+    invalidateAllPosts();
 
     return Response.json({ success: true });
 }

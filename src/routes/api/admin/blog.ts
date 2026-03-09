@@ -3,6 +3,7 @@ import { auth } from "~/auth/core";
 import { connection } from "~/database/connection";
 import { blogPost, user } from "~/database/schema";
 import { desc, asc, eq, like, and, sql, count } from "drizzle-orm";
+import { invalidateAllPosts } from "~/blog/cache";
 
 export async function GET(event: APIEvent) {
     const session = await auth.api.getSession({
@@ -100,6 +101,8 @@ export async function POST(event: APIEvent) {
         createdAt: now,
         updatedAt: now,
     });
+
+    invalidateAllPosts();
 
     return Response.json({ id });
 }

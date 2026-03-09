@@ -5,6 +5,7 @@ import { connection } from "~/database/connection";
 import { blogPost, user } from "~/database/schema";
 import { desc, eq, count, ilike, or, sql, and } from "drizzle-orm";
 import { readingTime } from "~/utils/reading-time";
+import { getCachedList, setCachedList } from "~/blog/cache";
 import Pill from "~/components/ui/Pill";
 import Avatar from "~/components/ui/Avatar";
 import Form from "~/components/ui/Form";
@@ -16,6 +17,10 @@ import "./blog.css";
 const getPublishedPosts = query(
     async (page: number, pageSize: number, search: string) => {
         "use server";
+
+        const cacheKey = `${page}-${pageSize}-${search}`;
+        const cached = getCachedList(cacheKey);
+        if (cached !== undefined) return cached;
 
         const offset = page * pageSize;
 
@@ -55,7 +60,7 @@ const getPublishedPosts = query(
                 .where(conditions),
         ]);
 
-        return {
+        const result = {
             posts: posts.map((p) => ({
                 title: p.title,
                 slug: p.slug,
@@ -69,6 +74,8 @@ const getPublishedPosts = query(
             })),
             total,
         };
+        setCachedList(cacheKey, result);
+        return result;
     },
     "published-posts",
 );

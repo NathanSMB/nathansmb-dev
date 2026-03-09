@@ -1,6 +1,6 @@
 import { createSignal, createEffect, on, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
-import { useNavigate } from "@solidjs/router";
+import { useNavigate, revalidate } from "@solidjs/router";
 import { BlogTable, type BlogPostRow } from "~/components/admin/blog-table";
 import { Pagination } from "~/components/admin/table";
 import ConfirmModal from "~/components/ui/ConfirmModal";
@@ -103,6 +103,8 @@ export default function AdminBlog() {
             });
             if (!res.ok) throw new Error("Failed to delete post");
 
+            revalidate("blog-post");
+            revalidate("published-posts");
             setSuccess("Post deleted");
             setPosts((prev) => prev.filter((p) => p.id !== target.id));
             setTotal((prev) => prev - 1);
