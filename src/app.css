@@ -85,6 +85,7 @@
     --gap-stack: 1rem;
 
     /* Spacing (margins) */
+    --space-xs: 0.25rem;
     --space-sm: 0.5rem;
     --space-md: 0.75rem;
     --space-lg: 1rem;
