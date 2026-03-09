@@ -87,56 +87,57 @@ export default function BlogPost() {
                                 </A>
 
                                 <article>
-                                    <Show when={p().coverImage}>
-                                        <div class="blog-post-cover-wrap">
+                                    <div class="blog-post-hero">
+                                        <Show when={p().coverImage}>
                                             <img
                                                 class="blog-post-cover"
                                                 src={p().coverImage!}
                                                 alt={p().title}
                                             />
-                                        </div>
-                                    </Show>
-
-                                    <header class="blog-post-header">
-                                        <h1 class="blog-post-title">
-                                            {p().title}
-                                        </h1>
-
-                                        <div class="blog-post-meta">
-                                            <Avatar
-                                                image={p().authorImage}
-                                                name={p().authorName ?? ""}
-                                            />
-                                            <span>{p().authorName}</span>
-                                            <span>&middot;</span>
-                                            <span>
-                                                {formatDate(
-                                                    p().publishedAt as
-                                                        | string
-                                                        | null,
-                                                )}
-                                            </span>
-                                            <span>&middot;</span>
-                                            <span>
-                                                {p().readingTime} min read
-                                            </span>
-                                        </div>
-                                        <Show
-                                            when={
-                                                p().tags && p().tags!.length > 0
-                                            }
-                                        >
-                                            <div class="blog-post-tags">
-                                                <For each={p().tags!}>
-                                                    {(tag) => (
-                                                        <Pill color="primary">
-                                                            {tag}
-                                                        </Pill>
-                                                    )}
-                                                </For>
-                                            </div>
                                         </Show>
-                                    </header>
+
+                                        <header class="blog-post-header">
+                                            <h1 class="blog-post-title">
+                                                {p().title}
+                                            </h1>
+
+                                            <div class="blog-post-meta">
+                                                <Avatar
+                                                    image={p().authorImage}
+                                                    name={p().authorName ?? ""}
+                                                />
+                                                <span>{p().authorName}</span>
+                                                <span>&middot;</span>
+                                                <span>
+                                                    {formatDate(
+                                                        p().publishedAt as
+                                                            | string
+                                                            | null,
+                                                    )}
+                                                </span>
+                                                <span>&middot;</span>
+                                                <span>
+                                                    {p().readingTime} min read
+                                                </span>
+                                            </div>
+                                            <Show
+                                                when={
+                                                    p().tags &&
+                                                    p().tags!.length > 0
+                                                }
+                                            >
+                                                <div class="blog-post-tags">
+                                                    <For each={p().tags!}>
+                                                        {(tag) => (
+                                                            <Pill color="primary">
+                                                                {tag}
+                                                            </Pill>
+                                                        )}
+                                                    </For>
+                                                </div>
+                                            </Show>
+                                        </header>
+                                    </div>
 
                                     <div
                                         class="blog-post-content"
