@@ -43,6 +43,7 @@ interface MarkdownStorage {
 interface MarkdownEditoryProps {
     value: string;
     onChange: (markdown: string) => void;
+    allowUpload?: boolean;
 }
 
 interface ToolbarButton {
@@ -572,22 +573,24 @@ export default function MarkdownEditor(props: MarkdownEditoryProps) {
                     resetImageModal();
                 }}
             >
-                <div class="image-modal-toggle">
-                    <button
-                        type="button"
-                        class={imageMode() === "url" ? "active" : ""}
-                        onClick={() => setImageMode("url")}
-                    >
-                        URL
-                    </button>
-                    <button
-                        type="button"
-                        class={imageMode() === "upload" ? "active" : ""}
-                        onClick={() => setImageMode("upload")}
-                    >
-                        Upload
-                    </button>
-                </div>
+                <Show when={props.allowUpload}>
+                    <div class="image-modal-toggle">
+                        <button
+                            type="button"
+                            class={imageMode() === "url" ? "active" : ""}
+                            onClick={() => setImageMode("url")}
+                        >
+                            URL
+                        </button>
+                        <button
+                            type="button"
+                            class={imageMode() === "upload" ? "active" : ""}
+                            onClick={() => setImageMode("upload")}
+                        >
+                            Upload
+                        </button>
+                    </div>
+                </Show>
 
                 <Show when={imageMode() === "url"}>
                     <TextInput

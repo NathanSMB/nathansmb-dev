@@ -180,6 +180,7 @@ export default function AdminBlogEdit() {
                         <MarkdownEditor
                             value={content()}
                             onChange={setContent}
+                            allowUpload
                         />
                     </div>
 
