@@ -143,3 +143,7 @@
     border-top: var(--border-thin) solid var(--panel-border);
     margin: 2em 0;
 }
+
+.blog-post-page .comment-section {
+    margin-bottom: var(--space-xl);
+}

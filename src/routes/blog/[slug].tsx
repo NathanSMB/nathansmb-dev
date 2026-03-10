@@ -17,6 +17,7 @@ import { getCachedPost, setCachedPost } from "~/blog/cache";
 import Spinner from "~/components/ui/Spinner";
 import Pill from "~/components/ui/Pill";
 import Avatar from "~/components/ui/Avatar";
+import CommentSection from "~/components/comments/CommentSection";
 import "./blog-post.css";
 
 const getBlogPost = query(async (slug: string) => {
@@ -27,6 +28,7 @@ const getBlogPost = query(async (slug: string) => {
 
     const [post] = await connection
         .select({
+            id: blogPost.id,
             title: blogPost.title,
             slug: blogPost.slug,
             content: blogPost.content,
@@ -152,6 +154,11 @@ export default function BlogPost() {
                                         innerHTML={p().html}
                                     />
                                 </article>
+
+                                <CommentSection
+                                    resourceType="blog_post"
+                                    resourceId={p().id}
+                                />
                             </>
                         )}
                     </Match>
