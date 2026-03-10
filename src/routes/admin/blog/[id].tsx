@@ -177,7 +177,10 @@ export default function AdminBlogEdit() {
 
                     <div class="blog-form-row">
                         <FormLabel>Content</FormLabel>
-                        <MarkdownEditor value={content()} onChange={setContent} />
+                        <MarkdownEditor
+                            value={content()}
+                            onChange={setContent}
+                        />
                     </div>
 
                     <div class="blog-form-actions">

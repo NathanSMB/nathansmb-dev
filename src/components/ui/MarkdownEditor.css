@@ -295,3 +295,59 @@
 .word-count {
     margin-right: 0.5rem;
 }
+
+/* ── Image Modal ── */
+
+.image-modal-toggle {
+    display: flex;
+    background: var(--panel-hover-bg);
+    border-radius: var(--radius-pill);
+    padding: 2px;
+    margin-bottom: var(--space-sm);
+    width: fit-content;
+}
+
+.image-modal-toggle button {
+    padding: 0.3rem 1rem;
+    border: none;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+        background 0.15s,
+        color 0.15s;
+}
+
+.image-modal-toggle button.active {
+    background: var(--color-primary);
+    color: var(--color-primary-ink);
+}
+
+.image-modal-toggle button:not(.active):hover {
+    color: var(--color-text);
+}
+
+.image-modal-file-input {
+    display: block;
+    width: 100%;
+    font-size: var(--text-sm);
+    color: var(--color-text);
+}
+
+.image-modal-preview {
+    display: block;
+    max-height: 120px;
+    max-width: 100%;
+    border-radius: var(--radius-md);
+    margin-top: var(--space-sm);
+    object-fit: contain;
+}
+
+.image-modal-error {
+    color: var(--color-danger);
+    font-size: var(--text-sm);
+    margin: var(--space-xs) 0 0;
+}

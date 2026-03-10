@@ -65,6 +65,20 @@ export default function MarkdownEditor(props: MarkdownEditoryProps) {
     const [linkUrl, setLinkUrl] = createSignal("");
     const [imageModalOpen, setImageModalOpen] = createSignal(false);
     const [imageUrl, setImageUrl] = createSignal("");
+    const [imageMode, setImageMode] = createSignal<"url" | "upload">("url");
+    const [imageFile, setImageFile] = createSignal<File | null>(null);
+    const [imageUploading, setImageUploading] = createSignal(false);
+    const [imageError, setImageError] = createSignal("");
+    const [imagePreview, setImagePreview] = createSignal("");
+    function resetImageModal() {
+        setImageMode("url");
+        setImageFile(null);
+        setImageUploading(false);
+        setImageError("");
+        if (imagePreview()) URL.revokeObjectURL(imagePreview());
+        setImagePreview("");
+        setImageUrl("");
+    }
     let debounceTimer: ReturnType<typeof setTimeout> | undefined;
     let isRestoring = false;
     let editorRef!: HTMLDivElement;
@@ -255,7 +269,7 @@ export default function MarkdownEditor(props: MarkdownEditoryProps) {
                 icon: () => <TbOutlinePhoto />,
                 title: "Image",
                 action: () => {
-                    setImageUrl("");
+                    resetImageModal();
                     setImageModalOpen(true);
                 },
             },
@@ -511,26 +525,112 @@ export default function MarkdownEditor(props: MarkdownEditoryProps) {
             <FormModal
                 open={imageModalOpen()}
                 title="Insert Image"
-                confirmLabel="Insert"
-                onSubmit={() => {
+                confirmLabel={imageUploading() ? "Uploading…" : "Insert"}
+                loading={imageUploading()}
+                onSubmit={async () => {
                     const e = editor();
-                    if (e && imageUrl()) {
-                        e.chain().focus().setImage({ src: imageUrl() }).run();
+                    if (!e) return;
+
+                    if (imageMode() === "url") {
+                        if (imageUrl()) {
+                            e.chain()
+                                .focus()
+                                .setImage({ src: imageUrl() })
+                                .run();
+                        }
+                        setImageModalOpen(false);
+                        return;
                     }
-                    setImageModalOpen(false);
+
+                    const file = imageFile();
+                    if (!file) return;
+
+                    setImageUploading(true);
+                    setImageError("");
+                    try {
+                        const form = new FormData();
+                        form.append("file", file);
+                        const res = await fetch("/api/admin/upload", {
+                            method: "POST",
+                            body: form,
+                        });
+                        if (!res.ok) {
+                            setImageError(await res.text());
+                            return;
+                        }
+                        const { url } = await res.json();
+                        e.chain().focus().setImage({ src: url }).run();
+                        setImageModalOpen(false);
+                    } catch {
+                        setImageError("Upload failed. Please try again.");
+                    } finally {
+                        setImageUploading(false);
+                    }
                 }}
-                onCancel={() => setImageModalOpen(false)}
+                onCancel={() => {
+                    setImageModalOpen(false);
+                    resetImageModal();
+                }}
             >
-                <TextInput
-                    value={imageUrl()}
-                    onInput={setImageUrl}
-                    type="url"
-                    size="lg"
-                    color="page"
-                    placeholder="https://example.com/image.jpg"
-                    required
-                    ref={(el) => requestAnimationFrame(() => el.focus())}
-                />
+                <div class="image-modal-toggle">
+                    <button
+                        type="button"
+                        class={imageMode() === "url" ? "active" : ""}
+                        onClick={() => setImageMode("url")}
+                    >
+                        URL
+                    </button>
+                    <button
+                        type="button"
+                        class={imageMode() === "upload" ? "active" : ""}
+                        onClick={() => setImageMode("upload")}
+                    >
+                        Upload
+                    </button>
+                </div>
+
+                <Show when={imageMode() === "url"}>
+                    <TextInput
+                        value={imageUrl()}
+                        onInput={setImageUrl}
+                        type="url"
+                        size="lg"
+                        color="page"
+                        placeholder="https://example.com/image.jpg"
+                        required
+                        ref={(el) => requestAnimationFrame(() => el.focus())}
+                    />
+                </Show>
+
+                <Show when={imageMode() === "upload"}>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        class="image-modal-file-input"
+                        onChange={(e) => {
+                            const file = e.currentTarget.files?.[0] ?? null;
+                            setImageFile(file);
+                            setImageError("");
+                            if (imagePreview()) {
+                                URL.revokeObjectURL(imagePreview());
+                            }
+                            setImagePreview(
+                                file ? URL.createObjectURL(file) : "",
+                            );
+                        }}
+                    />
+                    <Show when={imagePreview()}>
+                        <img
+                            src={imagePreview()}
+                            alt="Preview"
+                            class="image-modal-preview"
+                        />
+                    </Show>
+                </Show>
+
+                <Show when={imageError()}>
+                    <p class="image-modal-error">{imageError()}</p>
+                </Show>
             </FormModal>
         </>
     );
