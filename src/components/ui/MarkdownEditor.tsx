@@ -90,8 +90,8 @@ export default function MarkdownEditor(props: MarkdownEditoryProps) {
     }
 
     function handleChange(newValue: string) {
-        props.onChange(newValue);
         if (isRestoring) return;
+        props.onChange(newValue);
 
         const idx = historyIdx();
         const hist = history().slice(0, idx + 1);
@@ -293,7 +293,36 @@ export default function MarkdownEditor(props: MarkdownEditoryProps) {
                     undoRedo: false,
                     link: { openOnClick: false },
                 }),
-                Image.configure({ inline: false }),
+                Image.configure({ inline: false }).extend({
+                    addStorage() {
+                        return {
+                            markdown: {
+                                serialize(state: any, node: any) {
+                                    state.write(
+                                        "![" +
+                                            state.esc(node.attrs.alt || "") +
+                                            "](" +
+                                            node.attrs.src.replace(
+                                                /[()]/g,
+                                                "\\$&",
+                                            ) +
+                                            (node.attrs.title
+                                                ? ' "' +
+                                                  node.attrs.title.replace(
+                                                      /"/g,
+                                                      '\\"',
+                                                  ) +
+                                                  '"'
+                                                : "") +
+                                            ")",
+                                    );
+                                    state.closeBlock(node);
+                                },
+                                parse: {},
+                            },
+                        };
+                    },
+                }),
                 Markdown.configure({ html: false, transformPastedText: true }),
                 Placeholder.configure({ placeholder: "Start writing..." }),
             ],
@@ -320,9 +349,7 @@ export default function MarkdownEditor(props: MarkdownEditoryProps) {
         const e = editor();
 
         isRestoring = true;
-        if (newMode === "markdown" && e) {
-            props.onChange(getMarkdown(e));
-        } else if (newMode === "rich" && e) {
+        if (newMode === "rich" && e) {
             e.commands.setContent(props.value);
         }
         isRestoring = false;
