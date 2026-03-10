@@ -34,13 +34,13 @@ import {
 } from "solid-icons/tb";
 import FormModal from "~/components/ui/FormModal";
 import TextInput from "~/components/ui/TextInput";
-import css from "./BlogEditor.css?inline";
+import css from "./MarkdownEditor.css?inline";
 
 interface MarkdownStorage {
     getMarkdown: () => string;
 }
 
-interface BlogEditorProps {
+interface MarkdownEditoryProps {
     value: string;
     onChange: (markdown: string) => void;
 }
@@ -54,7 +54,7 @@ interface ToolbarButton {
 
 type ToolbarGroup = ToolbarButton[];
 
-export default function BlogEditor(props: BlogEditorProps) {
+export default function MarkdownEditor(props: MarkdownEditoryProps) {
     const [mode, setMode] = createSignal<"rich" | "markdown">("rich");
     const [fullscreen, setFullscreen] = createSignal(false);
     const [editor, setEditor] = createSignal<Editor | null>(null);
@@ -332,7 +332,7 @@ export default function BlogEditor(props: BlogEditorProps) {
         <>
             <style>{css}</style>
             <div
-                class={`blog-editor${fullscreen() ? " fullscreen" : ""}`}
+                class={`markdown-editor${fullscreen() ? " fullscreen" : ""}`}
                 onKeyDown={(e) => {
                     const mod = e.ctrlKey || e.metaKey;
                     if (mod && e.key === "z" && !e.shiftKey) {
@@ -349,7 +349,7 @@ export default function BlogEditor(props: BlogEditorProps) {
                     }
                 }}
             >
-                <div class="blog-editor-toolbar">
+                <div class="markdown-editor-toolbar">
                     <div class="toolbar-group">
                         <button
                             type="button"
@@ -434,14 +434,14 @@ export default function BlogEditor(props: BlogEditorProps) {
 
                 <div
                     ref={editorRef}
-                    class="blog-editor-content"
+                    class="markdown-editor-content"
                     style={mode() === "markdown" ? "display:none" : ""}
                 />
 
                 <Show when={mode() === "markdown"}>
-                    <div class="blog-editor-markdown-wrap">
+                    <div class="markdown-editor-markdown-wrap">
                         <textarea
-                            class="blog-editor-markdown"
+                            class="markdown-editor-markdown"
                             placeholder="Start writing..."
                             value={props.value}
                             ref={(el) => {
@@ -460,7 +460,7 @@ export default function BlogEditor(props: BlogEditorProps) {
                     </div>
                 </Show>
 
-                <div class="blog-editor-footer">
+                <div class="markdown-editor-footer">
                     <button
                         type="button"
                         class="toolbar-btn"

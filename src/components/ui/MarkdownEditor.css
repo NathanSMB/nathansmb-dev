@@ -1,11 +1,11 @@
-.blog-editor {
+.markdown-editor {
     display: flex;
     flex-direction: column;
 }
 
 /* ── Toolbar ── */
 
-.blog-editor-toolbar {
+.markdown-editor-toolbar {
     display: flex;
     align-items: center;
     gap: var(--space-xs);
@@ -104,7 +104,7 @@
 
 /* ── Content area ── */
 
-.blog-editor-content {
+.markdown-editor-content {
     border: var(--border-thin) solid var(--color-text-faint);
     border-top: none;
     min-height: 300px;
@@ -113,19 +113,19 @@
     background-color: var(--color-page-bg);
 }
 
-.blog-editor-content .tiptap {
+.markdown-editor-content .tiptap {
     min-height: 300px;
     box-sizing: border-box;
     padding: var(--space-md);
     outline: none;
 }
 
-.blog-editor-content .tiptap:focus {
+.markdown-editor-content .tiptap:focus {
     outline: none;
 }
 
 /* Placeholder */
-.blog-editor-content .tiptap p.is-editor-empty:first-child::before {
+.markdown-editor-content .tiptap p.is-editor-empty:first-child::before {
     content: attr(data-placeholder);
     float: left;
     color: var(--color-text-faint);
@@ -134,35 +134,35 @@
 }
 
 /* Prose styles */
-.blog-editor-content h1,
-.blog-editor-content h2,
-.blog-editor-content h3 {
+.markdown-editor-content h1,
+.markdown-editor-content h2,
+.markdown-editor-content h3 {
     margin: 0.75em 0 0.25em;
     line-height: 1.3;
 }
 
-.blog-editor-content h1 {
+.markdown-editor-content h1 {
     font-size: 1.75em;
 }
-.blog-editor-content h2 {
+.markdown-editor-content h2 {
     font-size: 1.4em;
 }
-.blog-editor-content h3 {
+.markdown-editor-content h3 {
     font-size: 1.15em;
 }
 
-.blog-editor-content p {
+.markdown-editor-content p {
     margin: 0.5em 0;
 }
 
-.blog-editor-content code {
+.markdown-editor-content code {
     background: var(--color-surface);
     padding: 0.15em 0.35em;
     border-radius: var(--radius-sm);
     font-size: 0.88em;
 }
 
-.blog-editor-content pre {
+.markdown-editor-content pre {
     background: var(--color-surface);
     padding: var(--space-md);
     border-radius: var(--radius-md);
@@ -170,55 +170,55 @@
     margin: 0.75em 0;
 }
 
-.blog-editor-content pre code {
+.markdown-editor-content pre code {
     background: none;
     padding: 0;
 }
 
-.blog-editor-content blockquote {
+.markdown-editor-content blockquote {
     border-left: 3px solid var(--color-primary-accent);
     margin: 0.75em 0;
     padding-left: var(--space-md);
     color: var(--color-text-muted);
 }
 
-.blog-editor-content ul,
-.blog-editor-content ol {
+.markdown-editor-content ul,
+.markdown-editor-content ol {
     padding-left: 1.5em;
     margin: 0.5em 0;
 }
 
-.blog-editor-content li {
+.markdown-editor-content li {
     margin: 0.2em 0;
 }
 
-.blog-editor-content hr {
+.markdown-editor-content hr {
     border: none;
     border-top: 2px solid var(--color-text-faint);
     margin: 1.25em 0;
 }
 
-.blog-editor-content img {
+.markdown-editor-content img {
     max-width: 100%;
     height: auto;
     border-radius: var(--radius-md);
     margin: 0.75em 0;
 }
 
-.blog-editor-content a {
+.markdown-editor-content a {
     color: var(--color-primary);
     text-decoration: underline;
 }
 
 /* ── Markdown textarea ── */
 
-.blog-editor-markdown-wrap {
+.markdown-editor-markdown-wrap {
     border: var(--border-thin) solid var(--color-text-faint);
     border-top: none;
     min-height: 300px;
 }
 
-.blog-editor .blog-editor-markdown {
+.markdown-editor .markdown-editor-markdown {
     display: block;
     width: 100%;
     box-sizing: border-box;
@@ -237,11 +237,11 @@
     overflow: hidden;
 }
 
-.blog-editor .blog-editor-markdown::placeholder {
+.markdown-editor .markdown-editor-markdown::placeholder {
     color: var(--color-text-faint);
 }
 
-.blog-editor .blog-editor-markdown:focus {
+.markdown-editor .markdown-editor-markdown:focus {
     outline: none;
     border: none;
     box-shadow: none;
@@ -250,7 +250,7 @@
 
 /* ── Footer ── */
 
-.blog-editor-footer {
+.markdown-editor-footer {
     display: flex;
     align-items: center;
     padding: var(--space-xs) var(--space-sm);
@@ -268,27 +268,27 @@
 
 /* ── Fullscreen ── */
 
-.blog-editor.fullscreen {
+.markdown-editor.fullscreen {
     position: fixed;
     inset: 0;
     z-index: calc(var(--z-modal) - 1);
 }
 
-.blog-editor.fullscreen .blog-editor-toolbar {
+.markdown-editor.fullscreen .markdown-editor-toolbar {
     border-radius: 0;
 }
 
-.blog-editor.fullscreen .blog-editor-content,
-.blog-editor.fullscreen .blog-editor-markdown-wrap {
+.markdown-editor.fullscreen .markdown-editor-content,
+.markdown-editor.fullscreen .markdown-editor-markdown-wrap {
     flex: 1;
     overflow-y: auto;
 }
 
-.blog-editor.fullscreen .blog-editor-content .tiptap {
+.markdown-editor.fullscreen .markdown-editor-content .tiptap {
     min-height: 100%;
 }
 
-.blog-editor.fullscreen .blog-editor-footer {
+.markdown-editor.fullscreen .markdown-editor-footer {
     border-radius: 0;
 }
 

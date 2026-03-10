@@ -1,7 +1,7 @@
 import { createSignal, onMount, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { useNavigate, useParams, revalidate } from "@solidjs/router";
-import BlogEditor from "~/components/blog/BlogEditor";
+import MarkdownEditor from "~/components/ui/MarkdownEditor";
 import Button from "~/components/ui/Button";
 import TextInput from "~/components/ui/TextInput";
 import TextArea from "~/components/ui/TextArea";
@@ -177,7 +177,7 @@ export default function AdminBlogEdit() {
 
                     <div class="blog-form-row">
                         <FormLabel>Content</FormLabel>
-                        <BlogEditor value={content()} onChange={setContent} />
+                        <MarkdownEditor value={content()} onChange={setContent} />
                     </div>
 
                     <div class="blog-form-actions">
