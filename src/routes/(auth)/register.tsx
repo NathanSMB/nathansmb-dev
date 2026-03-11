@@ -12,6 +12,7 @@ export default function Register() {
     const [name, setName] = createSignal("");
     const [email, setEmail] = createSignal("");
     const [password, setPassword] = createSignal("");
+    const [confirmPassword, setConfirmPassword] = createSignal("");
     const [error, setError] = createSignal("");
     const [loading, setLoading] = createSignal(false);
     const navigate = useNavigate();
@@ -19,6 +20,12 @@ export default function Register() {
     async function handleSubmit(e: Event) {
         e.preventDefault();
         setError("");
+
+        if (password() !== confirmPassword()) {
+            setError("Passwords do not match");
+            return;
+        }
+
         setLoading(true);
 
         const result = await authClient.signUp.email({
@@ -71,6 +78,17 @@ export default function Register() {
                         color="surface"
                         value={password()}
                         onInput={setPassword}
+                        required
+                    />
+                </FormLabel>
+                <FormLabel>
+                    Confirm password
+                    <TextInput
+                        type="password"
+                        size="lg"
+                        color="surface"
+                        value={confirmPassword()}
+                        onInput={setConfirmPassword}
                         required
                     />
                 </FormLabel>
