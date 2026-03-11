@@ -17,7 +17,10 @@ import { getCachedPost, setCachedPost } from "~/blog/cache";
 import Spinner from "~/components/ui/Spinner";
 import Pill from "~/components/ui/Pill";
 import Avatar from "~/components/ui/Avatar";
-import CommentSection from "~/components/comments/CommentSection";
+import { clientOnly } from "@solidjs/start";
+const CommentSection = clientOnly(
+    () => import("~/components/comments/CommentSection"),
+);
 import "./blog-post.css";
 
 const getBlogPost = query(async (slug: string) => {
