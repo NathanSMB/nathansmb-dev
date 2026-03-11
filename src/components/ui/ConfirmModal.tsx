@@ -1,6 +1,12 @@
 import { Show, onCleanup, createEffect } from "solid-js";
+import {
+    TbOutlineAlertTriangle,
+    TbOutlineInfoCircle,
+    TbOutlineCircleCheck,
+} from "solid-icons/tb";
 import Banner from "~/components/ui/Banner";
-import css from "./ConfirmModal.css?inline";
+import Button from "~/components/ui/Button";
+import css from "~/components/ui/modal-base.css?inline";
 
 interface ConfirmModalProps {
     open: boolean;
@@ -11,9 +17,24 @@ interface ConfirmModalProps {
     onConfirm: () => void;
     onCancel: () => void;
     loading?: boolean;
+    variant?: "danger" | "primary" | "success";
 }
 
+const variantIcon = {
+    danger: () => <TbOutlineAlertTriangle />,
+    primary: () => <TbOutlineInfoCircle />,
+    success: () => <TbOutlineCircleCheck />,
+};
+
+const bannerVariant = {
+    danger: "error" as const,
+    primary: "info" as const,
+    success: "success" as const,
+};
+
 export default function ConfirmModal(props: ConfirmModalProps) {
+    const v = () => props.variant ?? "danger";
+
     createEffect(() => {
         if (!props.open) return;
 
@@ -31,30 +52,37 @@ export default function ConfirmModal(props: ConfirmModalProps) {
             <Show when={props.open}>
                 <div class="modal-backdrop" onClick={props.onCancel}>
                     <div
-                        class="modal-dialog modal-destructive"
+                        class={`modal-dialog modal-${v()}`}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div class="modal-icon">&#9888;</div>
-                        <h2 class="modal-title">{props.title}</h2>
+                        <div class={`modal-icon modal-icon-${v()}`}>
+                            {variantIcon[v()]()}
+                        </div>
+                        <h2 class={`modal-title modal-title-${v()}`}>
+                            {props.title}
+                        </h2>
                         <p class="modal-message">{props.message}</p>
-                        <Banner variant="error" message={props.details} />
+                        <Banner
+                            variant={bannerVariant[v()]}
+                            message={props.details}
+                        />
                         <div class="modal-actions">
-                            <button
-                                class="modal-cancel"
+                            <Button
+                                color="neutral"
                                 onClick={props.onCancel}
                                 disabled={props.loading}
                             >
                                 Cancel
-                            </button>
-                            <button
-                                class="modal-confirm-destructive"
+                            </Button>
+                            <Button
+                                color={v()}
                                 onClick={props.onConfirm}
                                 disabled={props.loading}
                             >
                                 {props.loading
                                     ? "Deleting..."
                                     : (props.confirmLabel ?? "Delete")}
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>

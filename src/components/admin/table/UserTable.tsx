@@ -1,8 +1,9 @@
-import { Show, For } from "solid-js";
+import { type JSX } from "solid-js";
+import { createColumnHelper, type ColumnDef } from "@tanstack/solid-table";
 import type { AdminUser, EditingField } from "../types";
 import Checkbox from "~/components/ui/Checkbox";
+import Table from "~/components/ui/Table";
 import UserRow from "./UserRow";
-import sharedCss from "./admin-table.css?inline";
 import css from "./UserTable.css?inline";
 
 type SortableField = "name" | "email" | "role" | "banned";
@@ -50,140 +51,115 @@ interface UserTableProps {
 }
 
 export default function UserTable(props: UserTableProps) {
-    function sortIndicator(field: SortableField) {
-        if (props.sortBy !== field) return "";
-        return props.sortDirection === "asc" ? " \u25B2" : " \u25BC";
-    }
+    const columnHelper = createColumnHelper<AdminUser>();
+
+    const columns: ColumnDef<AdminUser, any>[] = [
+        columnHelper.display({
+            id: "select",
+            header: (): JSX.Element => (
+                <Checkbox
+                    checked={props.allSelected}
+                    onChange={props.onToggleSelectAll}
+                />
+            ),
+            enableSorting: false,
+            size: 44,
+            minSize: 44,
+        }),
+        columnHelper.display({
+            id: "avatar",
+            header: "",
+            enableSorting: false,
+            size: 44,
+            minSize: 44,
+        }),
+        columnHelper.accessor("name", {
+            header: "Name",
+            size: 160,
+            minSize: 120,
+        }),
+        columnHelper.accessor("email", {
+            header: "Email",
+            size: 220,
+            minSize: 150,
+        }),
+        columnHelper.accessor("role", {
+            header: "Role",
+            size: 100,
+            minSize: 90,
+        }),
+        columnHelper.accessor("banned", {
+            header: "Status",
+            size: 90,
+            minSize: 80,
+        }),
+        columnHelper.display({
+            id: "actions",
+            header: "Actions",
+            enableSorting: false,
+            size: 280,
+            minSize: 200,
+        }),
+    ];
 
     return (
         <>
-            <style>{sharedCss + css}</style>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>
-                            <Checkbox
-                                checked={props.allSelected}
-                                onChange={props.onToggleSelectAll}
-                            />
-                        </th>
-                        <th></th>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("name")}
-                        >
-                            Name{sortIndicator("name")}
-                        </th>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("email")}
-                        >
-                            Email{sortIndicator("email")}
-                        </th>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("role")}
-                        >
-                            Role{sortIndicator("role")}
-                        </th>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("banned")}
-                        >
-                            Status{sortIndicator("banned")}
-                        </th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <Show
-                        when={props.users.length > 0}
-                        fallback={
-                            <tr>
-                                <td colspan="7" class="admin-empty">
-                                    No users found
-                                </td>
-                            </tr>
-                        }
-                    >
-                        <For each={props.users}>
-                            {(user) => {
-                                const isSelf = () =>
-                                    user.id === props.currentUserId;
-                                return (
-                                    <UserRow
-                                        user={user}
-                                        isSelf={isSelf()}
-                                        isSelected={props.selectedIds.has(
-                                            user.id,
-                                        )}
-                                        editingField={props.editingField}
-                                        editValue={props.editValue}
-                                        isBanning={
-                                            props.banningUserId === user.id
-                                        }
-                                        banReason={props.banReason}
-                                        isSettingPassword={
-                                            props.settingPasswordUserId ===
-                                            user.id
-                                        }
-                                        newPassword={props.newPassword}
-                                        onToggleSelect={() =>
-                                            props.onToggleSelect(user.id)
-                                        }
-                                        onStartFieldEdit={(field, value) =>
-                                            props.onStartFieldEdit(
-                                                user.id,
-                                                field,
-                                                value,
-                                            )
-                                        }
-                                        onSetEditingField={
-                                            props.onSetEditingField
-                                        }
-                                        onSetEditValue={props.onSetEditValue}
-                                        onSaveField={props.onSaveField}
-                                        onFieldKeyDown={props.onFieldKeyDown}
-                                        onSetRole={(role) =>
-                                            props.onSetRole(user.id, role)
-                                        }
-                                        onSetPasswordClick={() =>
-                                            props.onSetPasswordClick(user.id)
-                                        }
-                                        onSetNewPassword={
-                                            props.onSetNewPassword
-                                        }
-                                        onConfirmSetPassword={() =>
-                                            props.onConfirmSetPassword(user.id)
-                                        }
-                                        onCancelSetPassword={
-                                            props.onCancelSetPassword
-                                        }
-                                        onBanClick={() =>
-                                            props.onBanClick(user.id)
-                                        }
-                                        onUnban={() => props.onUnban(user.id)}
-                                        onDeleteClick={() =>
-                                            props.onDeleteClick(
-                                                user.id,
-                                                user.name,
-                                            )
-                                        }
-                                        onSetBanReason={props.onSetBanReason}
-                                        onConfirmBan={() =>
-                                            props.onConfirmBan(user.id)
-                                        }
-                                        onCancelBan={props.onCancelBan}
-                                        isFieldEditing={(field) =>
-                                            props.isFieldEditing(user.id, field)
-                                        }
-                                    />
-                                );
-                            }}
-                        </For>
-                    </Show>
-                </tbody>
-            </table>
+            <style>{css}</style>
+            <Table
+                data={props.users}
+                columns={columns}
+                sortBy={props.sortBy ?? undefined}
+                sortDirection={props.sortDirection}
+                onSort={(field) => props.onSort(field as SortableField)}
+                emptyMessage="No users found"
+                renderRow={(row) => {
+                    const user = row.original;
+                    const isSelf = () => user.id === props.currentUserId;
+                    return (
+                        <UserRow
+                            user={user}
+                            isSelf={isSelf()}
+                            isSelected={props.selectedIds.has(user.id)}
+                            editingField={props.editingField}
+                            editValue={props.editValue}
+                            isBanning={props.banningUserId === user.id}
+                            banReason={props.banReason}
+                            isSettingPassword={
+                                props.settingPasswordUserId === user.id
+                            }
+                            newPassword={props.newPassword}
+                            onToggleSelect={() => props.onToggleSelect(user.id)}
+                            onStartFieldEdit={(field, value) =>
+                                props.onStartFieldEdit(user.id, field, value)
+                            }
+                            onSetEditingField={props.onSetEditingField}
+                            onSetEditValue={props.onSetEditValue}
+                            onSaveField={props.onSaveField}
+                            onFieldKeyDown={props.onFieldKeyDown}
+                            onSetRole={(role) => props.onSetRole(user.id, role)}
+                            onSetPasswordClick={() =>
+                                props.onSetPasswordClick(user.id)
+                            }
+                            onSetNewPassword={props.onSetNewPassword}
+                            onConfirmSetPassword={() =>
+                                props.onConfirmSetPassword(user.id)
+                            }
+                            onCancelSetPassword={props.onCancelSetPassword}
+                            onBanClick={() => props.onBanClick(user.id)}
+                            onUnban={() => props.onUnban(user.id)}
+                            onDeleteClick={() =>
+                                props.onDeleteClick(user.id, user.name)
+                            }
+                            onSetBanReason={props.onSetBanReason}
+                            onConfirmBan={() => props.onConfirmBan(user.id)}
+                            onCancelBan={props.onCancelBan}
+                            isFieldEditing={(field) =>
+                                props.isFieldEditing(user.id, field)
+                            }
+                        />
+                    );
+                }}
+            />
         </>
     );
 }

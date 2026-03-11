@@ -1,6 +1,7 @@
-import { Show, For } from "solid-js";
+import { type JSX } from "solid-js";
+import { createColumnHelper } from "@tanstack/solid-table";
 import Pill from "~/components/ui/Pill";
-import css from "~/components/admin/table/admin-table.css?inline";
+import Table from "~/components/ui/Table";
 
 export interface SessionRow {
     id: string;
@@ -26,90 +27,57 @@ interface SessionTableProps {
     onSort: (field: SortableField) => void;
 }
 
+function formatDate(dateStr: string | null) {
+    if (!dateStr) return "\u2014";
+    return new Date(dateStr).toLocaleString();
+}
+
+const columnHelper = createColumnHelper<SessionRow>();
+
+const columns = [
+    columnHelper.accessor("userName", {
+        header: "Player",
+        size: 180,
+        minSize: 120,
+    }),
+    columnHelper.accessor("game", {
+        header: "Game",
+        size: 140,
+        minSize: 100,
+    }),
+    columnHelper.accessor("startedAt", {
+        header: "Started",
+        size: 180,
+        minSize: 140,
+        cell: (info) => formatDate(info.getValue()),
+    }),
+    columnHelper.accessor("endedAt", {
+        header: "Ended",
+        size: 180,
+        minSize: 140,
+        cell: (info) => formatDate(info.getValue()),
+    }),
+    columnHelper.accessor("submitted", {
+        header: "Submitted",
+        size: 100,
+        minSize: 80,
+        cell: (info): JSX.Element => (
+            <Pill color={info.getValue() ? "success" : "neutral"}>
+                {info.getValue() ? "Yes" : "No"}
+            </Pill>
+        ),
+    }),
+];
+
 export default function SessionTable(props: SessionTableProps) {
-    function sortIndicator(field: SortableField) {
-        if (props.sortBy !== field) return "";
-        return props.sortDirection === "asc" ? " ▲" : " ▼";
-    }
-
-    function formatDate(dateStr: string | null) {
-        if (!dateStr) return "—";
-        return new Date(dateStr).toLocaleString();
-    }
-
     return (
-        <>
-            <style>{css}</style>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("userName")}
-                        >
-                            Player{sortIndicator("userName")}
-                        </th>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("game")}
-                        >
-                            Game{sortIndicator("game")}
-                        </th>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("startedAt")}
-                        >
-                            Started{sortIndicator("startedAt")}
-                        </th>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("endedAt")}
-                        >
-                            Ended{sortIndicator("endedAt")}
-                        </th>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("submitted")}
-                        >
-                            Submitted{sortIndicator("submitted")}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <Show
-                        when={props.sessions.length > 0}
-                        fallback={
-                            <tr>
-                                <td colspan="5" class="admin-empty">
-                                    No sessions found
-                                </td>
-                            </tr>
-                        }
-                    >
-                        <For each={props.sessions}>
-                            {(row) => (
-                                <tr>
-                                    <td>{row.userName}</td>
-                                    <td>{row.game}</td>
-                                    <td>{formatDate(row.startedAt)}</td>
-                                    <td>{formatDate(row.endedAt)}</td>
-                                    <td>
-                                        <Pill
-                                            color={
-                                                row.submitted
-                                                    ? "success"
-                                                    : "neutral"
-                                            }
-                                        >
-                                            {row.submitted ? "Yes" : "No"}
-                                        </Pill>
-                                    </td>
-                                </tr>
-                            )}
-                        </For>
-                    </Show>
-                </tbody>
-            </table>
-        </>
+        <Table
+            data={props.sessions}
+            columns={columns}
+            sortBy={props.sortBy}
+            sortDirection={props.sortDirection}
+            onSort={(field) => props.onSort(field as SortableField)}
+            emptyMessage="No sessions found"
+        />
     );
 }

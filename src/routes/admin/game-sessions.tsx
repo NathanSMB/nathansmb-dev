@@ -5,7 +5,7 @@ import {
     type SessionRow,
 } from "~/components/admin/session-table";
 import { Pagination } from "~/components/admin/table";
-import ConfirmModal from "~/components/admin/ConfirmModal";
+import ConfirmModal from "~/components/ui/ConfirmModal";
 import Button from "~/components/ui/Button";
 import Banner from "~/components/ui/Banner";
 import Spinner from "~/components/ui/Spinner";

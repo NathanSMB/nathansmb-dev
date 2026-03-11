@@ -22,7 +22,7 @@ export default function BanFormRow(props: BanFormRowProps) {
                         <TextInput
                             id="ban-reason"
                             type="text"
-                            variant="form"
+                            size="lg"
                             placeholder="Ban reason (optional)"
                             value={props.banReason}
                             onInput={(value) => props.onSetBanReason(value)}

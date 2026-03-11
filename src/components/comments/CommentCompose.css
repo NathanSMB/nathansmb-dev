@@ -1,0 +1,33 @@
+.comment-compose {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.comment-compose-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+}
+
+.comment-compose-counter {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+}
+
+.comment-compose-counter.over-limit {
+    color: var(--color-danger);
+    font-weight: 600;
+}
+
+.comment-compose-actions {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.comment-compose-error {
+    font-size: var(--text-sm);
+    color: var(--color-danger);
+    margin: 0;
+}

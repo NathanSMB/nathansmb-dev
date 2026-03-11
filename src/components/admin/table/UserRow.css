@@ -49,5 +49,6 @@
 /* Action buttons layout */
 .admin-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--gap-tight);
 }

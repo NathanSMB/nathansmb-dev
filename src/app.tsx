@@ -12,7 +12,7 @@ export default function App() {
             root={(props) => {
                 return (
                     <MetaProvider>
-                        <Title>SolidStart - Basic</Title>
+                        <Title>NathanSMB</Title>
                         <div class="app-layout">
                             <Nav />
                             <Suspense fallback={<Spinner size="xl" center />}>

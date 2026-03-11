@@ -27,6 +27,13 @@ export class InputSystem {
 
     constructor() {
         this.onKeyDown = (e: KeyboardEvent) => {
+            const el = e.target as HTMLElement;
+            if (
+                el?.tagName === "INPUT" ||
+                el?.tagName === "TEXTAREA" ||
+                el?.isContentEditable
+            )
+                return;
             this.keys.add(e.code);
             // Clear mouse pointer so keyboard movement takes over
             if (
@@ -48,6 +55,13 @@ export class InputSystem {
             }
         };
         this.onKeyUp = (e: KeyboardEvent) => {
+            const el = e.target as HTMLElement;
+            if (
+                el?.tagName === "INPUT" ||
+                el?.tagName === "TEXTAREA" ||
+                el?.isContentEditable
+            )
+                return;
             this.keys.delete(e.code);
         };
 

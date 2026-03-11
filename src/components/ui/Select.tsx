@@ -1,4 +1,4 @@
-import { For, createSignal, onCleanup } from "solid-js";
+import { For, createSignal, onCleanup, onMount } from "solid-js";
 import css from "./Select.css?inline";
 
 interface SelectOption {
@@ -11,11 +11,13 @@ interface SelectProps {
     options: SelectOption[];
     onChange: (value: string) => void;
     disabled?: boolean;
+    size?: "sm" | "md" | "lg";
     class?: string;
 }
 
 export default function Select(props: SelectProps) {
     const [open, setOpen] = createSignal(false);
+    const size = () => props.size ?? "md";
     let wrapperRef!: HTMLDivElement;
 
     const selectedLabel = () =>
@@ -28,10 +30,12 @@ export default function Select(props: SelectProps) {
         }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    onCleanup(() =>
-        document.removeEventListener("mousedown", handleClickOutside),
-    );
+    onMount(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        onCleanup(() =>
+            document.removeEventListener("mousedown", handleClickOutside),
+        );
+    });
 
     function handleKeyDown(e: KeyboardEvent) {
         if (e.key === "Escape") setOpen(false);
@@ -47,7 +51,7 @@ export default function Select(props: SelectProps) {
             >
                 <button
                     type="button"
-                    class={`select-trigger${open() ? " open" : ""}`}
+                    class={`select-trigger select-${size()}${open() ? " open" : ""}`}
                     disabled={props.disabled}
                     onClick={() => setOpen(!open())}
                 >

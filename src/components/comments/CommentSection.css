@@ -1,0 +1,37 @@
+.comment-section {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-xl);
+    border-top: var(--border-thin) solid var(--panel-border);
+}
+
+.comment-section-heading {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin: 0 0 var(--space-lg);
+}
+
+.comment-section-login {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-lg);
+}
+
+.comment-section-login a {
+    color: var(--color-link);
+}
+
+.comment-section-compose {
+    margin-bottom: var(--space-xl);
+}
+
+.comment-section-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+}
+
+.comment-section-empty {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+}

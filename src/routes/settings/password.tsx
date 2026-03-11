@@ -59,7 +59,8 @@ export default function PasswordSettings() {
                         Current password
                         <TextInput
                             type="password"
-                            variant="form"
+                            size="lg"
+                            color="surface"
                             value={currentPassword()}
                             onInput={setCurrentPassword}
                             required
@@ -69,7 +70,8 @@ export default function PasswordSettings() {
                         New password
                         <TextInput
                             type="password"
-                            variant="form"
+                            size="lg"
+                            color="surface"
                             value={newPassword()}
                             onInput={setNewPassword}
                             required
@@ -79,13 +81,19 @@ export default function PasswordSettings() {
                         Confirm new password
                         <TextInput
                             type="password"
-                            variant="form"
+                            size="lg"
+                            color="surface"
                             value={confirmPassword()}
                             onInput={setConfirmPassword}
                             required
                         />
                     </FormLabel>
-                    <Button variant="form" type="submit" disabled={loading()}>
+                    <Button
+                        size="lg"
+                        class="form-submit"
+                        type="submit"
+                        disabled={loading()}
+                    >
                         {loading() ? "Changing password..." : "Change password"}
                     </Button>
                 </Form>

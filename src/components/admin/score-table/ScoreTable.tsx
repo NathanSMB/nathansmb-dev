@@ -1,6 +1,7 @@
-import { Show, For } from "solid-js";
+import { type JSX } from "solid-js";
+import { createColumnHelper } from "@tanstack/solid-table";
 import Button from "~/components/ui/Button";
-import css from "~/components/admin/table/admin-table.css?inline";
+import Table from "~/components/ui/Table";
 
 export interface ScoreRow {
     id: string;
@@ -22,87 +23,67 @@ interface ScoreTableProps {
     onDelete: (scoreId: string, playerName: string, score: number) => void;
 }
 
-export default function ScoreTable(props: ScoreTableProps) {
-    function sortIndicator(field: SortableField) {
-        if (props.sortBy !== field) return "";
-        return props.sortDirection === "asc" ? " ▲" : " ▼";
-    }
+function formatDate(dateStr: string) {
+    return new Date(dateStr).toLocaleString();
+}
 
-    function formatDate(dateStr: string) {
-        return new Date(dateStr).toLocaleString();
-    }
+export default function ScoreTable(props: ScoreTableProps) {
+    const columnHelper = createColumnHelper<ScoreRow>();
+
+    const columns = [
+        columnHelper.accessor("userName", {
+            header: "Player",
+            size: 200,
+            minSize: 140,
+        }),
+        columnHelper.accessor("score", {
+            header: "Score",
+            size: 120,
+            minSize: 80,
+            cell: (info) => info.getValue().toLocaleString(),
+        }),
+        columnHelper.accessor("wave", {
+            header: "Wave",
+            size: 80,
+            minSize: 60,
+        }),
+        columnHelper.accessor("createdAt", {
+            header: "Date",
+            size: 200,
+            minSize: 140,
+            cell: (info) => formatDate(info.getValue()),
+        }),
+        columnHelper.display({
+            id: "actions",
+            header: "Actions",
+            enableSorting: false,
+            size: 100,
+            minSize: 80,
+            cell: (info): JSX.Element => (
+                <Button
+                    color="danger"
+                    onClick={() =>
+                        props.onDelete(
+                            info.row.original.id,
+                            info.row.original.userName,
+                            info.row.original.score,
+                        )
+                    }
+                >
+                    Delete
+                </Button>
+            ),
+        }),
+    ];
 
     return (
-        <>
-            <style>{css}</style>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("userName")}
-                        >
-                            Player{sortIndicator("userName")}
-                        </th>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("score")}
-                        >
-                            Score{sortIndicator("score")}
-                        </th>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("wave")}
-                        >
-                            Wave{sortIndicator("wave")}
-                        </th>
-                        <th
-                            class="sortable"
-                            onClick={() => props.onSort("createdAt")}
-                        >
-                            Date{sortIndicator("createdAt")}
-                        </th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <Show
-                        when={props.scores.length > 0}
-                        fallback={
-                            <tr>
-                                <td colspan="5" class="admin-empty">
-                                    No scores found
-                                </td>
-                            </tr>
-                        }
-                    >
-                        <For each={props.scores}>
-                            {(row) => (
-                                <tr>
-                                    <td>{row.userName}</td>
-                                    <td>{row.score.toLocaleString()}</td>
-                                    <td>{row.wave}</td>
-                                    <td>{formatDate(row.createdAt)}</td>
-                                    <td>
-                                        <Button
-                                            color="danger"
-                                            onClick={() =>
-                                                props.onDelete(
-                                                    row.id,
-                                                    row.userName,
-                                                    row.score,
-                                                )
-                                            }
-                                        >
-                                            Delete
-                                        </Button>
-                                    </td>
-                                </tr>
-                            )}
-                        </For>
-                    </Show>
-                </tbody>
-            </table>
-        </>
+        <Table
+            data={props.scores}
+            columns={columns}
+            sortBy={props.sortBy}
+            sortDirection={props.sortDirection}
+            onSort={(field) => props.onSort(field as SortableField)}
+            emptyMessage="No scores found"
+        />
     );
 }

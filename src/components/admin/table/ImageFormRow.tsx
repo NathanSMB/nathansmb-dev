@@ -23,7 +23,7 @@ export default function ImageFormRow(props: ImageFormRowProps) {
                         <TextInput
                             id="image-url"
                             type="url"
-                            variant="form"
+                            size="lg"
                             placeholder="https://example.com/photo.jpg"
                             value={props.editValue}
                             onInput={props.onSetEditValue}

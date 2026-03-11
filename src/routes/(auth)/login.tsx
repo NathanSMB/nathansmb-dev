@@ -48,7 +48,8 @@ export default function Login() {
                     Email
                     <TextInput
                         type="email"
-                        variant="form"
+                        size="lg"
+                        color="surface"
                         value={email()}
                         onInput={setEmail}
                         required
@@ -58,13 +59,19 @@ export default function Login() {
                     Password
                     <TextInput
                         type="password"
-                        variant="form"
+                        size="lg"
+                        color="surface"
                         value={password()}
                         onInput={setPassword}
                         required
                     />
                 </FormLabel>
-                <Button variant="form" type="submit" disabled={loading()}>
+                <Button
+                    size="lg"
+                    class="form-submit"
+                    type="submit"
+                    disabled={loading()}
+                >
                     {loading() ? "Logging in..." : "Log in"}
                 </Button>
             </Form>

@@ -5,10 +5,7 @@
 
 .select-trigger {
     font-family: inherit;
-    font-size: var(--text-base);
-    padding: var(--pad-control);
     border: var(--border-control) solid var(--color-primary-hover);
-    border-radius: var(--radius-control);
     outline: none;
     background: var(--color-surface);
     cursor: pointer;
@@ -16,6 +13,27 @@
     align-items: center;
     gap: var(--gap-inline);
     color: var(--color-text);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ── Sizes ── */
+.select-sm {
+    font-size: var(--text-sm);
+    padding: var(--pad-input-compact);
+    border-radius: var(--radius-md);
+}
+
+.select-md {
+    font-size: var(--text-base);
+    padding: var(--pad-control);
+    border-radius: var(--radius-control);
+}
+
+.select-lg {
+    font-size: var(--text-md);
+    padding: var(--pad-input);
+    border-radius: var(--radius-control);
 }
 
 .select-trigger:hover {

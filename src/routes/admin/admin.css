@@ -25,3 +25,8 @@
     flex: 1;
     min-width: 0;
 }
+
+.admin-toolbar .input {
+    flex: 1;
+    min-width: 10rem;
+}

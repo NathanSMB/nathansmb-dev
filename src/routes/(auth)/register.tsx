@@ -12,6 +12,7 @@ export default function Register() {
     const [name, setName] = createSignal("");
     const [email, setEmail] = createSignal("");
     const [password, setPassword] = createSignal("");
+    const [confirmPassword, setConfirmPassword] = createSignal("");
     const [error, setError] = createSignal("");
     const [loading, setLoading] = createSignal(false);
     const navigate = useNavigate();
@@ -19,6 +20,12 @@ export default function Register() {
     async function handleSubmit(e: Event) {
         e.preventDefault();
         setError("");
+
+        if (password() !== confirmPassword()) {
+            setError("Passwords do not match");
+            return;
+        }
+
         setLoading(true);
 
         const result = await authClient.signUp.email({
@@ -45,7 +52,8 @@ export default function Register() {
                 <FormLabel>
                     Name
                     <TextInput
-                        variant="form"
+                        size="lg"
+                        color="surface"
                         value={name()}
                         onInput={setName}
                         required
@@ -55,7 +63,8 @@ export default function Register() {
                     Email
                     <TextInput
                         type="email"
-                        variant="form"
+                        size="lg"
+                        color="surface"
                         value={email()}
                         onInput={setEmail}
                         required
@@ -65,13 +74,30 @@ export default function Register() {
                     Password
                     <TextInput
                         type="password"
-                        variant="form"
+                        size="lg"
+                        color="surface"
                         value={password()}
                         onInput={setPassword}
                         required
                     />
                 </FormLabel>
-                <Button variant="form" type="submit" disabled={loading()}>
+                <FormLabel>
+                    Confirm password
+                    <TextInput
+                        type="password"
+                        size="lg"
+                        color="surface"
+                        value={confirmPassword()}
+                        onInput={setConfirmPassword}
+                        required
+                    />
+                </FormLabel>
+                <Button
+                    size="lg"
+                    class="form-submit"
+                    type="submit"
+                    disabled={loading()}
+                >
                     {loading() ? "Creating account..." : "Create account"}
                 </Button>
             </Form>

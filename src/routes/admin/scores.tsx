@@ -2,7 +2,7 @@ import { createSignal, createEffect, on, Show } from "solid-js";
 import { Title } from "@solidjs/meta";
 import { ScoreTable, type ScoreRow } from "~/components/admin/score-table";
 import { Pagination } from "~/components/admin/table";
-import ConfirmModal from "~/components/admin/ConfirmModal";
+import ConfirmModal from "~/components/ui/ConfirmModal";
 import Button from "~/components/ui/Button";
 import Form from "~/components/ui/Form";
 import TextInput from "~/components/ui/TextInput";
@@ -119,7 +119,7 @@ export default function AdminScores() {
                     onSubmit={handleSearch}
                 >
                     <TextInput
-                        variant="toolbar"
+                        size="md"
                         placeholder="Search by player name..."
                         value={search()}
                         onInput={setSearch}

@@ -28,22 +28,63 @@
     box-shadow: 0 8px 30px var(--color-shadow);
 }
 
-.modal-destructive {
+/* ── Variant top borders ── */
+
+.modal-danger {
     border-top: var(--border-thick) solid var(--color-error);
 }
 
+.modal-primary {
+    border-top: var(--border-thick) solid var(--color-primary-accent);
+}
+
+.modal-success {
+    border-top: var(--border-thick) solid var(--color-success);
+}
+
+/* ── Icon ── */
+
 .modal-icon {
     font-size: var(--text-icon);
-    color: var(--color-error-ink);
     margin-bottom: var(--space-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
+.modal-icon-danger {
+    color: var(--color-error-ink);
+}
+
+.modal-icon-primary {
+    color: var(--color-primary-ink);
+}
+
+.modal-icon-success {
+    color: var(--color-success-ink);
+}
+
+/* ── Title ── */
 
 .modal-title {
     font-size: var(--text-lg);
     font-weight: 700;
-    color: var(--color-error-ink);
     margin: 0 0 var(--space-md);
 }
+
+.modal-title-danger {
+    color: var(--color-error-ink);
+}
+
+.modal-title-primary {
+    color: var(--color-primary-ink);
+}
+
+.modal-title-success {
+    color: var(--color-success-ink);
+}
+
+/* ── Message ── */
 
 .modal-message {
     font-size: var(--text-base);
@@ -52,42 +93,16 @@
     margin: 0 0 var(--space-sm);
 }
 
+/* ── Actions ── */
+
 .modal-actions {
     display: flex;
     gap: var(--gap-group);
     justify-content: center;
     margin-top: var(--space-xl);
-}
-
-.modal-actions button {
-    font-family: inherit;
-    font-size: var(--text-base);
-    padding: var(--pad-btn-wide);
-    border: none;
-    border-radius: var(--radius-control);
-    cursor: pointer;
     font-weight: 600;
 }
 
-.modal-cancel {
-    color: var(--color-text-muted);
-    background: var(--color-neutral);
-}
-
-.modal-cancel:hover:not(:disabled) {
-    background: var(--color-neutral-hover);
-}
-
-.modal-confirm-destructive {
-    color: var(--color-text-on-colored);
-    background: var(--color-error);
-}
-
-.modal-confirm-destructive:hover:not(:disabled) {
-    background: var(--color-error-hover);
-}
-
-.modal-actions button:disabled {
-    opacity: var(--opacity-disabled);
-    cursor: not-allowed;
+.modal-actions .btn {
+    padding: var(--pad-btn-wide);
 }

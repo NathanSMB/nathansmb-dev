@@ -1,0 +1,30 @@
+.blog-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    width: 100%;
+}
+
+.blog-form-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.blog-form-row-inline {
+    display: flex;
+    gap: var(--gap-group);
+    flex-wrap: wrap;
+}
+
+.blog-form-row-inline > .blog-form-row {
+    flex: 1;
+    min-width: 200px;
+}
+
+.blog-form-actions {
+    display: flex;
+    gap: var(--gap-group);
+    align-items: center;
+    justify-content: flex-end;
+}

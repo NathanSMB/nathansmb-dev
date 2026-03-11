@@ -85,6 +85,7 @@
     --gap-stack: 1rem;
 
     /* Spacing (margins) */
+    --space-xs: 0.25rem;
     --space-sm: 0.5rem;
     --space-md: 0.75rem;
     --space-lg: 1rem;
@@ -203,14 +204,10 @@ main {
 @media (aspect-ratio > 1) {
     .app-layout {
         flex-direction: row;
-        height: 100dvh;
-        overflow: hidden;
     }
 
     .app-layout > main {
         flex: 1;
-        overflow-y: auto;
-        min-height: 0;
     }
 }
 

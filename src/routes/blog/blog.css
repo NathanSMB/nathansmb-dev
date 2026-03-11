@@ -1,0 +1,136 @@
+.blog-index {
+    max-width: clamp(42rem, 55vw, 60rem);
+    margin: 0 auto;
+    padding: var(--space-xl) var(--space-lg);
+    text-align: left;
+}
+
+.blog-index-heading {
+    margin-bottom: var(--space-xl);
+}
+
+.blog-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+}
+
+.blog-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.blog-card {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: #1a1a2e;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    will-change: transform;
+}
+
+.blog-card-link:hover .blog-card {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.blog-card-cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.blog-card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--space-lg);
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.blog-card-title {
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    margin: 0;
+    color: #fff;
+}
+
+.blog-card-link:hover .blog-card-title {
+    color: var(--color-link);
+}
+
+.blog-card-excerpt {
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.blog-card-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.6);
+    flex-wrap: wrap;
+}
+
+.blog-card-author {
+    font-weight: 500;
+}
+
+.blog-card-sep {
+    opacity: 0.4;
+}
+
+.blog-card-tags {
+    display: flex;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+    margin-top: var(--space-xs);
+}
+
+.blog-card-link + .blog-card-link {
+    border-top: var(--border-thin) solid var(--panel-border);
+    padding-top: var(--space-2xl);
+}
+
+.blog-search-form {
+    margin-bottom: var(--space-xl);
+}
+
+.blog-empty {
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: var(--space-2xl);
+}
+
+@media not (aspect-ratio > 1) {
+    .blog-card {
+        aspect-ratio: auto;
+    }
+
+    .blog-card-cover {
+        position: relative;
+        aspect-ratio: 16 / 10;
+        display: block;
+    }
+
+    .blog-card-overlay {
+        position: relative;
+    }
+}

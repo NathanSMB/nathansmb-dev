@@ -1,11 +1,18 @@
 .cb-page {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.cb-page-grid {
     display: grid;
     grid-template-columns: 1fr 280px;
     gap: 16px;
     flex: 1;
     min-height: 0;
-    margin: 0;
-    box-sizing: border-box;
 }
 
 /* In landscape, nav is a sidebar — use full main height */
@@ -29,8 +36,16 @@
     overflow-y: auto;
 }
 
+.cb-page-comments {
+    max-width: 800px;
+    padding-top: 16px;
+    margin: 0 auto;
+    text-align: left;
+    width: 100%;
+}
+
 @media (max-width: 800px) {
-    .cb-page {
+    .cb-page-grid {
         grid-template-columns: 1fr;
         flex: initial;
         height: auto;

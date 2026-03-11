@@ -1,2 +1,0 @@
-- Add documentation for what's there
-- Start planning the testing strategy
