@@ -8,16 +8,27 @@ const CosmicBarrageGame = clientOnly(
 const Leaderboard = clientOnly(
     () => import("~/components/cosmic-barrage/ui/Leaderboard"),
 );
+const CommentSection = clientOnly(
+    () => import("~/components/comments/CommentSection"),
+);
 
 export default function CosmicBarragePage() {
     return (
         <main class="cb-page">
             <Title>Cosmic Barrage</Title>
-            <div class="cb-page-game">
-                <CosmicBarrageGame />
+            <div class="cb-page-grid">
+                <div class="cb-page-game">
+                    <CosmicBarrageGame />
+                </div>
+                <div class="cb-page-sidebar">
+                    <Leaderboard />
+                </div>
             </div>
-            <div class="cb-page-sidebar">
-                <Leaderboard />
+            <div class="cb-page-comments">
+                <CommentSection
+                    resourceType="game"
+                    resourceId="cosmic-barrage"
+                />
             </div>
         </main>
     );

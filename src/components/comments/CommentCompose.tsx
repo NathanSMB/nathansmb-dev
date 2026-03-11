@@ -98,7 +98,6 @@ export default function CommentCompose(props: CommentComposeProps) {
                         </Show>
                         <Button
                             color="primary"
-                            size="sm"
                             type="submit"
                             onClick={handleSubmit}
                             disabled={

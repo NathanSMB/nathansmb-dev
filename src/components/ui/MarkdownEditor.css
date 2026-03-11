@@ -214,6 +214,7 @@
 
 .markdown-editor-markdown-wrap {
     border: var(--border-thin) solid var(--color-text-faint);
+    background-color: var(--color-page-bg);
     border-top: none;
     min-height: 300px;
 }

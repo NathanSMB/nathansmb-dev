@@ -1,6 +1,7 @@
 import {
     createSignal,
     createMemo,
+    createEffect,
     onMount,
     onCleanup,
     Show,
@@ -336,6 +337,21 @@ export default function MarkdownEditor(props: MarkdownEditoryProps) {
             },
         });
         setEditor(e);
+    });
+
+    createEffect(() => {
+        const val = props.value;
+        const e = editor();
+        if (!e || isRestoring) return;
+        if (getMarkdown(e) !== val) {
+            isRestoring = true;
+            e.commands.setContent(val);
+            isRestoring = false;
+            if (val === "") {
+                setHistory([""]);
+                setHistoryIdx(0);
+            }
+        }
     });
 
     onCleanup(() => {

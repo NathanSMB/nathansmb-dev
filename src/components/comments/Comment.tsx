@@ -120,28 +120,31 @@ export default function Comment(props: CommentProps) {
 
                     <div class="comment-actions">
                         <Show when={!props.isReply && props.currentUserId}>
-                            <button
-                                class="comment-action-btn"
+                            <Button
+                                variant="pill"
+                                color="neutral"
                                 onClick={() => setShowReply(!showReply())}
                             >
                                 {showReply() ? "Cancel" : "Reply"}
-                            </button>
+                            </Button>
                         </Show>
                         <Show when={isOwn()}>
-                            <button
-                                class="comment-action-btn"
+                            <Button
+                                variant="pill"
+                                color="neutral"
                                 onClick={() => setShowEdit(!showEdit())}
                             >
                                 Edit
-                            </button>
+                            </Button>
                         </Show>
                         <Show when={canDelete()}>
-                            <button
-                                class="comment-action-btn comment-action-danger"
+                            <Button
+                                variant="pill"
+                                color="danger"
                                 onClick={() => setShowDeleteModal(true)}
                             >
                                 Delete
-                            </button>
+                            </Button>
                         </Show>
                     </div>
 
