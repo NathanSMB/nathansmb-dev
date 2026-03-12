@@ -35,3 +35,25 @@
     color: var(--color-text-muted);
     margin: 0;
 }
+
+.comment-compose-placeholder {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+    border: var(--border-thin) solid var(--panel-border);
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+}
+
+.comment-compose-placeholder:hover {
+    border-color: var(--color-border-hover, var(--color-text-muted));
+    background: var(--color-surface-hover, var(--color-surface));
+}
+
+.comment-compose-placeholder-text {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
