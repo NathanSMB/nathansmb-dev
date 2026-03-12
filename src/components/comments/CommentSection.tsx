@@ -1,9 +1,10 @@
-import { createResource, Show, For } from "solid-js";
+import { createResource, createSignal, Show, For } from "solid-js";
 import { A } from "@solidjs/router";
 import { authClient } from "~/auth/auth-client";
 import type { CommentData } from "~/routes/api/comments";
 import Comment from "./Comment";
 import CommentCompose from "./CommentCompose";
+import Avatar from "~/components/ui/Avatar";
 import Spinner from "~/components/ui/Spinner";
 import css from "./CommentSection.css?inline";
 
@@ -36,6 +37,8 @@ export default function CommentSection(props: CommentSectionProps) {
         refetch();
     }
 
+    const [composing, setComposing] = createSignal(false);
+
     const currentUser = () => session().data?.user;
     const isAdmin = () => currentUser()?.role === "admin";
     const count = () => {
@@ -60,12 +63,34 @@ export default function CommentSection(props: CommentSectionProps) {
                     }
                 >
                     <div class="comment-section-compose">
-                        <CommentCompose
-                            resourceType={props.resourceType}
-                            resourceId={props.resourceId}
-                            onSubmitted={handleRefetch}
-                            isAdmin={isAdmin()}
-                        />
+                        <Show
+                            when={composing()}
+                            fallback={
+                                <div
+                                    class="comment-compose-placeholder"
+                                    onClick={() => setComposing(true)}
+                                >
+                                    <Avatar
+                                        image={currentUser()?.image}
+                                        name={currentUser()?.name ?? ""}
+                                    />
+                                    <span class="comment-compose-placeholder-text">
+                                        Write a comment...
+                                    </span>
+                                </div>
+                            }
+                        >
+                            <CommentCompose
+                                resourceType={props.resourceType}
+                                resourceId={props.resourceId}
+                                onSubmitted={() => {
+                                    setComposing(false);
+                                    handleRefetch();
+                                }}
+                                onCancel={() => setComposing(false)}
+                                isAdmin={isAdmin()}
+                            />
+                        </Show>
                     </div>
                 </Show>
 
