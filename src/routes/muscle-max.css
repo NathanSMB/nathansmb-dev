@@ -1,0 +1,23 @@
+:root {
+    /* Muscle highlight (anatomical SVG + legend) */
+    --muscle-neutral: oklch(85% 0.01 300);
+    --muscle-primary: oklch(60% 0.22 25);
+    --muscle-secondary: oklch(75% 0.18 65);
+    --muscle-hover: oklch(65% 0.18 290);
+}
+
+/* Lock the app layout to viewport height when this page is active */
+.app-layout:has(.muscle-max-page) {
+    height: 100dvh;
+    overflow: hidden;
+}
+
+.muscle-max-page {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    margin: 0;
+    box-sizing: border-box;
+}
