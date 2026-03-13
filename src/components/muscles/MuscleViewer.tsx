@@ -3,25 +3,43 @@ import BottomSheet, { type SnapPoint } from "./BottomSheet";
 import ExerciseList from "./ExerciseList";
 import MuscleTooltip from "./MuscleTooltip";
 import MuscleSvg from "./MuscleSvg";
+import SideDrawer from "./SideDrawer";
 import { type Exercise, type ExerciseCategory } from "./exercise-data";
 import { MUSCLE_MAP } from "./muscle-map";
 import css from "./MuscleViewer.css?inline";
 
-function useIsMobile() {
-    const query = "(max-aspect-ratio: 1/1)";
-    const [matches, setMatches] = createSignal(
+type Layout = "desktop" | "portrait" | "landscape";
+
+function useLayout(): () => Layout {
+    const portraitQuery = "(max-aspect-ratio: 1/1)";
+    const landscapeQuery = "(max-height: 500px) and (orientation: landscape)";
+
+    const [isPortrait, setIsPortrait] = createSignal(
         typeof window !== "undefined"
-            ? window.matchMedia(query).matches
+            ? window.matchMedia(portraitQuery).matches
+            : false,
+    );
+    const [isShortLandscape, setIsShortLandscape] = createSignal(
+        typeof window !== "undefined"
+            ? window.matchMedia(landscapeQuery).matches
             : false,
     );
 
     if (typeof window !== "undefined") {
-        const mql = window.matchMedia(query);
-        const handler = (e: MediaQueryListEvent) => setMatches(e.matches);
-        mql.addEventListener("change", handler);
+        const portraitMql = window.matchMedia(portraitQuery);
+        portraitMql.addEventListener("change", (e) => setIsPortrait(e.matches));
+
+        const landscapeMql = window.matchMedia(landscapeQuery);
+        landscapeMql.addEventListener("change", (e) =>
+            setIsShortLandscape(e.matches),
+        );
     }
 
-    return matches;
+    return () => {
+        if (isShortLandscape()) return "landscape";
+        if (isPortrait()) return "portrait";
+        return "desktop";
+    };
 }
 
 export default function MuscleViewer() {
@@ -37,7 +55,8 @@ export default function MuscleViewer() {
     const [muscleFilter, setMuscleFilter] = createSignal<string | null>(null);
     const [sheetSnap, setSheetSnap] = createSignal<SnapPoint>("collapsed");
 
-    const isMobile = useIsMobile();
+    const layout = useLayout();
+    const isMobile = () => layout() !== "desktop";
 
     function handleMuscleClick(muscleId: string) {
         if (muscleFilter() === muscleId) {
@@ -130,7 +149,7 @@ export default function MuscleViewer() {
                         y={mousePos().y}
                     />
                 </div>
-                <Show when={isMobile()}>
+                <Show when={layout() === "portrait"}>
                     <BottomSheet snap={sheetSnap()} onSnapChange={setSheetSnap}>
                         <ExerciseList
                             {...exerciseListProps()}
@@ -138,6 +157,20 @@ export default function MuscleViewer() {
                         />
                         {legend}
                     </BottomSheet>
+                </Show>
+                <Show when={layout() === "landscape"}>
+                    <SideDrawer
+                        open={sheetSnap() !== "collapsed"}
+                        onOpenChange={(open) =>
+                            setSheetSnap(open ? "half" : "collapsed")
+                        }
+                    >
+                        <ExerciseList
+                            {...exerciseListProps()}
+                            searchColor="page"
+                        />
+                        {legend}
+                    </SideDrawer>
                 </Show>
             </div>
         </>
