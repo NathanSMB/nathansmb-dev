@@ -1,6 +1,7 @@
 .muscle-viewer {
     display: grid;
     grid-template-columns: 300px 1fr;
+    grid-template-rows: 1fr;
     gap: 1rem;
     padding: 1rem;
     flex: 1;
@@ -81,18 +82,14 @@
     font-weight: 500;
 }
 
-@media (max-width: 750px) {
+@media (aspect-ratio <= 1) {
     .muscle-viewer {
         grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
-        overflow-y: auto;
+        grid-template-rows: 2fr 3fr;
+        overflow: hidden;
     }
 
     .muscle-viewer-sidebar {
-        overflow: visible;
-    }
-
-    .exercise-list-scroll {
-        max-height: 220px;
+        overflow: hidden;
     }
 }
