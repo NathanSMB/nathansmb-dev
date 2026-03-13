@@ -14,7 +14,7 @@
 .exercise-list-categories {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.35rem;
+    gap: var(--gap-label);
     flex-shrink: 0;
 }
 
