@@ -1,0 +1,132 @@
+.exercise-list-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.exercise-list-search {
+    flex-shrink: 0;
+}
+
+.exercise-list-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    flex-shrink: 0;
+}
+
+.category-btn {
+    padding: var(--pad-pill);
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--panel-border);
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+        background 0.15s,
+        color 0.15s,
+        border-color 0.15s;
+    line-height: 1;
+}
+
+.category-btn:hover {
+    background: var(--panel-hover-bg);
+    border-color: var(--panel-hover-border);
+    color: var(--color-text);
+}
+
+.category-btn.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary-accent);
+    color: var(--color-primary-ink);
+}
+
+.exercise-list-scroll {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.exercise-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition:
+        background 0.12s,
+        border-color 0.12s;
+    text-align: left;
+    background: transparent;
+    width: 100%;
+}
+
+.exercise-item:hover {
+    background: var(--panel-hover-bg);
+    border-color: var(--panel-hover-border);
+}
+
+.exercise-item.selected {
+    background: var(--color-primary);
+    border-color: var(--color-primary-accent);
+}
+
+.exercise-item-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.exercise-item.selected .exercise-item-name {
+    color: var(--color-primary-ink);
+}
+
+.exercise-item-muscles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.exercise-item-tag {
+    font-size: 0.7rem;
+    padding: 0.1em 0.45em;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.exercise-item-tag.primary-tag {
+    background: oklch(60% 0.22 25 / 0.15);
+    color: oklch(45% 0.22 25);
+}
+
+.exercise-item-tag.secondary-tag {
+    background: oklch(75% 0.18 65 / 0.15);
+    color: oklch(50% 0.18 65);
+}
+
+.exercise-item.selected .exercise-item-tag.primary-tag {
+    background: oklch(60% 0.22 25 / 0.25);
+    color: oklch(35% 0.2 25);
+}
+
+.exercise-item.selected .exercise-item-tag.secondary-tag {
+    background: oklch(75% 0.18 65 / 0.25);
+    color: oklch(40% 0.16 65);
+}
+
+.exercise-list-empty {
+    text-align: center;
+    color: var(--color-text-faint);
+    font-size: 0.85rem;
+    padding: 2rem 0;
+}

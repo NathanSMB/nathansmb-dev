@@ -1,0 +1,14 @@
+.muscle-max-page {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+@media (aspect-ratio > 1) {
+    .muscle-max-page {
+        height: 100%;
+    }
+}
