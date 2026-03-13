@@ -1,0 +1,58 @@
+.bottom-sheet-backdrop {
+    position: fixed;
+    inset: 0;
+    background: oklch(0 0 0 / 0.4);
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-normal);
+}
+
+.bottom-sheet-backdrop.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.bottom-sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100dvh;
+    z-index: 100;
+    background: var(--color-surface);
+    border-top-left-radius: var(--radius-lg);
+    border-top-right-radius: var(--radius-lg);
+    border-top: var(--border-thin) solid var(--panel-border);
+    box-shadow: 0 -4px 24px oklch(0 0 0 / 0.15);
+    will-change: transform;
+    touch-action: none;
+}
+
+.bottom-sheet.snapping {
+    transition: transform var(--duration-normal) ease-out;
+}
+
+.bottom-sheet-handle {
+    display: flex;
+    justify-content: center;
+    padding: 0.6rem 0 0.25rem;
+    cursor: grab;
+    flex-shrink: 0;
+    touch-action: none;
+}
+
+.bottom-sheet-handle-bar {
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--color-text-faint);
+}
+
+.bottom-sheet-content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0 0.85rem 0.85rem;
+    gap: var(--gap-group);
+}
