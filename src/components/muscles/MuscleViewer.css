@@ -2,8 +2,8 @@
     display: grid;
     grid-template-columns: 300px 1fr;
     grid-template-rows: 1fr;
-    gap: 1rem;
-    padding: 1rem;
+    gap: var(--gap-stack);
+    padding: var(--space-lg);
     flex: 1;
     min-height: 0;
     overflow: hidden;
@@ -12,17 +12,17 @@
 .muscle-viewer-sidebar {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: var(--gap-group);
     min-height: 0;
     overflow: hidden;
     background: var(--panel-bg);
-    border: 1px solid var(--panel-border);
+    border: var(--border-thin) solid var(--panel-border);
     border-radius: var(--radius-lg);
     padding: 0.85rem;
 }
 
 .muscle-viewer-title {
-    font-size: 1rem;
+    font-size: var(--text-md);
     font-weight: 600;
     color: var(--color-text);
     margin: 0;
@@ -39,10 +39,10 @@
 .muscle-viewer-legend {
     flex-shrink: 0;
     display: flex;
-    gap: 1rem;
+    gap: var(--gap-stack);
     flex-wrap: wrap;
-    padding-top: 0.5rem;
-    border-top: 1px solid var(--panel-border);
+    padding-top: var(--space-sm);
+    border-top: var(--border-thin) solid var(--panel-border);
 }
 
 .legend-item {
@@ -61,15 +61,15 @@
 }
 
 .legend-swatch.primary {
-    background: oklch(60% 0.22 25);
+    background: var(--muscle-primary);
 }
 
 .legend-swatch.secondary {
-    background: oklch(75% 0.18 65);
+    background: var(--muscle-secondary);
 }
 
 .legend-swatch.hover {
-    background: oklch(65% 0.18 290);
+    background: var(--muscle-hover);
 }
 
 @media (aspect-ratio <= 1) {

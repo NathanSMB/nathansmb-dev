@@ -21,25 +21,25 @@
 
 /* Default neutral fill for all color-layer paths */
 #color path {
-    fill: oklch(85% 0.01 300);
-    transition: fill 0.15s ease;
+    fill: var(--muscle-neutral);
+    transition: fill var(--duration-fast) ease;
     cursor: pointer;
 }
 
 /* Hover: indigo highlight */
 #color .muscle-hover path,
 #color path.muscle-hover {
-    fill: oklch(65% 0.18 290) !important;
+    fill: var(--muscle-hover) !important;
 }
 
 /* Secondary: amber */
 #color .muscle-secondary path,
 #color path.muscle-secondary {
-    fill: oklch(75% 0.18 65) !important;
+    fill: var(--muscle-secondary) !important;
 }
 
 /* Primary: red/coral — highest priority */
 #color .muscle-primary path,
 #color path.muscle-primary {
-    fill: oklch(60% 0.22 25) !important;
+    fill: var(--muscle-primary) !important;
 }
