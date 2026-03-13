@@ -6,6 +6,7 @@ interface MuscleSvgProps {
     primaryIds: string[];
     secondaryIds: string[];
     onMuscleHover: (muscleId: string | null) => void;
+    onMuscleClick: (muscleId: string) => void;
     onMouseMove: (x: number, y: number) => void;
 }
 
@@ -40,6 +41,7 @@ export default function MuscleSvg(props: MuscleSvgProps) {
         if (liveColorGroup) {
             liveColorGroup.addEventListener("mouseover", handleMouseOver);
             liveColorGroup.addEventListener("mouseout", handleMouseOut);
+            liveColorGroup.addEventListener("click", handleClick);
         }
         containerRef!.addEventListener("mousemove", handleMouseMove);
 
@@ -50,6 +52,7 @@ export default function MuscleSvg(props: MuscleSvgProps) {
                     handleMouseOver,
                 );
                 liveColorGroup.removeEventListener("mouseout", handleMouseOut);
+                liveColorGroup.removeEventListener("click", handleClick);
             }
             containerRef?.removeEventListener("mousemove", handleMouseMove);
         });
@@ -64,6 +67,14 @@ export default function MuscleSvg(props: MuscleSvgProps) {
             el = el.parentElement;
         }
         return null;
+    }
+
+    function handleClick(e: Event) {
+        const muscleEl = findMuscleElement(e.target as Element);
+        const muscleKey = muscleEl ? SVG_ID_TO_MUSCLE[muscleEl.id] : null;
+        if (muscleKey) {
+            props.onMuscleClick(muscleKey);
+        }
     }
 
     function handleMouseOver(e: Event) {

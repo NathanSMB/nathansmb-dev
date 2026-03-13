@@ -16,11 +16,24 @@ export default function MuscleViewer() {
     const [searchQuery, setSearchQuery] = createSignal("");
     const [activeCategory, setActiveCategory] =
         createSignal<ExerciseCategory | null>(null);
+    const [muscleFilter, setMuscleFilter] = createSignal<string | null>(null);
+
+    function handleMuscleClick(muscleId: string) {
+        if (muscleFilter() === muscleId) {
+            setMuscleFilter(null);
+        } else {
+            setMuscleFilter(muscleId);
+            setSelectedExercise(null);
+        }
+    }
 
     const primarySvgIds = createMemo(() => {
         const ex = selectedExercise();
-        if (!ex) return [];
-        return ex.primary.flatMap((mid) => MUSCLE_MAP[mid]?.svgIds ?? []);
+        if (ex)
+            return ex.primary.flatMap((mid) => MUSCLE_MAP[mid]?.svgIds ?? []);
+        const filter = muscleFilter();
+        if (filter) return MUSCLE_MAP[filter]?.svgIds ?? [];
+        return [];
     });
 
     const secondarySvgIds = createMemo(() => {
@@ -41,6 +54,26 @@ export default function MuscleViewer() {
             <div class="muscle-viewer">
                 <div class="muscle-viewer-sidebar">
                     <p class="muscle-viewer-title">Exercises</p>
+                    <Show when={muscleFilter()}>
+                        {(id) => (
+                            <div class="muscle-filter-indicator">
+                                <span>
+                                    Showing exercises for{" "}
+                                    <strong>
+                                        {MUSCLE_MAP[id()]?.displayName}
+                                    </strong>
+                                </span>
+                                <button
+                                    class="muscle-filter-clear"
+                                    onClick={() => setMuscleFilter(null)}
+                                    type="button"
+                                    aria-label="Clear muscle filter"
+                                >
+                                    ×
+                                </button>
+                            </div>
+                        )}
+                    </Show>
                     <ExerciseList
                         selected={selectedExercise()}
                         onSelect={setSelectedExercise}
@@ -48,6 +81,7 @@ export default function MuscleViewer() {
                         onSearchChange={setSearchQuery}
                         activeCategory={activeCategory()}
                         onCategoryChange={setActiveCategory}
+                        muscleFilter={muscleFilter()}
                     />
                     <div class="muscle-viewer-legend">
                         <div class="legend-item">
@@ -76,6 +110,7 @@ export default function MuscleViewer() {
                         primaryIds={primarySvgIds()}
                         secondaryIds={secondarySvgIds()}
                         onMuscleHover={setHoveredMuscleId}
+                        onMuscleClick={handleMuscleClick}
                         onMouseMove={(x, y) => setMousePos({ x, y })}
                     />
                     <MuscleTooltip

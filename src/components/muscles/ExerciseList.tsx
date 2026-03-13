@@ -16,16 +16,22 @@ interface ExerciseListProps {
     onSearchChange: (q: string) => void;
     activeCategory: ExerciseCategory | null;
     onCategoryChange: (cat: ExerciseCategory | null) => void;
+    muscleFilter: string | null;
 }
 
 export default function ExerciseList(props: ExerciseListProps) {
     const filtered = () => {
         const q = props.searchQuery.toLowerCase();
         const cat = props.activeCategory;
+        const muscle = props.muscleFilter;
         return EXERCISES.filter((ex) => {
             const matchesCat = !cat || ex.category === cat;
             const matchesSearch = !q || ex.name.toLowerCase().includes(q);
-            return matchesCat && matchesSearch;
+            const matchesMuscle =
+                !muscle ||
+                ex.primary.includes(muscle) ||
+                ex.secondary.includes(muscle);
+            return matchesCat && matchesSearch && matchesMuscle;
         });
     };
 
