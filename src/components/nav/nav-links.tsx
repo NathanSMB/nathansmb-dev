@@ -44,6 +44,7 @@ export const defaultLinks: NavLink[] = [
             },
         ],
     },
+    { href: "/muscle-max", label: "Muscle Max" },
 ];
 
 const sectionLinksConfig: { prefix: string; links: NavLink[] }[] = [

@@ -1,0 +1,19 @@
+.muscle-tooltip {
+    position: fixed;
+    pointer-events: none;
+    z-index: 100;
+    background: var(--color-text);
+    color: var(--color-page-bg);
+    padding: 0.3em 0.7em;
+    border-radius: var(--radius-md);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.1s;
+    transform: translate(12px, -50%);
+}
+
+.muscle-tooltip.visible {
+    opacity: 1;
+}

@@ -1,0 +1,45 @@
+.muscle-svg-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.muscle-svg-container svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Disable pointer events on decorative layers so hover hits the color layer */
+#body_lines,
+#silueta {
+    pointer-events: none;
+}
+
+/* Default neutral fill for all color-layer paths */
+#color path {
+    fill: var(--muscle-neutral);
+    transition: fill var(--duration-fast) ease;
+    cursor: pointer;
+}
+
+/* Hover: indigo highlight */
+#color .muscle-hover path,
+#color path.muscle-hover {
+    fill: var(--muscle-hover) !important;
+}
+
+/* Secondary: amber */
+#color .muscle-secondary path,
+#color path.muscle-secondary {
+    fill: var(--muscle-secondary) !important;
+}
+
+/* Primary: red/coral — highest priority */
+#color .muscle-primary path,
+#color path.muscle-primary {
+    fill: var(--muscle-primary) !important;
+}
