@@ -20,6 +20,7 @@ interface ExerciseListProps {
     activeCategory: ExerciseCategory | null;
     onCategoryChange: (cat: ExerciseCategory | null) => void;
     muscleFilter: string | null;
+    searchColor?: "surface" | "page" | "transparent";
 }
 
 export default function ExerciseList(props: ExerciseListProps) {
@@ -69,7 +70,7 @@ export default function ExerciseList(props: ExerciseListProps) {
                         onInput={props.onSearchChange}
                         size="lg"
                         placeholder="Search exercises…"
-                        color="surface"
+                        color={props.searchColor ?? "surface"}
                     />
                 </div>
                 <div class="exercise-list-categories">

@@ -1,10 +1,28 @@
-import { createMemo, createSignal } from "solid-js";
+import { Show, createMemo, createSignal } from "solid-js";
+import BottomSheet, { type SnapPoint } from "./BottomSheet";
 import ExerciseList from "./ExerciseList";
 import MuscleTooltip from "./MuscleTooltip";
 import MuscleSvg from "./MuscleSvg";
 import { type Exercise, type ExerciseCategory } from "./exercise-data";
 import { MUSCLE_MAP } from "./muscle-map";
 import css from "./MuscleViewer.css?inline";
+
+function useIsMobile() {
+    const query = "(max-aspect-ratio: 1/1)";
+    const [matches, setMatches] = createSignal(
+        typeof window !== "undefined"
+            ? window.matchMedia(query).matches
+            : false,
+    );
+
+    if (typeof window !== "undefined") {
+        const mql = window.matchMedia(query);
+        const handler = (e: MediaQueryListEvent) => setMatches(e.matches);
+        mql.addEventListener("change", handler);
+    }
+
+    return matches;
+}
 
 export default function MuscleViewer() {
     const [selectedExercise, setSelectedExercise] =
@@ -17,6 +35,9 @@ export default function MuscleViewer() {
     const [activeCategory, setActiveCategory] =
         createSignal<ExerciseCategory | null>(null);
     const [muscleFilter, setMuscleFilter] = createSignal<string | null>(null);
+    const [sheetSnap, setSheetSnap] = createSignal<SnapPoint>("collapsed");
+
+    const isMobile = useIsMobile();
 
     function handleMuscleClick(muscleId: string) {
         if (muscleFilter() === muscleId) {
@@ -24,6 +45,14 @@ export default function MuscleViewer() {
         } else {
             setMuscleFilter(muscleId);
             setSelectedExercise(null);
+            if (isMobile()) setSheetSnap("half");
+        }
+    }
+
+    function handleExerciseSelect(ex: Exercise | null) {
+        setSelectedExercise(ex);
+        if (isMobile() && ex) {
+            setSheetSnap("collapsed");
         }
     }
 
@@ -48,36 +77,45 @@ export default function MuscleViewer() {
         return MUSCLE_MAP[id]?.displayName ?? null;
     });
 
+    const legend = (
+        <div class="muscle-viewer-legend">
+            <div class="legend-item">
+                <div class="legend-swatch primary" />
+                Primary muscle
+            </div>
+            <div class="legend-item">
+                <div class="legend-swatch secondary" />
+                Secondary muscle
+            </div>
+            <div class="legend-item">
+                <div class="legend-swatch hover" />
+                Hover
+            </div>
+        </div>
+    );
+
+    const exerciseListProps = () =>
+        ({
+            selected: selectedExercise(),
+            onSelect: handleExerciseSelect,
+            searchQuery: searchQuery(),
+            onSearchChange: setSearchQuery,
+            activeCategory: activeCategory(),
+            onCategoryChange: setActiveCategory,
+            muscleFilter: muscleFilter(),
+        }) as const;
+
     return (
         <>
             <style>{css}</style>
-            <div class="muscle-viewer">
-                <div class="muscle-viewer-sidebar">
-                    <p class="muscle-viewer-title">Exercises</p>
-                    <ExerciseList
-                        selected={selectedExercise()}
-                        onSelect={setSelectedExercise}
-                        searchQuery={searchQuery()}
-                        onSearchChange={setSearchQuery}
-                        activeCategory={activeCategory()}
-                        onCategoryChange={setActiveCategory}
-                        muscleFilter={muscleFilter()}
-                    />
-                    <div class="muscle-viewer-legend">
-                        <div class="legend-item">
-                            <div class="legend-swatch primary" />
-                            Primary muscle
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-swatch secondary" />
-                            Secondary muscle
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-swatch hover" />
-                            Hover
-                        </div>
+            <div class={`muscle-viewer${isMobile() ? " mobile" : ""}`}>
+                <Show when={!isMobile()}>
+                    <div class="muscle-viewer-sidebar">
+                        <p class="muscle-viewer-title">Exercises</p>
+                        <ExerciseList {...exerciseListProps()} />
+                        {legend}
                     </div>
-                </div>
+                </Show>
                 <div class="muscle-viewer-svg-area">
                     <MuscleSvg
                         primaryIds={primarySvgIds()}
@@ -92,6 +130,15 @@ export default function MuscleViewer() {
                         y={mousePos().y}
                     />
                 </div>
+                <Show when={isMobile()}>
+                    <BottomSheet snap={sheetSnap()} onSnapChange={setSheetSnap}>
+                        <ExerciseList
+                            {...exerciseListProps()}
+                            searchColor="page"
+                        />
+                        {legend}
+                    </BottomSheet>
+                </Show>
             </div>
         </>
     );
