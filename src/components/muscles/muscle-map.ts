@@ -22,15 +22,11 @@ export const MUSCLE_MAP: Record<string, MuscleDefinition> = {
     },
     traps: {
         displayName: "Trapezius",
-        svgIds: ["trapezius1", "trapezius", "sternocleidomastoid"],
+        svgIds: ["trapezius1", "trapezius"],
     },
     "deltoid-front": {
         displayName: "Front Deltoid",
-        svgIds: [
-            "deltoid-anterior-head-left",
-            "deltoid-anterior-head-right",
-            "shoulder-frontal",
-        ],
+        svgIds: ["deltoid-anterior-head-left", "deltoid-anterior-head-right"],
     },
     "deltoid-side": {
         displayName: "Side Deltoid",
@@ -124,7 +120,7 @@ export const MUSCLE_MAP: Record<string, MuscleDefinition> = {
     },
     neck: {
         displayName: "Neck",
-        svgIds: ["stemocleidomastoid", "omohyoid"],
+        svgIds: ["stemocleidomastoid", "omohyoid", "sternocleidomastoid"],
     },
 };
 

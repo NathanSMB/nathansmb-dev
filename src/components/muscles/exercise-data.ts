@@ -203,6 +203,18 @@ export const EXERCISES: Exercise[] = [
         primary: ["glutes", "adductors"],
         secondary: ["hamstrings", "quadriceps"],
     },
+    {
+        name: "Tibialis Raise",
+        category: "legs",
+        primary: ["tibialis"],
+        secondary: [],
+    },
+    {
+        name: "Walking Lunge",
+        category: "legs",
+        primary: ["quadriceps", "glutes"],
+        secondary: ["hamstrings", "tibialis"],
+    },
 
     // Core
     {
