@@ -18,15 +18,19 @@ export const MUSCLE_MAP: Record<string, MuscleDefinition> = {
     },
     "upper-back": {
         displayName: "Upper Back",
-        svgIds: ["infraspinatus", "teres-minor", "teres"],
+        svgIds: ["infraspinatus", "teres-minor", "teres", "rhomboid"],
     },
     traps: {
         displayName: "Trapezius",
-        svgIds: ["trapezius1", "sternocleidomastoid"],
+        svgIds: ["trapezius1", "trapezius", "sternocleidomastoid"],
     },
     "deltoid-front": {
         displayName: "Front Deltoid",
-        svgIds: ["deltoid-anterior-head-left", "deltoid-anterior-head-right"],
+        svgIds: [
+            "deltoid-anterior-head-left",
+            "deltoid-anterior-head-right",
+            "shoulder-frontal",
+        ],
     },
     "deltoid-side": {
         displayName: "Side Deltoid",
@@ -68,6 +72,7 @@ export const MUSCLE_MAP: Record<string, MuscleDefinition> = {
             "mucle-rectus-abdominis",
             "tendinous-inscriptions",
             "end-of-middle-abs",
+            "abs-middle",
         ],
     },
     obliques: {

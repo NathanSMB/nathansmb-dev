@@ -3,7 +3,7 @@ import ExerciseList from "./ExerciseList";
 import MuscleTooltip from "./MuscleTooltip";
 import MuscleSvg from "./MuscleSvg";
 import { type Exercise, type ExerciseCategory } from "./exercise-data";
-import { MUSCLE_MAP, SVG_ID_TO_MUSCLE } from "./muscle-map";
+import { MUSCLE_MAP } from "./muscle-map";
 import css from "./MuscleViewer.css?inline";
 
 export default function MuscleViewer() {
@@ -32,8 +32,7 @@ export default function MuscleViewer() {
     const hoveredMuscleName = createMemo(() => {
         const id = hoveredMuscleId();
         if (!id) return null;
-        const key = SVG_ID_TO_MUSCLE[id];
-        return key ? (MUSCLE_MAP[key]?.displayName ?? null) : null;
+        return MUSCLE_MAP[id]?.displayName ?? null;
     });
 
     return (

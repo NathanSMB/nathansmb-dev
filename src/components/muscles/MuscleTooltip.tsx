@@ -1,4 +1,3 @@
-import { Show } from "solid-js";
 import css from "./MuscleTooltip.css?inline";
 
 interface MuscleTooltipProps {
@@ -15,7 +14,7 @@ export default function MuscleTooltip(props: MuscleTooltipProps) {
                 class={`muscle-tooltip${props.name ? " visible" : ""}`}
                 style={{ left: `${props.x}px`, top: `${props.y}px` }}
             >
-                <Show when={props.name}>{(name) => name()}</Show>
+                {props.name}
             </div>
         </>
     );

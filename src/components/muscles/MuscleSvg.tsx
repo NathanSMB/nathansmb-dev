@@ -1,5 +1,5 @@
 import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
-import { SVG_ID_TO_MUSCLE } from "./muscle-map";
+import { MUSCLE_MAP, SVG_ID_TO_MUSCLE } from "./muscle-map";
 import css from "./MuscleSvg.css?inline";
 
 interface MuscleSvgProps {
@@ -14,7 +14,8 @@ export default function MuscleSvg(props: MuscleSvgProps) {
     const [svgElement, setSvgElement] = createSignal<SVGSVGElement | null>(
         null,
     );
-    let hoveredEl: Element | null = null;
+    let hoveredEls: Element[] = [];
+    let hoveredMuscleKey: string | null = null;
 
     onMount(async () => {
         const res = await fetch("/Muscles.svg");
@@ -67,16 +68,25 @@ export default function MuscleSvg(props: MuscleSvgProps) {
 
     function handleMouseOver(e: Event) {
         const muscleEl = findMuscleElement(e.target as Element);
-        if (muscleEl === hoveredEl) return;
+        const muscleKey = muscleEl ? SVG_ID_TO_MUSCLE[muscleEl.id] : null;
+        if (muscleKey === hoveredMuscleKey) return;
 
-        if (hoveredEl) {
-            hoveredEl.classList.remove("muscle-hover");
-        }
-        hoveredEl = muscleEl;
+        for (const el of hoveredEls) el.classList.remove("muscle-hover");
+        hoveredEls = [];
+        hoveredMuscleKey = muscleKey;
 
-        if (muscleEl) {
-            muscleEl.classList.add("muscle-hover");
-            props.onMuscleHover(SVG_ID_TO_MUSCLE[muscleEl.id]);
+        if (muscleKey) {
+            const svg = svgElement();
+            if (svg) {
+                for (const id of MUSCLE_MAP[muscleKey].svgIds) {
+                    const el = svg.querySelector(`[id="${id}"]`);
+                    if (el) {
+                        el.classList.add("muscle-hover");
+                        hoveredEls.push(el);
+                    }
+                }
+            }
+            props.onMuscleHover(muscleKey);
         } else {
             props.onMuscleHover(null);
         }
@@ -88,10 +98,9 @@ export default function MuscleSvg(props: MuscleSvgProps) {
         const colorGroup = svgElement()?.querySelector("#color");
         if (colorGroup && related && colorGroup.contains(related)) return;
 
-        if (hoveredEl) {
-            hoveredEl.classList.remove("muscle-hover");
-            hoveredEl = null;
-        }
+        for (const el of hoveredEls) el.classList.remove("muscle-hover");
+        hoveredEls = [];
+        hoveredMuscleKey = null;
         props.onMuscleHover(null);
     }
 
