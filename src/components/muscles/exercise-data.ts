@@ -103,6 +103,30 @@ export const EXERCISES: Exercise[] = [
         primary: ["deltoid-front", "deltoid-side", "deltoid-rear"],
         secondary: ["triceps"],
     },
+    {
+        name: "Neck Curl",
+        category: "shoulders",
+        primary: ["neck"],
+        secondary: [],
+    },
+    {
+        name: "Neck Extension",
+        category: "shoulders",
+        primary: ["neck"],
+        secondary: ["traps"],
+    },
+    {
+        name: "Barbell Shrug",
+        category: "shoulders",
+        primary: ["traps"],
+        secondary: ["neck", "forearms"],
+    },
+    {
+        name: "Dumbbell Shrug",
+        category: "shoulders",
+        primary: ["traps"],
+        secondary: ["neck", "forearms"],
+    },
 
     // Arms
     {
@@ -214,6 +238,30 @@ export const EXERCISES: Exercise[] = [
         category: "legs",
         primary: ["quadriceps", "glutes"],
         secondary: ["hamstrings", "tibialis"],
+    },
+    {
+        name: "Adductor Machine",
+        category: "legs",
+        primary: ["adductors"],
+        secondary: [],
+    },
+    {
+        name: "Cable Hip Adduction",
+        category: "legs",
+        primary: ["adductors"],
+        secondary: [],
+    },
+    {
+        name: "Copenhagen Plank",
+        category: "legs",
+        primary: ["adductors"],
+        secondary: ["obliques", "abs"],
+    },
+    {
+        name: "Cossack Squat",
+        category: "legs",
+        primary: ["adductors", "quadriceps", "glutes"],
+        secondary: ["hamstrings"],
     },
 
     // Core
