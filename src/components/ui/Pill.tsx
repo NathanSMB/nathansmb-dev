@@ -3,7 +3,7 @@ import shapeCss from "~/styles/control-shapes.css?inline";
 import css from "./Pill.css?inline";
 
 interface PillProps {
-    color?: "primary" | "danger" | "success" | "neutral";
+    color?: "primary" | "danger" | "success" | "neutral" | "warning";
     title?: string;
     children: JSX.Element;
 }

@@ -1,4 +1,7 @@
 import { For, Show } from "solid-js";
+import Banner from "~/components/ui/Banner";
+import Button from "~/components/ui/Button";
+import Pill from "~/components/ui/Pill";
 import TextInput from "~/components/ui/TextInput";
 import {
     CATEGORIES,
@@ -51,27 +54,45 @@ export default function ExerciseList(props: ExerciseListProps) {
         <>
             <style>{css}</style>
             <div class="exercise-list-panel">
+                <Banner
+                    variant="info"
+                    message={
+                        props.muscleFilter
+                            ? `Showing exercises for ${MUSCLE_MAP[props.muscleFilter]?.displayName} — click again to deselect`
+                            : null
+                    }
+                    class="exercise-list-filter-banner"
+                />
                 <div class="exercise-list-search">
                     <TextInput
                         value={props.searchQuery}
                         onInput={props.onSearchChange}
+                        size="lg"
                         placeholder="Search exercises…"
-                        size="sm"
                         color="surface"
                     />
                 </div>
                 <div class="exercise-list-categories">
-                    <button
-                        class={`category-btn${props.activeCategory === null ? " active" : ""}`}
+                    <Button
+                        variant="pill"
+                        color={
+                            props.activeCategory === null
+                                ? "primary"
+                                : "neutral"
+                        }
                         onClick={() => props.onCategoryChange(null)}
-                        type="button"
                     >
                         All
-                    </button>
+                    </Button>
                     <For each={CATEGORIES}>
                         {(cat) => (
-                            <button
-                                class={`category-btn${props.activeCategory === cat.id ? " active" : ""}`}
+                            <Button
+                                variant="pill"
+                                color={
+                                    props.activeCategory === cat.id
+                                        ? "primary"
+                                        : "neutral"
+                                }
                                 onClick={() =>
                                     props.onCategoryChange(
                                         props.activeCategory === cat.id
@@ -79,10 +100,9 @@ export default function ExerciseList(props: ExerciseListProps) {
                                             : cat.id,
                                     )
                                 }
-                                type="button"
                             >
                                 {cat.label}
-                            </button>
+                            </Button>
                         )}
                     </For>
                 </div>
@@ -108,16 +128,16 @@ export default function ExerciseList(props: ExerciseListProps) {
                                     <div class="exercise-item-muscles">
                                         <For each={ex.primary}>
                                             {(mid) => (
-                                                <span class="exercise-item-tag primary-tag">
+                                                <Pill color="danger">
                                                     {muscleName(mid)}
-                                                </span>
+                                                </Pill>
                                             )}
                                         </For>
                                         <For each={ex.secondary}>
                                             {(mid) => (
-                                                <span class="exercise-item-tag secondary-tag">
+                                                <Pill color="warning">
                                                     {muscleName(mid)}
-                                                </span>
+                                                </Pill>
                                             )}
                                         </For>
                                     </div>
@@ -126,6 +146,15 @@ export default function ExerciseList(props: ExerciseListProps) {
                         </For>
                     </Show>
                 </div>
+                <Banner
+                    variant="info"
+                    message={
+                        props.selected
+                            ? `${props.selected.name} — click again to deselect`
+                            : null
+                    }
+                    class="exercise-list-selected-banner"
+                />
             </div>
         </>
     );

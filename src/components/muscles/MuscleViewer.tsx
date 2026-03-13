@@ -1,4 +1,4 @@
-import { createMemo, createSignal, Show } from "solid-js";
+import { createMemo, createSignal } from "solid-js";
 import ExerciseList from "./ExerciseList";
 import MuscleTooltip from "./MuscleTooltip";
 import MuscleSvg from "./MuscleSvg";
@@ -54,26 +54,6 @@ export default function MuscleViewer() {
             <div class="muscle-viewer">
                 <div class="muscle-viewer-sidebar">
                     <p class="muscle-viewer-title">Exercises</p>
-                    <Show when={muscleFilter()}>
-                        {(id) => (
-                            <div class="muscle-filter-indicator">
-                                <span>
-                                    Showing exercises for{" "}
-                                    <strong>
-                                        {MUSCLE_MAP[id()]?.displayName}
-                                    </strong>
-                                </span>
-                                <button
-                                    class="muscle-filter-clear"
-                                    onClick={() => setMuscleFilter(null)}
-                                    type="button"
-                                    aria-label="Clear muscle filter"
-                                >
-                                    ×
-                                </button>
-                            </div>
-                        )}
-                    </Show>
                     <ExerciseList
                         selected={selectedExercise()}
                         onSelect={setSelectedExercise}
@@ -97,13 +77,6 @@ export default function MuscleViewer() {
                             Hover
                         </div>
                     </div>
-                    <Show when={selectedExercise()}>
-                        {(ex) => (
-                            <div class="muscle-viewer-selected-info">
-                                {ex().name} — click again to deselect
-                            </div>
-                        )}
-                    </Show>
                 </div>
                 <div class="muscle-viewer-svg-area">
                     <MuscleSvg

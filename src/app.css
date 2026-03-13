@@ -14,6 +14,10 @@
     --color-success-hover: oklch(95% 0.1 152);
     --color-success-ink: oklch(35% 0.12 152);
     --color-success-accent: oklch(75% 0.18 152);
+    --color-warning: oklch(90% 0.12 65);
+    --color-warning-hover: oklch(95% 0.12 65);
+    --color-warning-ink: oklch(35% 0.14 65);
+    --color-warning-accent: oklch(75% 0.18 65);
 
     /* Text */
     --color-text: oklch(23% 0.012 300);
@@ -142,6 +146,10 @@
         --color-success-hover: oklch(20% 0.14 152);
         --color-success-ink: oklch(90% 0.1 152);
         --color-success-accent: oklch(50% 0.18 152);
+        --color-warning: oklch(30% 0.16 65);
+        --color-warning-hover: oklch(20% 0.16 65);
+        --color-warning-ink: oklch(90% 0.12 65);
+        --color-warning-accent: oklch(50% 0.18 65);
 
         --color-text: oklch(92% 0.012 300);
         --color-text-muted: oklch(81% 0.012 300);
